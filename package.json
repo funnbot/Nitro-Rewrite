@@ -2,7 +2,7 @@
   "name": "modularbot",
   "version": "0.0.1",
   "description": "A Modular Bot",
-  "main": "spawn.js",
+  "main": "ModuleManager.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/funnbot/Mudulur-Boot/issues"
   },
-  "homepage": "https://github.com/funnbot/Mudulur-Boot#readme"
+  "homepage": "https://github.com/funnbot/Mudulur-Boot#readme",
+  "dependencies": {
+    "bufferutil": "^3.0.1",
+    "discord.js": "^11.1.0",
+    "erlpack": "github:hammerandchisel/erlpack"
+  }
 }
