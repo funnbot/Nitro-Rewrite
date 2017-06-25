@@ -6,7 +6,7 @@ fs.readdir('./modules', (err, modules) => {
 
     modules.forEach(module => {
 
-        child_process.fork(`./modules/${module}`)
+        child_process.fork(`./modules/${module}/ShardingManager.js`)
 
     })
 });
