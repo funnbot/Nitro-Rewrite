@@ -1,0 +1,19 @@
+{
+  "name": "modularbot",
+  "version": "0.0.1",
+  "description": "A Modular Bot",
+  "main": "spawn.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funnbot/Mudulur-Boot.git"
+  },
+  "author": "Funnbot, Motion, Gymnophoria",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/funnbot/Mudulur-Boot/issues"
+  },
+  "homepage": "https://github.com/funnbot/Mudulur-Boot#readme"
+}
