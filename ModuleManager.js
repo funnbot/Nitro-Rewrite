@@ -1,12 +1,10 @@
 const child_process = require('child_process');
 const fs = require('fs');
 
-fs.readdir('./modules', (err, modules) => {
-    if (err) throw new Error("Module Folder Is Screwed");
+let modules = fs.readdirSync('./modules')
 
-    modules.forEach(module => {
+modules.forEach(module => {
 
-        child_process.fork(`./modules/${module}/ShardingManager.js`)
+    child_process.fork(`./modules/${module}/ShardingManager.js`)
 
-    })
-});
+})
