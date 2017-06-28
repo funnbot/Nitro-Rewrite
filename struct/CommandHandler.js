@@ -10,9 +10,11 @@ class CommandHandler {
 
         this.commandFiles = fs.readdirSync(this.path)
 
-        for (let commandFile in this.commandFiles) {
+        for (let commandFile of this.commandFiles) {
 
-            let command = require(`${this.path}/${commandFile}`)
+            commandFile = commandFile.slice(0, -3)
+
+            let command = require(`.${this.path}/${commandFile}`)
 
             this.commands[commandFile] = command
 

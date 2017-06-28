@@ -3,7 +3,7 @@ const { FUNNBOT } = require('../../config.js')
 const CommandHandler = require('../../struct/CommandHandler.js')
 const Message = require('../../struct/Message.js')
 
-const commandhandler = new CommandHandler('tag')
+const commandhandler = new CommandHandler('dev')
 
 let commands = commandhandler.fetch()
 
