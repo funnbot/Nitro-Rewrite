@@ -1,4 +1,5 @@
 /node_modules
+/rethinkdb_data
 config.js
 .vscode
 .jsbeautifyrc
