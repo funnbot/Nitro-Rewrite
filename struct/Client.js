@@ -1,4 +1,7 @@
 const Discord = require('discord.js')
+const MessageExtension = require('../extensions/MessageExtension.js')
+
+MessageExtension.extend(Discord.Message)
 
 const { TOKEN } = require('../config.js')
 
