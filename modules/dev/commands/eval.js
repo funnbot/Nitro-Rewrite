@@ -5,9 +5,9 @@ exports.run = (message, bot, send) => {
 
     if (!message.checkSuffix) {
 
-      let txt = evalTxt('Funnbot', 'Output', '100000', 'An idiot who does not provide code when he evals.')
+        let txt = evalTxt('Funnbot', 'Output', '100000', 'An idiot who does not provide code when he evals.')
 
-      return send(txt)
+        return send(txt)
 
     }
 

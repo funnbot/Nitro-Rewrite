@@ -12,15 +12,15 @@ class MessageExtension extends Extension {
     }
 
     get args() {
-        return this.cutPrefix.split(" ").slice(1)
+        return this.cutPrefix.split(" ").slice(1).filter(t=>t!='')
     }
 
     get suffix() {
-        return this.args.join(" ")
+        return this.cutPrefix.split(" ").slice(1).join(" ")
     }
 
     get checkSuffix() {
-        return this.suffix.replace(/\s/g, '').length > 1
+        return this.suffix.replace(/\s/g, '').length > 0
     }
 
     get send() {

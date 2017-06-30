@@ -19,10 +19,27 @@ class DatabaseManager {
 
         })
 
-        r.table(key).changes().run().then(change => {
+        r.table(key).changes().run().then(feed => {
 
-            
+            feed.each((err, row) => {
 
+                if (err) return console.log(err)
+
+                if (!row.new_val) return
+
+                this.settings[row.new_val.id] = row.new_val.data
+
+            })
+
+        })
+
+    }
+
+    update(id) {
+
+        r.table(this.key).insert({
+            id,
+            data: this.settings[id]
         })
 
     }
@@ -36,6 +53,7 @@ class DatabaseManager {
     set(id, val) {
 
         this.settings[id] = val
+        this.update(id)
 
     }
 
