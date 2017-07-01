@@ -26,7 +26,7 @@ class Client {
     }
 
     login() {
-        this.bot.login(TOKEN)
+        this.bot.login(TOKEN).catch(console.log)
     }
 }
 

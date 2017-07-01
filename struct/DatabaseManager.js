@@ -1,61 +1,65 @@
-const r = require('rethinkdbdash')({ db: "Nitro" })
-const { DEFAULTS } = require('../config.js')
+const r = require("rethinkdbdash")({
+  db: "Nitro"
+})
+const {
+  DEFAULTS
+} = require("../config.js")
 
 class DatabaseManager {
 
-    constructor(key) {
+  constructor(key) {
 
-        this.key = key
+    this.key = key
 
-        this.settings = {}
+    this.settings = {}
 
-        r.table(key).run().then(res => {
+    r.table(key).run().then(res => {
 
-            res.forEach(k => {
+      res.forEach(k => {
 
-                this.settings[k.id] = k.data
+        this.settings[k.id] = k.data
 
-            })
+      })
 
-        })
+    })
 
-        r.table(key).changes().run().then(feed => {
+    r.table(key).changes().run().then(feed => {
 
-            feed.each((err, row) => {
+      feed.each((err, row) => {
 
-                if (err) return console.log(err)
+        if (err) return console.log(err)
 
-                if (!row.new_val) return
+        if (!row.new_val) return
 
-                this.settings[row.new_val.id] = row.new_val.data
+        this.settings[row.new_val.id] = row.new_val.data
 
-            })
+      })
 
-        })
+    })
 
-    }
+  }
 
-    update(id) {
+  update(id) {
 
-        r.table(this.key).insert({
-            id,
-            data: this.settings[id]
-        })
+    r.table(this.key).insert({
+      id,
+      data: this.settings[id]
+    })
 
-    }
+  }
 
-    get(id) {
+  get(id) {
 
-        return this.settings[id] ? this.settings[id] : DEFAULTS[this.key]
+    return this.settings[id] ? this.settings[id] : DEFAULTS[this.key]
 
-    }
+  }
 
-    set(id, val) {
+  set(id, val) {
 
-        this.settings[id] = val
-        this.update(id)
+    this.settings[id] = val
+    this.update(id)
 
-    }
+  }
 
 }
 

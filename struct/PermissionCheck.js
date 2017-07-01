@@ -1,21 +1,21 @@
 module.exports = (message, perms = []) => {
 
-    let not = []
+  let not = []
 
-    perms.forEach(p => {
+  perms.forEach(p => {
 
-        if (!message.channel.permissionsFor(message.member).has(p)) {
+    if (!message.channel.permissionsFor(message.member).has(p)) {
 
-            not.push(p)
+      not.push(p)
 
-        }
+    }
 
-    })
+  })
 
-    if (p.length > 0) {
-        let s = p.length > 1 ? 's' : ''
-        message.send(`You lack the permission${s}: \`${not.join('\`, \`')}\``)
-        return true
-    } else return false
+  if (not.length > 0) {
+    let s = p.length > 1 ? "s" : ""
+    message.send("You lack the permission" + s + ": `" + not.join("`, `") + "`")
+    return true
+  } else return false
 
 }

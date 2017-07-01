@@ -3,7 +3,7 @@ class Extension {
         Object.defineProperties(
             target.prototype,
             Object.getOwnPropertyDescriptors(this.prototype)
-        );
+        )
     }
 }
 

@@ -1,30 +1,30 @@
-const fs = require('fs')
+const fs = require("fs")
 
 class CommandHandler {
 
-    constructor(key) {
+  constructor(key) {
 
-        this.commands = {}
+    this.commands = {}
 
-        this.path = `./modules/${key}/commands`
+    this.path = `./modules/${key}/commands`
 
-        this.commandFiles = fs.readdirSync(this.path)
+    this.commandFiles = fs.readdirSync(this.path)
 
-        for (let commandFile of this.commandFiles) {
+    for (let commandFile of this.commandFiles) {
 
-            commandFile = commandFile.slice(0, -3)
+      commandFile = commandFile.slice(0, -3)
 
-            let command = require(`.${this.path}/${commandFile}`)
+      let command = require(`.${this.path}/${commandFile}`)
 
-            this.commands[commandFile] = command
-
-        }
+      this.commands[commandFile] = command
 
     }
 
-    fetch() {
-        return this.commands
-    }
+  }
+
+  fetch() {
+    return this.commands
+  }
 
 }
 

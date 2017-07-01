@@ -1,14 +1,16 @@
-const bot = require('./bot.js')
-const { FUNNBOT } = require('../../config.js')
-const CommandHandler = require('../../struct/CommandHandler.js')
+const bot = require("./bot.js")
+const {
+  FUNNBOT
+} = require("../../config.js")
+const CommandHandler = require("../../struct/CommandHandler.js")
 
-const commandhandler = new CommandHandler('dev')
+const commandhandler = new CommandHandler("dev")
 const commands = commandhandler.fetch()
 
-bot.on('message', message => {
+bot.on("message", message => {
 
-    if (message.author.id !== FUNNBOT) return
+  if (message.author.id !== FUNNBOT) return
 
-    commands[message.command] ? commands[message.command].run(message, bot, message.send) : 0
+  commands[message.command] ? commands[message.command].run(message, bot, message.send) : 0
 
 })
