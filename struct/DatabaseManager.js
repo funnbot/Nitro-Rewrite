@@ -44,7 +44,9 @@ class DatabaseManager {
     r.table(this.key).insert({
       id,
       data: this.settings[id]
-    })
+    }, {
+      conflict: "replace"
+    }).run()
 
   }
 

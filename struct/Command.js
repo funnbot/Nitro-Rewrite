@@ -12,7 +12,7 @@ class Command {
 
     this.dm = options.dm || !options.guildOnly || false
 
-    this.coolDown = options.coolDown || options.cooldown || 10
+    this.coolDown = options.coolDown || options.cooldown || 1
 
 
     this.userPerms = options.userPerms || options.userperms || []
@@ -42,4 +42,4 @@ class Command {
 
 }
 
-global.NitroCommand = Command
+Nitro.Command = Command

@@ -1,4 +1,4 @@
-module.exports = (message, perms = []) => {
+let user = (message, perms = []) => {
 
   let not = []
 
@@ -19,3 +19,9 @@ module.exports = (message, perms = []) => {
   } else return false
 
 }
+
+let bot = () => {
+
+}
+
+Nitro.PermissionCheck = { user, bot }

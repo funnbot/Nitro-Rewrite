@@ -6,7 +6,12 @@ MessageExtension.extend(Discord.Message)
 
 const { TOKEN } = require("../config.js")
 
+global.Nitro = {}
+
 require("./Command.js")
+require("./CommandLoader.js")
+require("./CoolDown.js")
+require("./PermissionCheck.js")
 
 class Client {
 

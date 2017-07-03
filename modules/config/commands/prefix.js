@@ -1,10 +1,10 @@
-module.exports = new NitroCommand({
+module.exports = new Nitro.Command({
 
   help: "Change the prefix for commands.",
   example: '`${p}prefix !!` - The ping command would be called with `!!ping`\n`${p}prefix "nitro "` - This prefix has a space so it is wrapped in double quotes `nitro ping`',
   args: "<newPrefix> || \"<newPrefix with space>\"",
   dm: false,
-  coolDown: 1000,
+  coolDown: 4,
   userPerms: ["MANAGE_GUILD"],
 
   run: async(message, bot, send) => {

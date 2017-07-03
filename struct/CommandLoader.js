@@ -28,4 +28,4 @@ class CommandHandler {
 
 }
 
-module.exports = CommandHandler
+Nitro.CommandHandler = CommandHandler
