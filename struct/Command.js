@@ -14,6 +14,8 @@ class Command {
 
     this.coolDown = options.coolDown || options.cooldown || 1
 
+    this.argh = options.argh || options.argumentHandler || []
+
 
     this.userPerms = options.userPerms || options.userperms || []
 
@@ -21,16 +23,19 @@ class Command {
 
     this.roles = []
 
+
     this.runCommand = options.run
     if (!this.runCommand) throw new Error("Command function undefined")
 
   }
 
-  async run(bot, message, send) {
+  async run(message, bot, send) {
 
     if (typeof this.runCommand === "string") send(this.runCommand).catch(console.log)
     else if (typeof this.runCommand === "function") {
+      const ArgumentHandler = new Nitro.ArgumentHandler(message)
       try {
+        message.content = await ArgumentHandler.run(this.argh)
         await this.runCommand(message, bot, send)
       } catch (err) {
         send("Command Error, Please alert the developer.").catch(console.log)

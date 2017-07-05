@@ -12,6 +12,7 @@ require("./Command.js")
 require("./CommandLoader.js")
 require("./CoolDown.js")
 require("./PermissionCheck.js")
+require("./ArgumentHandler")
 
 class Client {
 
