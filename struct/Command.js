@@ -36,6 +36,7 @@ class Command {
       const ArgumentHandler = new Nitro.ArgumentHandler(message)
       try {
         message.content = await ArgumentHandler.run(this.argh)
+        if (!message.content) return
         await this.runCommand(message, bot, send)
       } catch (err) {
         send("Command Error, Please alert the developer.").catch(console.log)
