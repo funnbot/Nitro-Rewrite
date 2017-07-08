@@ -1,10 +1,11 @@
 const Discord = require("discord.js")
 const DatabaseManager = require("./DatabaseManager.js")
 const MessageExtension = require("../extensions/MessageExtension.js")
+const Sentry = require("raven")
 
 MessageExtension.extend(Discord.Message)
 
-const { TOKEN } = require("../config.js")
+const { TOKEN, SENTRY } = require("../config.js")
 
 global.Nitro = {}
 
@@ -13,6 +14,9 @@ require("./CommandLoader.js")
 require("./CoolDown.js")
 require("./PermissionCheck.js")
 require("./ArgumentHandler")
+require("./Logger.js")
+require("./util.js")
+require("./Alias.js")
 
 class Client {
 
@@ -20,7 +24,10 @@ class Client {
 
     opt.disabledEvents = ["TYPING_START"]
     this.bot = new Discord.Client(opt)
-    this.bot.embed = Discord.RichEmbed
+    this.bot.embed = Discord.MessageEmbed
+
+    Sentry.config(SENTRY).install()
+    this.bot.sentry = Sentry
 
     this.bot.on("ready", () => console.log(`${key} bot online`))
 

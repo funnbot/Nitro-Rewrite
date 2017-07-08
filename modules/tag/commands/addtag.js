@@ -1,17 +1,17 @@
 module.exports = new Nitro.Command({
 
   help: "Create a tag",
-  example: "",
-  args: "<name> <content>",
+  example: "${p}addtag nitro A really cool Discord bot",
+  argExample: "<name> <content>",
   dm: false,
   coolDown: 1,
   userPerms: [],
   botPerms: [],
 
-  argh: [
+  args: [
     {
       desc: "What would you like to name it?",
-      type: "text"
+      type: "name"
     },
     {
       desc: "What content should it have?",
@@ -19,14 +19,24 @@ module.exports = new Nitro.Command({
     }
   ],
 
-  run: async(message, bot, send) => {
-
-    if (!message.checkSuffix) return send()
+  run: async (message, bot, send) => {
 
     let tags = bot.tag.get(message.guild.id)
+    let name = Nitro.cleanVarName(message.args[0])
+    if (!name) return send("**Invalid tag name**")
+    let value = message.suffixOf(1)
+    if (!value) return send("**Tag content missing**")
+    if (tags[name]) return send("**The tag `" + name + "` already exists**")
 
+    tags[name] = {
+      content: value,
+      author: message.author.id,
+      created: Date.now(),
+      uses: 0
+    }
 
-
+    bot.tag.set(message.guild.id, tags)
+    return message.channel.send("**That tag `" + name + "` has been created**")
   }
 
 })

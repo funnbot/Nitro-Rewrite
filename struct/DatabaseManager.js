@@ -1,6 +1,7 @@
 const r = require("rethinkdbdash")({
   db: "Nitro"
 })
+
 const {
   DEFAULTS
 } = require("../config.js")
