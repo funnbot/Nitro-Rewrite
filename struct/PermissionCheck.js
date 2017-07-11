@@ -1,3 +1,5 @@
+const {PERMISSIONS} = require("../config.js")
+
 let user = (message, perms = []) => {
 
   let not = []
@@ -13,7 +15,8 @@ let user = (message, perms = []) => {
   })
 
   if (not.length > 0) {
-    let s = p.length > 1 ? "s" : ""
+    let s = not.length > 1 ? "s" : ""
+    not = not.map(p => PERMISSIONS[p])
     message.send("You lack the permission" + s + ": `" + not.join("`, `") + "`")
     return true
   } else return false

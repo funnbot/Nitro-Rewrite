@@ -7,7 +7,7 @@ class Command {
     this.example = options.example || options.usage || "There is no example."
     this.argExample = options.argExample || options.paramExample || ""
 
-    this.dm = options.dm || options.guildOnly || false
+    this.dm = options.dm || false
     this.coolDown = options.coolDown || options.cooldown || 1
     this.args = options.args || options.argumentHandler || []
 
@@ -15,7 +15,7 @@ class Command {
     this.botPerms = options.botPerms || options.botperms || []
 
     this.permissions = []
-    this.alias = []
+    this.alias = options.alias || []
     this.roles = []
 
     this.runCommand = options.run
@@ -23,18 +23,19 @@ class Command {
 
   }
 
-  async run(message, bot, send) {
+  async run(message, bot, send, ArgumentHandler) {
 
     if (typeof this.runCommand === "string") send(this.runCommand).catch(console.log)
     else if (typeof this.runCommand === "function") {
-      const ArgumentHandler = new Nitro.ArgumentHandler(message)
+      if (ArgumentHandler.chActive(message)) return
       try {
-        message.content = await ArgumentHandler.run(this.args)
+        message.content = await ArgumentHandler.run(this.args, message)
         if (!message.content) return
         await this.runCommand(message, bot, send)
       } catch (err) {
         send("Command Error, Please alert the developer.").catch(console.log)
-        console.log(message.command + " - " + err)
+        Nitro.logger.error(message.command + " - " + err)
+
       }
     } else throw new Error("Invalid command type")
 

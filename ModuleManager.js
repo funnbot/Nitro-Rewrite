@@ -6,9 +6,9 @@ let modules = fs.readdirSync("./modules")
 modules.forEach(module => {
 
   if (module !== ".DS_Store") {
-
-    child_process.fork(`./modules/${module}/ShardingManager.js`)
-
+    let exist = fs.existsSync(`./modules/${module}/ShardingManager.js`)
+    if (!exist) console.log(`module ${module} is missing Sharding Manager.`)
+    else child_process.fork(`./modules/${module}/ShardingManager.js`)
   }
 
 })

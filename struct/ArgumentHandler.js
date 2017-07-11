@@ -1,29 +1,35 @@
 class ArgumentHandler {
-  constructor(m) {
-    this.message = m
+  constructor() {
+    this.active = {}
   }
 
-  async run(args) {
-    if (1 > args.length) return this.message.content
+  async run(args, message) {
+    if (1 > args.length) return message.content
+    this.active[message.author.id] = true
     let newContent = []
-    newContent.push(this.message.prefix + this.message.command)
+    newContent.push(message.prefix + message.command)
     for (let [i, a] of args.entries()) {
-      let content = this.message.args[i]
+      let content = message.args[i]
       let collect
       if (!content) {
-        collect = await this.collect(a)
-        if (!collect) return false
+        collect = await this.collect(a, message)
+        if (!collect) return delete this.active[message.author.id], false
       }
-      newContent.push(i + 1 === args.length ? this.message.suffixOf(i).length > 0 ? this.message.suffixOf(i) : collect : this.message.args[i] || collect)
+      newContent.push(i + 1 === args.length ? message.suffixOf(i).length > 0 ? message.suffixOf(i) : collect : message.args[i] || collect)
     }
+    delete this.active[message.author.id]
     return newContent.join(" ")
   }
 
-  collect(arg) {
+  chActive(message) {
+    return this.active[message.author.id]
+  }
+
+  collect(arg, message) {
 
     return new Promise((resolve) => {
 
-      let collector = this.message.channel.createMessageCollector(m => m.author.id === this.message.author.id, {
+      let collector = message.channel.createMessageCollector(m => m.author.id === message.author.id, {
         time: 30000
       })
 
@@ -52,7 +58,7 @@ class ArgumentHandler {
 
       collector.on("end", (c, reason) => {
         if (reason === "time" || reason === "cancel") {
-          this.message.reply("Command cancelled")
+          message.reply("Command cancelled")
           return resolve(false)
         }
         if (reason === "invalid") {
@@ -60,7 +66,7 @@ class ArgumentHandler {
         }
       })
 
-      this.message.reply(`${arg.desc}\n\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`)
+      message.reply(`${arg.desc}\n\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`)
 
     })
   }

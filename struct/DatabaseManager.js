@@ -2,9 +2,7 @@ const r = require("rethinkdbdash")({
   db: "Nitro"
 })
 
-const {
-  DEFAULTS
-} = require("../config.js")
+const {DEFAULTS} = require("../config.js")
 
 class DatabaseManager {
 
@@ -41,27 +39,21 @@ class DatabaseManager {
   }
 
   update(id) {
-
     r.table(this.key).insert({
       id,
       data: this.settings[id]
     }, {
       conflict: "replace"
     }).run()
-
   }
 
   get(id) {
-
     return this.settings[id] ? this.settings[id] : DEFAULTS[this.key]
-
   }
 
   set(id, val) {
-
     this.settings[id] = val
     this.update(id)
-
   }
 
 }

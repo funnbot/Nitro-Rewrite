@@ -1,9 +1,11 @@
 const Discord = require("discord.js")
 const DatabaseManager = require("./DatabaseManager.js")
 const MessageExtension = require("../extensions/MessageExtension.js")
+const MessageEmbedExtension = require("../extensions/MessageEmbedExtension.js")
 const Sentry = require("raven")
 
 MessageExtension.extend(Discord.Message)
+MessageEmbedExtension.extend(Discord.MessageEmbed)
 
 const { TOKEN, SENTRY } = require("../config.js")
 
@@ -34,7 +36,7 @@ class Client {
   }
 
   database(keys = []) {
-    keys.push("prefix")
+    keys.push("prefix", "alias")
     for (let db of keys) {
       this.bot[db] = new DatabaseManager(db)
     }

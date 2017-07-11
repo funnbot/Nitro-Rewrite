@@ -1,9 +1,7 @@
 class CoolDown {
 
   constructor() {
-
     this.ids = {}
-
   }
 
   run(message, command) {
@@ -18,7 +16,6 @@ class CoolDown {
     let date = Date.now()
     if (u) {
       let e = u.date + u.cooldown * 1000
-      console.log(e, date)
       e > date ? val = e - date : delete this.ids[id]
     } else {
       this.ids[id] = {date, cooldown}

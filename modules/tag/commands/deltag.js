@@ -9,7 +9,7 @@ module.exports = new Nitro.Command({
   botPerms: [],
 
   args: [{
-    desc: "Which tag would you like to delete?",
+    desc: "What is the name of it?",
     type: "name"
   }],
 
@@ -17,5 +17,13 @@ module.exports = new Nitro.Command({
 
     let tags = bot.tag.get(message.guild.id)
 
+    let name = message.args[0]
+    if (!name) return send("**Invalid tag name**")
+    if (!tags[name]) return send("**Tag does not exist**")
+    let manage = message.channel.permissionsFor(message.author.id).has("MANAGE_GUILD")
+    if (message.author.id !== tags[name].author || !manage) return send("**You do not own this tag**")
+    delete tags[name]
+    bot.tag.set(message.guild.id, tags)
+    send("**Deleting the tag `"+name+"`**")
   }
 })

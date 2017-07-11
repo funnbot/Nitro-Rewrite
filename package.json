@@ -17,13 +17,14 @@
   },
   "homepage": "https://github.com/funnbot/Mudulur-Boot#readme",
   "dependencies": {
-    "bufferutil": "^3.0.1",
     "chalk": "^2.0.1",
     "discord.js": "github:hydrabolt/discord.js",
     "erlpack": "github:hammerandchisel/erlpack",
     "eslint": "^4.1.1",
+    "moment": "^2.18.1",
     "node-opus": "^0.2.6",
     "raven": "^2.1.0",
-    "rethinkdbdash": "^2.3.29"
+    "rethinkdbdash": "^2.3.29",
+    "uws": "^8.14.0"
   }
 }
