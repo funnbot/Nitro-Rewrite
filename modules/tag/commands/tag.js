@@ -21,6 +21,7 @@ module.exports = new Nitro.Command({
     if (!tags[name]) return send("**The tag `"+name+"` does not exist.**")
     tags[name].uses++
     bot.tag.set(message.guild.id, tags)
+    console.log(bot.tag.get)
     return send(tags[name].content)
   }
 })

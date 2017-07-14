@@ -24,7 +24,6 @@ class Command {
   }
 
   async run(message, bot, send, ArgumentHandler) {
-
     if (typeof this.runCommand === "string") send(this.runCommand).catch(console.log)
     else if (typeof this.runCommand === "function") {
       if (ArgumentHandler.chActive(message)) return
@@ -35,7 +34,7 @@ class Command {
       } catch (err) {
         send("Command Error, Please alert the developer.").catch(console.log)
         Nitro.logger.error(message.command + " - " + err)
-
+        console.log(err.stack)
       }
     } else throw new Error("Invalid command type")
 

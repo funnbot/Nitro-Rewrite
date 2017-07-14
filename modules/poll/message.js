@@ -7,6 +7,7 @@ const cooldown = new Nitro.CoolDown()
 const ArgumentHandler = new Nitro.ArgumentHandler()
 
 bot.on("message", async message => {
+
   if (message.author.bot) return
   if (!message.content.startsWith(message.prefix)) return
 

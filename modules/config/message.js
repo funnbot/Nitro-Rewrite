@@ -5,7 +5,7 @@ const commandhandler = new Nitro.CommandHandler("config")
 const commands = commandhandler.fetch()
 
 bot.on("message", async message => {
-
+  
   if (message.author.bot) return
   if (!message.content.startsWith(message.prefix)) return
   if (message.channel.type !== "text") return
