@@ -47,11 +47,11 @@ class DatabaseManager {
     }).run()
   }
 
-  get(id) {
+  g(id) {
     return this.settings[id] ? this.settings[id] : DEFAULTS[this.key]
   }
 
-  set(id, val) {
+  s(id, val) {
     this.settings[id] = val
     this.update(id)
   }

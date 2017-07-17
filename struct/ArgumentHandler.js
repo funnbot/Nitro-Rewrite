@@ -9,7 +9,7 @@ class ArgumentHandler {
     let newContent = []
     newContent.push(message.prefix + message.command)
     for (let [i, a] of args.entries()) {
-      if (a + 1 === args.length && a.type === "text") {
+      if (i + 1 === args.length && a.type === "text") {
         let content = message.suffixOf(i)
         if (content.length === 0 && a.opt) {
         } else {
@@ -19,7 +19,7 @@ class ArgumentHandler {
           }
           content = await this.parse(content, a, message)
           if (!content) return delete this.active[message.author.id], false
-          newContent.push(...content.split(" "))
+          content.split(" ").forEach(c => newContent.push(c))
         }
       } else {
         let content = message.args[i]
@@ -117,8 +117,8 @@ class ArgumentHandler {
     }
   }
 
-  test(content, arg, message) {
-    if (!content) return false
+  test(content, arg) {
+    if (!content) return true
     if (arg.type.number) {
       let num = parseInt(content) || "invalid"
       if (num === "invalid") return true

@@ -15,7 +15,7 @@ module.exports = new Nitro.Command({
 
   run: async (message, bot, send) => {
 
-    let tags = bot.tag.get(message.guild.id)
+    let tags = bot.tag.g(message.guild.id)
 
     let name = message.args[0]
     if (!name) return send("**Invalid tag name**")
@@ -23,7 +23,7 @@ module.exports = new Nitro.Command({
     let manage = message.channel.permissionsFor(message.author.id).has("MANAGE_GUILD")
     if (message.author.id !== tags[name].author || !manage) return send("**You do not own this tag**")
     delete tags[name]
-    bot.tag.set(message.guild.id, tags)
+    bot.tag.s(message.guild.id, tags)
     send("**Deleting the tag `"+name+"`**")
   }
 })

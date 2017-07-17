@@ -1,14 +1,9 @@
 const child_process = require("child_process")
 const fs = require("fs")
 
-let modules = fs.readdirSync("./modules")
+process.env.MOD ? start(process.env.MOD) : fs.readdirSync("./modules").forEach(module => start(module))
 
-modules.forEach(module => {
-
-  if (module !== ".DS_Store") {
-    let exist = fs.existsSync(`./modules/${module}/ShardingManager.js`)
-    if (!exist) console.log(`module ${module} is missing Sharding Manager.`)
-    else setTimeout(() => child_process.fork(`./modules/${module}/ShardingManager.js`), 2000)
-  }
-
-})
+function start(module) {
+  if (module === ".DS_Store") return
+  fs.existsSync(`./modules/${module}/ShardingManager.js`) ? child_process.fork(`./modules/${module}/ShardingManager.js`) : console.log(`module ${module} is missing Sharding Manager.`)
+}

@@ -1,8 +1,8 @@
 const Discord = require("discord.js")
-const { TOKEN } = require("../../config.js")
+const {TOKEN, SHARDS} = require("../../config.js")
 
 const ShardingManager = new Discord.ShardingManager("./modules/poll/bot.js", {
-  totalShards: 1,
+  totalShards: SHARDS,
   token: TOKEN
 })
 ShardingManager.spawn().catch(console.log)

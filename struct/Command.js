@@ -30,11 +30,15 @@ class Command {
       try {
         message.content = await ArgumentHandler.run(this.args, message)
         if (!message.content) return
+        message.channel.startTyping()
+        setTimeout(() => {
+          message.channel.stopTyping()
+        }, 4500)
+
         await this.runCommand(message, bot, send)
       } catch (err) {
         send("Command Error, Please alert the developer.").catch(console.log)
-        Nitro.logger.error(message.command + " - " + err)
-        console.log(err.stack)
+        bot.logger.error(message.command + " - " + err)
       }
     } else throw new Error("Invalid command type")
 

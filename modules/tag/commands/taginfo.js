@@ -17,7 +17,7 @@ module.exports = new Nitro.Command({
   }],
 
   run: async (message, bot, send) => {
-    let tags = bot.tag.get(message.guild.id)
+    let tags = bot.tag.g(message.guild.id)
     let name = message.args[0]
     name = Nitro.cleanVarName(name)
     if (!name) return send("**Invalid tag name**")

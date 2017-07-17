@@ -19,6 +19,7 @@
   "dependencies": {
     "chalk": "^2.0.1",
     "discord.js": "github:hydrabolt/discord.js",
+    "duration-js": "^4.0.0",
     "erlpack": "github:hammerandchisel/erlpack",
     "eslint": "^4.2.0",
     "moment": "^2.18.1",

@@ -3,7 +3,7 @@ const Extension = require("./Extension")
 class MessageExtension extends Extension {
 
   get prefix() {
-    return this.client.prefix.get(this.guild ? this.guild.id : "1234")
+    return this.client.prefix.g(this.guild ? this.guild.id : "1234")
   }
 
   get cutPrefix() {

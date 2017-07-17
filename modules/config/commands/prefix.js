@@ -24,7 +24,7 @@ module.exports = new Nitro.Command({
     } else {
 
       let pre = message.suffix.trim()
-      bot.prefix.set(message.guild.id, pre)
+      bot.prefix.s(message.guild.id, pre)
       return send("**The prefix was set to `" + pre + "`\nTest - `" + pre + "ping`**")
 
     }

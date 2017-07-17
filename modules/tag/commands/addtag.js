@@ -22,7 +22,7 @@ module.exports = new Nitro.Command({
 
   run: async (message, bot, send) => {
 
-    let tags = bot.tag.get(message.guild.id)
+    let tags = bot.tag.g(message.guild.id)
     let name = Nitro.cleanVarName(message.args[0])
     if (!name) return send("**Invalid tag name**")
     let value = message.suffixOf(1)
@@ -36,7 +36,7 @@ module.exports = new Nitro.Command({
       uses: 0
     }
 
-    bot.tag.set(message.guild.id, tags)
+    bot.tag.s(message.guild.id, tags)
     return message.channel.send("**That tag `" + name + "` has been created**")
   }
 

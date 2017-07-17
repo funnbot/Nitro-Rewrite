@@ -6,7 +6,7 @@ module.exports = new Nitro.Command({
   alias: ["listtags"],
 
   run: async (message, bot, send) => {
-    let tags = bot.tag.get(message.guild.id)
+    let tags = bot.tag.g(message.guild.id)
     let owned = []
     Object.keys(tags).forEach(t => {
       let tag = tags[t]
