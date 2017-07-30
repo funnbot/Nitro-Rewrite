@@ -1,8 +1,9 @@
 const bot = require("./bot.js")
 
-const commandhandler = new Nitro.CommandHandler("poll")
+const commandhandler = new Nitro.CommandHandler("help")
+commandhandler.readAll()
+bot.allCommands = commandhandler.fetchAll()
 const commands = commandhandler.fetch()
-const alias = new Nitro.Alias("poll", commands)
 const cooldown = new Nitro.CoolDown()
 const ArgumentHandler = new Nitro.ArgumentHandler()
 const perms = new Nitro.PermissionHandler()
@@ -12,9 +13,6 @@ bot.on("message", async message => {
   if (message.author.bot) return
   if (!message.content.startsWith(message.prefix)) return
   if (message.channel.type !== "text") return
-
-  alias.mapCustom(bot.alias.g(message.guild ? message.guild.id : "1234"))
-  message.content = alias.run(message)
 
   let command = commands[message.command]
   if (!command) return

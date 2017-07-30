@@ -5,3 +5,5 @@ Nitro.cleanVarName = (name) => {
   name = name.toLowerCase()
   return name
 }
+
+Nitro.pullProps = (obj, props) => props.reduce((o, p) => { o[p] = obj[p]; return o }, {})

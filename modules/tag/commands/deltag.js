@@ -21,9 +21,9 @@ module.exports = new Nitro.Command({
     if (!name) return send("**Invalid tag name**")
     if (!tags[name]) return send("**Tag does not exist**")
     let manage = message.channel.permissionsFor(message.author.id).has("MANAGE_GUILD")
-    if (message.author.id !== tags[name].author || !manage) return send("**You do not own this tag**")
+    if (message.author.id !== tags[name].author && !manage) return send("**You do not own this tag**")
     delete tags[name]
     bot.tag.s(message.guild.id, tags)
-    send("**Deleting the tag `"+name+"`**")
+    send("**Deleted the tag `"+name+"`**")
   }
 })

@@ -1,17 +1,19 @@
 const bot = require("./bot.js")
 
-const commandhandler = new Nitro.CommandHandler("poll")
+const commandhandler = new Nitro.CommandHandler("mod")
 const commands = commandhandler.fetch()
-const alias = new Nitro.Alias("poll", commands)
+const alias = new Nitro.Alias("mod", commands)
 const cooldown = new Nitro.CoolDown()
 const ArgumentHandler = new Nitro.ArgumentHandler()
 const perms = new Nitro.PermissionHandler()
+const CaseManager = require("./CaseManager.js")
 
 bot.on("message", async message => {
 
   if (message.author.bot) return
   if (!message.content.startsWith(message.prefix)) return
   if (message.channel.type !== "text") return
+  if (!message.guild) return
 
   alias.mapCustom(bot.alias.g(message.guild ? message.guild.id : "1234"))
   message.content = alias.run(message)
@@ -20,6 +22,8 @@ bot.on("message", async message => {
   if (!command) return
 
   if (perms.user(message, bot, command.userPerms)) return
+
+  if (!message.guild.check("caseman")) message.guild.add("caseman", new CaseManager(bot, message.guild))
 
   if (cooldown.run(message, command)) return
   if (!message.channel.permissionsFor(bot.user).has("SEND_MESSAGES")) return message.author.send("**I lack permission to send messages in this channel**").catch()

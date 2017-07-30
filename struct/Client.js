@@ -27,6 +27,7 @@ require("./PermissionHandler.js")
 require("./ArgumentHandler")
 require("./util.js")
 require("./Alias.js")
+require("./Logger.js")
 
 class Client {
 
@@ -40,14 +41,23 @@ class Client {
     Sentry.config(SENTRY).install()
     this.bot.sentry = Sentry
 
-    this.bot.active = {}
+    this.bot.active = {
+      channel: {},
+      guild: {},
+      user: {}
+    }
 
     this.bot.on("ready", () => {
       console.log(`${key} bot online`)
       Status.start(this.bot)
     })
+
     process.on("unhandledRejection", (err) => this.bot.logger.error(err.stack))
 
+  }
+
+  ready(cb) {
+    this.bot.once("ready", () => cb())
   }
 
   database(keys = []) {

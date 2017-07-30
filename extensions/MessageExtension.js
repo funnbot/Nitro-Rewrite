@@ -34,6 +34,72 @@ class MessageExtension extends Extension {
     return this.channel.send.bind(this.channel)
   }
 
+  async collectMessage(truthy, falsy, filter, time) {
+    return new Promise((resolve, reject) => {
+      if (filter === "author") filter = m => m.author.id === this.author.id
+      else if (filter === "everyone") filter = m => m.user.bot === "false"
+      else return reject("Filter = author || everyone")
+      if (!time) time = 30000
+      let collector = this.channel.createMessageCollector(filter, {time})
+      collector.on("collect", msg => {
+        if ((typeof truthy === "object" && truthy.includes(msg.content)) || (truthy === msg.content)) return collector.stop("true")
+        if ((typeof falsy === "object" && falsy.includes(msg.content)) || (falsy === msg.content)) return collector.stop("false")
+      })
+      collector.on("end", (c, reason) => {
+        resolve({time: false, true: true, false: false}[reason])
+      })
+    })
+  }
+
+  async parseUser(u) {
+    if (/<@\d{18,21}>/.test(u) || /<@!\d{18,21}>/.test(u)) {
+      let id = u.replace(/[^1234567890]/g, "")
+      return await this.guild.fetchMember(id)
+    }
+    if (/\d{18,21}/.test(u)) {
+      let id = u.replace(/[^1234567890]/g, "")
+      return await this.guild.fetchMember(id)
+    }
+    if (/^.{2,32}#\d{4}$/.test(u)) {
+      let [name, disc] = u.split("#")
+      try {
+        await this.guild.fetchMembers()
+        return this.guild.members.find(m => m.user.username.toLowerCase() === name.toLowerCase() && m.user.discriminator === disc)
+      } catch (err) {
+        return null
+      }
+    }
+    if (/^.{2,32}$/.test(u)) {
+      if (u.length < 4) return null
+      try {
+        await this.guild.fetchMembers()
+        return this.guild.members.find(m => m.user.username.toLowerCase().includes(u.toLowerCase()) || m.displayName.toLowerCase().includes(u.toLowerCase()))
+      } catch (err) {
+        return null
+      }
+    }
+    return null
+  }
+
+  async parseRole(u) {
+    return null
+  }
+
+  async parseChannel(u) {
+    if (/<#\d{18,21}>/.test(u)) {
+      let id = u.replace(/[^1234567890]/g, "")
+      return this.guild.channels.get(id) || false
+    }
+    if (/\d{18,21}/.test(u)) {
+      let id = u.replace(/[^1234567890]/g, "")
+      return this.guild.channels.get(id) || false
+    }
+    if (/^[a-z\-_]{2,100}$/.test(u)) {
+      return this.guild.channels.find(c => c.name.toLowerCase().includes(u.toLowerCase()))
+    }
+    return null
+  }
+
 }
 
 module.exports = MessageExtension

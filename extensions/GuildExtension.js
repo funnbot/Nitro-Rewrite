@@ -2,19 +2,23 @@ const Extension = require("./Extension.js")
 
 class GuildExtension extends Extension {
 
-  add(key) {
-    if (!this.client.active[key]) this.client.active[key] = {}
-    this.client.active[key][this.id] = true
+  add(key, value) {
+    if (!this.client.active.guild[key]) this.client.active.guild[key] = {}
+    this.client.active.guild[key][this.id] = value || true
   }
 
   check(key) {
-    if (!this.client.active[key]) this.client.active[key] = {}
-    return this.client.active[key][this.id]
+    if (!this.client.active.guild[key]) this.client.active.guild[key] = {}
+    return this.client.active.guild[key][this.id] || null
   }
 
   del(key) {
-    if (!this.client.active[key]) this.client.active[key] = {}
-    delete this.client.active[key][this.id]
+    if (!this.client.active.guild[key]) this.client.active.guild[key] = {}
+    return delete this.client.active.guild[key][this.id]
+  }
+
+  purge(key) {
+    return delete this.client.active.guild[key]
   }
 
 }

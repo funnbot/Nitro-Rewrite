@@ -48,7 +48,7 @@ class ArgumentHandler {
     } else if (arg.type === "text") {
       return content
     } else if (arg.type === "user") {
-      if (/<@\d{18,21}>/.test(content)) {
+      if (/<@\d{18,21}>/.test(content) || /<@!\d{18,21}>/.test(content)) {
         content = content.replace(/[^1234567890]/g, "")
         return content
       } else if (/\d{18,21}/.test(content)) {

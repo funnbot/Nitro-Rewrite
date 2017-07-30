@@ -1,6 +1,5 @@
 const Extension = require("./Extension.js")
 const chalk = require("chalk")
-const {STATUS} = require("../config.js").CHANNELS
 
 class ClientExtension extends Extension {
 
@@ -16,7 +15,18 @@ class ClientExtension extends Extension {
         console.log(chalk.red(error))
       }
     }
+  }
 
+  succ(text, data) {
+    text = text.replace(/\*/g, "")
+    if (Array.isArray(data)) data = data.join(", ")
+    return `<:tickmarkYes:340357547141627905> **| ${text}** ${data || ""}`
+  }
+
+  fail(text, data) {
+    text = text.replace(/\*/g, "")
+    if (Array.isArray(data)) data = data.join(", ")
+    return `<:tickmarkNo:340357547682955264> **| ${text}** ${data || ""}`
   }
 
 
