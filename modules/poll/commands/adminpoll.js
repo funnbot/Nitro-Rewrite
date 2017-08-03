@@ -6,8 +6,8 @@ module.exports = new Nitro.Command({
   argExample: "<the channel the poll is sent to> <the channel people vote from> <time> <question> | <optionOne> | <optionTwo> | ...",
   dm: false,
   coolDown: 60,
-  userPerms: ["MANAGE_GUILD"],
   alias: ["apoll"],
+  userPerms: 3,
   args: [
     {
       desc: "What channel should it be displayed in?",

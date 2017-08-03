@@ -1,47 +1,39 @@
-const {PERMISSIONS} = require("../config.js")
+const {PERMISSIONS, FUNNBOT} = require("../config.js")
 
 class PermissionHandler {
   constructor() {
   }
 
-  user(message, bot, perms = []) {
-    let notP = []
-    perms = this.mapPerms(message, bot, perms)
-    perms.forEach(p => {
-      if (!message.channel.permissionsFor(message.member).has(p)) {
-        notP.push(p)
-      }
-    })
-    let roles = this.mapRoles(message, bot)
-    let notR = []
-    roles.forEach(r => {
-      if (!message.member) notR.push(r)
-      if (!message.member.roles.has(r)) {
-        notR.push(r)
-      }
-    })
-    let fail = false
-    if (notP.length > 0) {
-      let s = notP.length > 1 ? "s" : ""
-      notP = notP.map(p => PERMISSIONS[p])
-      message.send("You lack the permission" + s + ": `" + notP.join("`, `") + "`")
-      fail = true
+  user(message, bot, perm = 4) {
+    if (!message.guild) {
+      if (perm === 4 && message.author.id === FUNNBOT) return false
+      else if (perm !== 4) return false
+      return true
     }
-
-    if (notR.length > 0) {
-      let s = notR.length > 1 ? "s" : ""
-      notR = notR.map(p => {
-        if (!message.guild) return p
-        let role = message.guild.roles.get(p)
-        if (!role) return p
-        else return role.name
-      })
-      message.send("You lack the role" + s + ": `" + notR.join("`, `") + "`")
-      fail = true
+    if (perm !== 4 && message.author.id === message.guild.ownerID) return false
+    let perms = [
+      "User",
+      "Moderator",
+      "Admin",
+      "Nitro Commander",
+      "Dev"
+    ]
+    let has = {
+      user: message.member.roles.find("name", perms[0]),
+      mod: message.member.roles.find("name", perms[1]),
+      admin: message.member.roles.find("name", perms[2]),
+      nitro: message.member.roles.find("name", perms[3])
     }
-
-    return fail
+    if (perm === 0) {
+      let userrole = bot.perms.g(message.guild ? message.guild.id : "1234")
+      if (userrole) {
+        return (!message.member.roles.find("name", perms[perm]))
+      } else return false
+    }
+    if (perm === 4 && message.author.id !== FUNNBOT) return true
+    return (!message.member.roles.find("name", perms[perm]))
   }
+
 
   bot(message, bot, perms = []) {
     let not = []
@@ -58,20 +50,6 @@ class PermissionHandler {
       return true
     } else return false
   }
-
-  mapPerms(message, bot, perms = []) {
-    let custom = bot.perms.g(message.guild ? message.guild.id : "1234")
-    custom.forEach(p => {
-      if (perms[p]) delete perms[p]
-      else perms.push(p)
-    })
-    return perms
-  }
-
-  mapRoles(message, bot) {
-    return bot.roles.g(message.guild ? message.guild.id : "1234")
-  }
-
 
 }
 

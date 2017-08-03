@@ -5,7 +5,7 @@ module.exports = new Nitro.Command({
   argExample: '<newPrefix> || "<newPrefix with space>"',
   dm: false,
   coolDown: 4,
-  userPerms: ["MANAGE_GUILD"],
+  userPerms: 2,
 
   run: async(message, bot, send) => {
 

@@ -4,6 +4,7 @@ module.exports = new Nitro.Command({
   dm: false,
   coolDown: 1,
   alias: ["listtags"],
+  userPerms: 0,
 
   run: async (message, bot, send) => {
     let tags = bot.tag.g(message.guild.id)

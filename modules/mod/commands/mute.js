@@ -7,13 +7,12 @@ module.exports = new Nitro.Command({
   argExample: "<user> <reason>",
   dm: false,
   coolDown: 1,
-  userPerms: ["KICK_MEMBERS"],
+  userPerms: 1,
   botPerms: ["MANAGE_ROLES"],
 
   args: [],
 
   run: async (message, bot, send) => {
-    return send(bot.succ("Don't mute the user", message.author.tag))
     if (!message.checkSuffix) return send("**Example: " + module.exports.example.replace("${p}", message.prefix) + "**")
     let user = message.args[0]
     let reason = message.suffixOf(2).length > 0 ? message.suffixOf(2) : false

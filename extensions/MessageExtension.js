@@ -34,6 +34,18 @@ class MessageExtension extends Extension {
     return this.channel.send.bind(this.channel)
   }
 
+  succ(text, data) {
+    this.channel.send(`:white_check_mark: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
+  }
+
+  warn(text, data) {
+    this.channel.send(`:warning: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
+  }
+
+  fail(text, data) {
+    this.channel.send(`:no_entry_sign: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
+  }
+
   async collectMessage(truthy, falsy, filter, time) {
     return new Promise((resolve, reject) => {
       if (filter === "author") filter = m => m.author.id === this.author.id
@@ -52,13 +64,23 @@ class MessageExtension extends Extension {
   }
 
   async parseUser(u) {
-    if (/<@\d{18,21}>/.test(u) || /<@!\d{18,21}>/.test(u)) {
+    if (/<@\d{17,19}>/.test(u) || /<@!\d{18,21}>/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
-      return await this.guild.fetchMember(id)
+      try {
+        let member = await this.guild.fetchMember(id)
+        return member
+      } catch(err) {
+        return null
+      }
     }
-    if (/\d{18,21}/.test(u)) {
+    if (/\d{17,19}/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
-      return await this.guild.fetchMember(id)
+      try {
+        let member = await this.guild.fetchMember(id)
+        return member
+      } catch(err) {
+        return null
+      }
     }
     if (/^.{2,32}#\d{4}$/.test(u)) {
       let [name, disc] = u.split("#")
@@ -70,10 +92,10 @@ class MessageExtension extends Extension {
       }
     }
     if (/^.{2,32}$/.test(u)) {
-      if (u.length < 4) return null
+      if (u.length < 2) return null
       try {
         await this.guild.fetchMembers()
-        return this.guild.members.find(m => m.user.username.toLowerCase().includes(u.toLowerCase()) || m.displayName.toLowerCase().includes(u.toLowerCase()))
+        return this.guild.members.find(m => m.user.username.toLowerCase().includes(u.toLowerCase()) || (m.nickname && m.nickname.toLowerCase().includes(u.toLowerCase())))
       } catch (err) {
         return null
       }
@@ -86,11 +108,11 @@ class MessageExtension extends Extension {
   }
 
   async parseChannel(u) {
-    if (/<#\d{18,21}>/.test(u)) {
+    if (/<#\d{17,19}>/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
       return this.guild.channels.get(id) || false
     }
-    if (/\d{18,21}/.test(u)) {
+    if (/\d{17,19}/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
       return this.guild.channels.get(id) || false
     }

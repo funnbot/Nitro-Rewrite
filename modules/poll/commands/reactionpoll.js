@@ -5,6 +5,7 @@ module.exports = new Nitro.Command({
   dm: false,
   coolDown: 10,
   botPerms: ["ADD_REACTIONS", "MANAGE_MESSAGES"],
+  userPerms: 0,
   alias: ["rpoll"],
   args: [
     {

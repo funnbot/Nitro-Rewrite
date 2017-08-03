@@ -4,7 +4,7 @@ module.exports = new Nitro.Command({
   argExample: "<channel>",
   dm: false,
   coolDown: 5,
-  userPerms: ["MANAGE_GUILD"],
+  userPerms: 2,
   botPerms: [],
 
   args: [{

@@ -6,6 +6,7 @@ module.exports = new Nitro.Command({
   coolDown: 10,
   alias: ["spoll"],
   botPerms: ["ADD_REACTIONS", "MANAGE_MESSAGES"],
+  userPerms: 0,
   args: [{
     desc: "What is the content?",
     type: "text"

@@ -6,7 +6,7 @@ module.exports = new Nitro.Command({
   argExample: "<time> <question> | <option1> | <option2> | ...",
   dm: false,
   coolDown: 10,
-  userPerms: [],
+  userPerms: 0,
 
   args: [
     {

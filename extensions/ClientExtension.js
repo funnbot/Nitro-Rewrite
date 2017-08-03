@@ -17,19 +17,6 @@ class ClientExtension extends Extension {
     }
   }
 
-  succ(text, data) {
-    text = text.replace(/\*/g, "")
-    if (Array.isArray(data)) data = data.join(", ")
-    return `<:tickmarkYes:340357547141627905> **| ${text}** ${data || ""}`
-  }
-
-  fail(text, data) {
-    text = text.replace(/\*/g, "")
-    if (Array.isArray(data)) data = data.join(", ")
-    return `<:tickmarkNo:340357547682955264> **| ${text}** ${data || ""}`
-  }
-
-
 }
 
 module.exports = ClientExtension

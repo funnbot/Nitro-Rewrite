@@ -11,34 +11,32 @@ class Command {
     this.coolDown = options.coolDown || options.cooldown || 1
     this.args = options.args || options.argumentHandler || []
 
-    this.userPerms = options.userPerms || options.userperms || []
+    this.perm = options.userPerms || options.perm || 4
     this.botPerms = options.botPerms || options.botperms || []
 
-    this.permissions = []
     this.alias = options.alias || []
-    this.roles = []
 
     this.runCommand = options.run
     if (!this.runCommand) throw new Error("Command function undefined")
 
   }
 
-  async run(message, bot, send, ArgumentHandler) {
+  async run(message, bot, send) {
     if (typeof this.runCommand === "string") send(this.runCommand).catch(console.log)
     else if (typeof this.runCommand === "function") {
-      if (ArgumentHandler.chActive(message)) return
+      if (bot.ArgumentHandler.chActive(message)) return
       try {
-        message.content = await ArgumentHandler.run(this.args, message)
+        message.content = await bot.ArgumentHandler.run(this.args, message)
         if (!message.content) return
         message.channel.startTyping()
         setTimeout(() => {
           message.channel.stopTyping()
-        }, 4500)
+        }, 2500)
 
         await this.runCommand(message, bot, send)
       } catch (err) {
         send("Command Error, Please alert the developer.").catch(console.log)
-        bot.logger.error(message.command + " - " + err)
+        bot.logger.error(message.command + " - " + err.stack)
       }
     } else throw new Error("Invalid command type")
 

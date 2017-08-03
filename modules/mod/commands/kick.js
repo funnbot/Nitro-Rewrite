@@ -4,7 +4,7 @@ module.exports = new Nitro.Command({
   argExample: "<user> <reason>",
   dm: false,
   coolDown: 1,
-  userPerms: ["KICK_MEMBERS"],
+  userPerms: 1,
   botPerms: ["KICK_MEMBERS"],
 
   args: [],

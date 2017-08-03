@@ -20,6 +20,7 @@ const { TOKEN, SENTRY } = require("../config.js")
 
 global.Nitro = {}
 
+require("../extensions/NativeExtensions.js")
 require("./Command.js")
 require("./CommandLoader.js")
 require("./CoolDown.js")
@@ -28,6 +29,7 @@ require("./ArgumentHandler")
 require("./util.js")
 require("./Alias.js")
 require("./Logger.js")
+require("./Message.js")
 
 class Client {
 
@@ -61,7 +63,7 @@ class Client {
   }
 
   database(keys = []) {
-    keys.push("prefix", "alias", "perms", "roles")
+    keys.push("prefix", "alias", "perms")
     for (let db of keys) {
       this.bot[db] = new DatabaseManager(db)
     }
