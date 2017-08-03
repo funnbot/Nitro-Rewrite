@@ -28,5 +28,8 @@
     "raven": "^2.1.0",
     "rethinkdbdash": "^2.3.29",
     "uws": "^8.14.0"
+  },
+  "devDependencies": {
+    "standard": "^10.0.2"
   }
 }
