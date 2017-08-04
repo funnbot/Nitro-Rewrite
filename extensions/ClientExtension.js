@@ -1,9 +1,20 @@
+const Discord = require("discord.js")
 const Extension = require("./Extension.js")
 const chalk = require("chalk")
+const config = require("../config.js")
+config.auth = require("../auth.js")
 
 class ClientExtension extends Extension {
 
-  get logger() {
+  get config () {
+    return config
+  }
+
+  get Embed () {
+    return Discord.MessageEmbed()
+  }
+
+  get logger () {
     return {
       info: (info) => {
         console.log(chalk.blue(info))

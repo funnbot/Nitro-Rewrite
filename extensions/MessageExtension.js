@@ -2,51 +2,51 @@ const Extension = require("./Extension")
 
 class MessageExtension extends Extension {
 
-  get prefix() {
+  get prefix () {
     return this.client.prefix.g(this.guild ? this.guild.id : "1234")
   }
 
-  get cutPrefix() {
+  get cutPrefix () {
     return this.content.slice(this.prefix.length)
   }
 
-  get command() {
+  get command () {
     return this.cutPrefix.split(" ")[0]
   }
 
-  get args() {
+  get args () {
     return this.cutPrefix.split(" ").slice(1).filter(t => t != "")
   }
 
-  get suffix() {
+  get suffix () {
     return this.cutPrefix.split(" ").slice(1).join(" ").trim()
   }
 
-  suffixOf(index) {
+  suffixOf (index) {
     return this.cutPrefix.split(" ").slice(index + 1).join(" ")
   }
 
-  get checkSuffix() {
+  get checkSuffix () {
     return this.suffix.replace(/\s/g, "").length > 0
   }
 
-  get send() {
+  get send () {
     return this.channel.send.bind(this.channel)
   }
 
-  succ(text, data) {
+  succ (text, data) {
     this.channel.send(`:white_check_mark: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
-  warn(text, data) {
+  warn (text, data) {
     this.channel.send(`:warning: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
-  fail(text, data) {
+  fail (text, data) {
     this.channel.send(`:no_entry_sign: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
-  async collectMessage(truthy, falsy, filter, time) {
+  async collectMessage (truthy, falsy, filter, time) {
     return new Promise((resolve, reject) => {
       if (filter === "author") filter = m => m.author.id === this.author.id
       else if (filter === "everyone") filter = m => m.user.bot === "false"
@@ -63,13 +63,17 @@ class MessageExtension extends Extension {
     })
   }
 
-  async parseUser(u) {
+  async parseUsr (u) {
+
+  }
+
+  async parseMember (u) {
     if (/<@\d{17,19}>/.test(u) || /<@!\d{18,21}>/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
       try {
         let member = await this.guild.fetchMember(id)
         return member
-      } catch(err) {
+      } catch (err) {
         return null
       }
     }
@@ -78,7 +82,7 @@ class MessageExtension extends Extension {
       try {
         let member = await this.guild.fetchMember(id)
         return member
-      } catch(err) {
+      } catch (err) {
         return null
       }
     }
@@ -103,11 +107,11 @@ class MessageExtension extends Extension {
     return null
   }
 
-  async parseRole(u) {
+  async parseRole (u) {
     return null
   }
 
-  async parseChannel(u) {
+  async parseChannel (u) {
     if (/<#\d{17,19}>/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
       return this.guild.channels.get(id) || false

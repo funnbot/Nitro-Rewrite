@@ -1,13 +1,14 @@
 const bot = require("./bot.js")
-const {STATUSMESSAGE} = require("../../config.js")
+const {CHANNELS} = require("../../config.js")
 const fs = require("fs")
 
-async function loop() {
+async function loop () {
   let channel = bot.channels.get("341038206994743297")
   if (!channel) return
-  let message, stats = {}
+  let message
+  let stats = {}
   try {
-    message = await channel.fetchMessage(STATUSMESSAGE)
+    message = await channel.fetchMessage(CHANNELS.STATUS)
     stats.guilds = await bot.shard.fetchClientValues("guilds.size")
     stats.channels = await bot.shard.fetchClientValues("channels.size")
     stats.users = await bot.shard.fetchClientValues("users.size")

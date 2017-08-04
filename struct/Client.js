@@ -16,8 +16,6 @@ ChannelExtension.extend(Discord.Channel)
 UserExtension.extend(Discord.User)
 GuildExtension.extend(Discord.Guild)
 
-const { TOKEN, SENTRY } = require("../config.js")
-
 global.Nitro = {}
 
 require("../extensions/NativeExtensions.js")
@@ -32,15 +30,13 @@ require("./Logger.js")
 require("./Message.js")
 
 class Client {
-
-  constructor(key, opt = {}) {
-
+  constructor (key, opt = {}) {
     opt.disabledEvents = ["TYPING_START"]
     this.bot = new Discord.Client(opt)
     this.bot.embed = Discord.MessageEmbed
     this.bot.module = key
 
-    Sentry.config(SENTRY).install()
+    Sentry.config(this.bot.config.auth.SENTRY).install()
     this.bot.sentry = Sentry
 
     this.bot.active = {
@@ -55,22 +51,21 @@ class Client {
     })
 
     process.on("unhandledRejection", (err) => this.bot.logger.error(err.stack))
-
   }
 
-  ready(cb) {
+  ready (cb) {
     this.bot.once("ready", () => cb())
   }
 
-  database(keys = []) {
+  database (keys = []) {
     keys.push("prefix", "alias", "perms")
     for (let db of keys) {
       this.bot[db] = new DatabaseManager(db)
     }
   }
 
-  login() {
-    this.bot.login(TOKEN).catch(console.log)
+  login () {
+    this.bot.login(this.bot.config.auth.TOKEN).catch(console.log)
   }
 }
 

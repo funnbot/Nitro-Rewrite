@@ -17,7 +17,7 @@ module.exports = new Nitro.Command({
     users = users.split(" ")
     let members = []
     for (let u of users) {
-      let member = await message.parseUser(u)
+      let member = await message.parseMember(u)
       if (member && member.bannable) members.push(member)
     }
     if (members.length < 0) return send("**Invalid Users:** " + splitDel[0])

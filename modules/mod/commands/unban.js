@@ -17,8 +17,13 @@ module.exports = new Nitro.Command({
     if (!caseman) throw new Error("CaseManager Not Initialized")
     let cases = caseman.cases
     cases = cases.filter(c => c.user.id === user)
-    if (!cases[0]) user = {username:"", discriminator:"", id: user, avatar: bot.user.avatar}
-    else user = {username: cases[0].user.username, discriminator: cases[0].user.discriminator, id: cases[0].user.id, avatar: cases[0].user.avatar}
+    if (!cases[0]) user = {username: "", discriminator: "", id: user, avatar: bot.user.avatar}
+    else user = {
+      username: cases[0].user.username,
+      discriminator: cases[0].user.discriminator,
+      id: cases[0].user.id,
+      avatar: cases[0].user.avatar
+    }
     send("**Unbanning user...**").then(async msg => {
       try {
         await message.guild.unban(user.id)

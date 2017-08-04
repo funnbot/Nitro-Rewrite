@@ -1,17 +1,22 @@
 module.exports = {
-  TOKEN: "",
   FUNNBOT: "163735744995655680",
   SHARDS: 1,
-  SENTRY: "",
+  CUR: {
+    toString () {
+      return "USD"
+    },
+    icon: ":dollar:"
+  },
   CHANNELS: {
-    STATUS: "336163606678994945"
+    STATUS: "341048367737995274"
   },
   DEFAULTS: {
     prefix: ".",
     tag: {},
     alias: {},
-    perms: [],
-    roles: []
+    perms: false,
+    mod: {},
+    economy: 0
   },
   PERMISSIONS: {
     ADMINISTRATOR: "Administrator",
@@ -45,20 +50,21 @@ module.exports = {
   },
 
   COLORS: [
-    "#BBDEFB",
-    "#90CAF9",
-    "#64B5F6",
-    "#42A5F5",
+    "#03A9F4",
+    "#039BE5",
+    "#0288D1",
+    "#0277BD",
+    "#2196F3",
+    "#1E88E5",
+    "#1976D2",
+    "#2962FF",
+    "#448AFF",
+    "#2979FF",
     "#2196F3",
     "#1E88E5",
     "#1976D2",
     "#1565C0",
-    "#448AFF",
-    "#2979FF",
-    "#607D8B",
-    "#546E7A",
-    "#455A64",
-    "#37474F"
+    "#0091EA"
   ]
 
 }

@@ -1,5 +1,5 @@
 /node_modules
 /rethinkdb_data
-config.js
+auth.js
 .vscode
 .jsbeautifyrc

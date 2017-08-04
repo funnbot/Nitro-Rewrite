@@ -16,7 +16,7 @@ module.exports = new Nitro.Command({
     let cases = caseman.cases
     let user
     if (!message.checkSuffix) user = message.member
-    else user = await message.parseUser(message.args[0])
+    else user = await message.parseMember(message.args[0])
     if (!user) return send("**Invalid User:** " + message.args[0])
     user = user.user
 

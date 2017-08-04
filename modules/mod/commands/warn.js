@@ -12,7 +12,7 @@ module.exports = new Nitro.Command({
     if (!message.checkSuffix) return send("**Example: " + module.exports.example.replace("${p}", message.prefix) + "**")
     let user = message.args[0]
     let reason = message.suffixOf(1).length > 0 ? message.suffixOf(1).trim() : false
-    let member = await message.parseUser(user)
+    let member = await message.parseMember(user)
     if (!member) return send("**Could not find the user: **" + user)
     send("**Warning user...**").then(async msg => {
       let t = `**You have been warned in ${message.guild.name}**\n\n**Reason:** ${reason || "None"}`
