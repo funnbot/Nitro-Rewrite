@@ -1,10 +1,11 @@
-const child_process = require('child_process');
-const fs = require('fs');
+const { fork } = require("child_process")
+const fs = require("fs")
 
-let modules = fs.readdirSync('./modules')
+let start = (mod) => {
+  if (mod === ".DS_Store") return
+  if (fs.existsSync(`./modules/${mod}/bot.js`)) fork("./struct/ShardingManager", [], {env: {MODULE: mod}})
+  else console.log(`module ${mod} is missing bot.js`)
+}
 
-modules.forEach(module => {
-
-    child_process.fork(`./modules/${module}/ShardingManager.js`)
-
-})
+if (process.env.MOD) start(process.env.MOD)
+else fs.readdirSync("./modules").forEach(start)

@@ -1,6 +1,6 @@
 {
-  "name": "modularbot",
-  "version": "0.0.1",
+  "name": "Nitro",
+  "version": "1.0.0",
   "description": "A Modular Bot",
   "main": "ModuleManager.js",
   "scripts": {
@@ -8,17 +8,28 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/funnbot/Mudulur-Boot.git"
+    "url": "git+https://github.com/funnbot/Nitro-Rewrite.git"
   },
-  "author": "Funnbot, Motion, Gymnophoria",
+  "author": "Funnbot",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/funnbot/Mudulur-Boot/issues"
   },
   "homepage": "https://github.com/funnbot/Mudulur-Boot#readme",
   "dependencies": {
-    "bufferutil": "^3.0.1",
-    "discord.js": "^11.1.0",
-    "erlpack": "github:hammerandchisel/erlpack"
+    "chalk": "^2.0.1",
+    "discord.js": "github:funnbot/discord.js",
+    "duration-js": "^4.0.0",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "eslint": "^4.2.0",
+    "moment": "^2.18.1",
+    "node-opus": "^0.2.6",
+    "pretty-ms": "^3.0.0",
+    "raven": "^2.1.0",
+    "rethinkdbdash": "^2.3.29",
+    "uws": "^8.14.0"
+  },
+  "devDependencies": {
+    "standard": "^10.0.2"
   }
 }
