@@ -1,12 +1,4 @@
-const tables = [
-  "alias",
-  "economy",
-  "mod",
-  "perms",
-  "prefix",
-  "roles",
-  "tag"
-]
+const tables = Object.keys(require("./config").DEFAULTS)
 
 const r = require("rethinkdbdash")()
 
