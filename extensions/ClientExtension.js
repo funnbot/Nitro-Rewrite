@@ -11,7 +11,7 @@ class ClientExtension extends Extension {
   }
 
   get Embed () {
-    return Discord.MessageEmbed()
+    return Discord.MessageEmbed
   }
 
   get logger () {
