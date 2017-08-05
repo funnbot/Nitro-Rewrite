@@ -1,4 +1,4 @@
-const Nitro = require("../Nitro.js")
+const logger = require("./Logger")
 const fs = require("fs")
 
 class CommandHandler {
@@ -13,7 +13,7 @@ class CommandHandler {
         let command = require(`.${this.path}/${commandFile}`)
         this.commands[commandFile] = command
       } catch (err) {
-        Nitro.logger.error(`Error Loading Command: .${this.path}/${commandFile} - \n` + err.stack)
+        logger.error(`Error Loading Command: .${this.path}/${commandFile} - \n` + err.stack)
       }
     }
     this.globalCommands = ["./modules/dev/commands/eval"]
@@ -24,7 +24,7 @@ class CommandHandler {
         let command = require("." + cmd)
         this.commands[key + name] = command
       } catch (err) {
-        Nitro.logger.error(`Error Loading Command: .${cmd} - \n` + err.stack)
+        logger.error(`Error Loading Command: .${cmd} - \n` + err.stack)
       }
     }
   }
@@ -42,7 +42,7 @@ class CommandHandler {
               if (!this.allCommands[mod]) this.allCommands[mod] = {}
               this.allCommands[mod][file] = command
             } catch (err) {
-              Nitro.logger.error(`Error Loading Command: ../modules/${mod}/commands/${file} - \n` + err.stack)
+              logger.error(`Error Loading Command: ../modules/${mod}/commands/${file} - \n` + err.stack)
             }
           }
         })

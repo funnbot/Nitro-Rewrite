@@ -1,4 +1,8 @@
-const Nitro = require("../Nitro.js")
+const CommandLoader = require("./CommandLoader.js")
+const Alias = require("./Alias.js")
+const CoolDown = require("./CoolDown.js")
+const ArgumentHandler = require("./ArgumentHandler.js")
+const PermissionHandler = require("./PermissionHandler.js")
 const EventEmitter = require("events")
 
 class Message extends EventEmitter {
@@ -17,24 +21,24 @@ class Message extends EventEmitter {
     }, {}) : {}
 
     if (!this.dis.commands) {
-      this.CommandHandler = new Nitro.CommandLoader(bot.module)
+      this.CommandHandler = new CommandLoader(bot.module)
       this.commands = this.CommandHandler.fetch()
     }
     if (this.options.fetchAllCommands) {
-      if (!this.CommandHandler) this.CommandHandler = new Nitro.CommandLoader(bot.module)
+      if (!this.CommandHandler) this.CommandHandler = new CommandLoader(bot.module)
       this.CommandHandler.readAll()
       bot.allCommands = this.CommandHandler.fetchAll()
     }
     if (!this.dis.alias && this.commands) {
-      this.alias = new Nitro.Alias(bot.module, this.commands)
+      this.alias = new Alias(bot.module, this.commands)
       this.alias.mapDefaults(this.commands)
     }
     if (!this.dis.cooldown) {
-      this.cooldown = new Nitro.CoolDown()
+      this.cooldown = new CoolDown()
     }
-    bot.ArgumentHandler = new Nitro.ArgumentHandler()
+    bot.ArgumentHandler = new ArgumentHandler()
     if (!this.dis.permissions) {
-      this.permissions = new Nitro.PermissionHandler()
+      this.permissions = new PermissionHandler()
     }
     if (!this.dis.create) {
       bot.on("message", message => {

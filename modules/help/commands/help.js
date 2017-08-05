@@ -28,6 +28,10 @@ module.exports = new Nitro.Command({
         "Tags",
         "Store custom text and make it easy to access."
       ],
+      irc: [
+        "IRC",
+        "Send messages to other servers."
+      ],
       economy: [
         "Economy",
         "Manage your money."
@@ -73,7 +77,7 @@ module.exports = new Nitro.Command({
     let embed = new bot.Embed()
     embed.setTitle(`\`${cmd}\``)
       .addField("Help: ", c.help)
-      .addField("Example: ", c.example)
+      .addField("Example: ", c.example.replace(/\$\{p\}/g, message.prefix))
       .addField("Arguments: ", c.argExample)
       .addField("Permission: ", perms[c.perm])
       .addField("Alias: ", c.alias.length > 0 ? c.alias.join() : "None")

@@ -1,7 +1,6 @@
 const Discord = require("discord.js")
 const DatabaseManager = require("./DatabaseManager.js")
 const Status = require("./Status.js")
-const Nitro = require("../Nitro.js")
 const ClientExtension = require("../extensions/ClientExtension.js")
 const MessageExtension = require("../extensions/MessageExtension.js")
 const MessageEmbedExtension = require("../extensions/MessageEmbedExtension.js")

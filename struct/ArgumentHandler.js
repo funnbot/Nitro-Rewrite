@@ -1,4 +1,4 @@
-const Nitro = require("../Nitro.js")
+const util = require("./util.js")
 
 class ArgumentHandler {
   constructor () {
@@ -45,7 +45,7 @@ class ArgumentHandler {
     if (arg.type.number) {
       return content
     } else if (arg.type === "name") {
-      content = Nitro.cleanVarName(content)
+      content = util.cleanVarName(content)
       return content
     } else if (arg.type === "text") {
       return content

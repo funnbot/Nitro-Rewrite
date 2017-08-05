@@ -6,7 +6,10 @@ class CoolDown {
 
   run(message, command) {
     let check = this.check(message.author.id, command.coolDown)
-    if (check) return message.send("**CoolDown:** Please wait " + check / 1000 + " seconds before using this command."), true
+    if (check) {
+      message.send("**CoolDown:** Please wait " + check / 1000 + " seconds before using this command.").then(m => m.delete({timeout: check}))
+      return true
+    }
     return false
   }
 

@@ -35,15 +35,15 @@ class MessageExtension extends Extension {
   }
 
   succ (text, data) {
-    this.channel.send(`:white_check_mark: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
+    return this.channel.send(`:white_check_mark: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
   warn (text, data) {
-    this.channel.send(`:warning: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
+    return this.channel.send(`:warning: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
   fail (text, data) {
-    this.channel.send(`:no_entry_sign: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
+    return this.channel.send(`:no_entry_sign: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
   async collectMessage (truthy, falsy, filter, time) {

@@ -17,7 +17,8 @@ module.exports = {
     alias: {},
     perms: false,
     mod: {},
-    economy: {}
+    economy: {},
+    irc: {}
   },
   PERMISSIONS: {
     ADMINISTRATOR: "Administrator",
