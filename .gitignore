@@ -3,3 +3,13 @@
 auth.js
 .vscode
 .jsbeautifyrc
+.idea/misc.xml
+.idea/modules.xml
+.idea/nitrorewrite.iml
+.idea/vcs.xml
+.idea/watcherTasks.xml
+.idea/workspace.xml
+.idea/dictionaries/dillonbayless.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/jsLinters/eslint.xml
+.eslintrc.js

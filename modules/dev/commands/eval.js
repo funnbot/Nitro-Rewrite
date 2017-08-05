@@ -1,3 +1,4 @@
+const Nitro = require("../../../Nitro.js")
 const util = require("util")
 const {TOKEN, FUNNBOT} = require("../../../config.js")
 const SnowFlake = require("../SnowFlakeUtil.js")

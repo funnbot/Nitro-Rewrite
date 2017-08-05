@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Access a tag",
   example: "${p}tag nitro",

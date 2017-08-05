@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Toggle, whether a user needs the User role to run commands.",
   example: "${p}requireuser",

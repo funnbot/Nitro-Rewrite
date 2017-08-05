@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Ban and unban a user to delete their messages.",
   example: "${p}softban @Funnbot spamming in every channel",

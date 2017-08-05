@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Create a poll with multiple options using reactions.",
   example: "${p}reactionpoll Which is the best bot? | Mee8 | Clyde | B1nzy",

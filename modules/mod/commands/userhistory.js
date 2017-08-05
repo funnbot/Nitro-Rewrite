@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "The moderation actions preformed on a user.",
   example: "${p}userhistory @Nitro",

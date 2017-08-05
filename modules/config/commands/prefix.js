@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
 
   help: "Change the prefix for commands.",
@@ -18,7 +20,7 @@ module.exports = new Nitro.Command({
       if (quote.length < 1) return send("` ` is not a valid prefix.")
       if (quote.startsWith(" ")) return send("`" + pre + "` is not a valid prefix.")
       if (quote.length > 20) return send("The prefix cannot be more than 20 characters")
-      bot.prefix.set(message.guild.id, quote)
+      bot.prefix.s(message.guild.id, quote)
       return send("**The prefix was set to `" + quote + "`\nTest - `" + quote + "ping`**")
 
     } else {

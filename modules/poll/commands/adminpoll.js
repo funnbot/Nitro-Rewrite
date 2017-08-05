@@ -1,3 +1,4 @@
+const Nitro = require("../../../Nitro.js")
 const Duration = require("duration-js")
 
 module.exports = new Nitro.Command({

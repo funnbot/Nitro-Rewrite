@@ -1,13 +1,12 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
-  help: "",
-  example: "",
-  argExample: "",
+  help: "The moderation actions of a user.",
+  example: "${p}modhistory @Funnbot",
+  argExample: "<user>",
   dm: false,
   coolDown: 1,
   userPerms: 0,
-  botPerms: [],
-
-  args: [],
   alias: ["modh"],
 
   run: async (message, bot, send) => {

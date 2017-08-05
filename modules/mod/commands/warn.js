@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Warn a user.",
   example: "${p}warn @Funnbot please don't do that.",

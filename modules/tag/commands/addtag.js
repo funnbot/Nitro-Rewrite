@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
 
   help: "Create a tag",
@@ -21,7 +23,6 @@ module.exports = new Nitro.Command({
   ],
 
   run: async (message, bot, send) => {
-
     let tags = bot.tag.g(message.guild.id)
     let name = Nitro.cleanVarName(message.args[0])
     if (!name) return send("**Invalid tag name**")

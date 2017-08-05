@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Create a simple poll which uses :thumbsup: and :thumbsdown:",
   example: "${p}simplepoll Is Nitro the best bot?",

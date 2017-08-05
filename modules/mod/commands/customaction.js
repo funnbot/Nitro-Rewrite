@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "[WIP] Collect users and apply custom action.",
   example: "${p}customaction joined ",

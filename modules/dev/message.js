@@ -1,10 +1,11 @@
+const Nitro = require("../../Nitro.js")
 const bot = require("./bot.js")
 const {
   FUNNBOT
 } = require("../../config.js")
 bot.ArgumentHandler = new Nitro.ArgumentHandler()
 
-const commandhandler = new Nitro.CommandHandler("dev")
+const commandhandler = new Nitro.CommandLoader("dev")
 const commands = commandhandler.fetch()
 
 bot.on("message", async message => {

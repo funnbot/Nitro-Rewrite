@@ -1,3 +1,4 @@
+const Nitro = require("../../../Nitro.js")
 const moment = require("moment")
 
 module.exports = new Nitro.Command({

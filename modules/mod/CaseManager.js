@@ -1,3 +1,4 @@
+const Nitro = require("../../Nitro.js")
 const prettyms = require("pretty-ms")
 
 class CaseManager {
@@ -59,8 +60,8 @@ class CaseManager {
   async createCase(moderator, user, action, optional = {}) {
     let newCase = {
       number: this.cases.length + 1,
-      moderator: Nitro.pullProps(moderator, ["username", "discriminator", "id", "avatar"]),
-      user: Nitro.pullProps(user, ["username", "discriminator", "id", "avatar"]),
+      moderator: Nitro.util.pullProps(moderator, ["username", "discriminator", "id", "avatar"]),
+      user: Nitro.util.pullProps(user, ["username", "discriminator", "id", "avatar"]),
       action,
       reason: optional.reason || false,
       length: optional.length || false,

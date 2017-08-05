@@ -1,3 +1,4 @@
+const Nitro = require("../../../Nitro.js")
 module.exports = new Nitro.Command({
   help: "Tutorial on Nitro's permission system.",
   example: "${p}permissions",

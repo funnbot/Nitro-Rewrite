@@ -1,9 +1,11 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "List all tags.",
-  example: "${p}tags",
+  example: "${p}listtags",
   dm: false,
   coolDown: 1,
-  alias: ["listtags"],
+  alias: ["tags"],
   userPerms: 0,
 
   run: async (message, bot, send) => {

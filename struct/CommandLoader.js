@@ -1,3 +1,4 @@
+const Nitro = require("../Nitro.js")
 const fs = require("fs")
 
 class CommandHandler {
@@ -59,4 +60,4 @@ class CommandHandler {
 
 }
 
-Nitro.CommandHandler = CommandHandler
+module.exports = CommandHandler

@@ -63,7 +63,7 @@ class MessageExtension extends Extension {
     })
   }
 
-  async parseUsr (u) {
+  async parseUser (u) {
 
   }
 

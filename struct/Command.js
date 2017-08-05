@@ -1,6 +1,6 @@
 class Command {
 
-  constructor(options) {
+  constructor (options) {
 
     this.help = options.help || "The help message is missing"
     this.help += this.help.endsWith(".") ? "" : "."
@@ -11,17 +11,16 @@ class Command {
     this.coolDown = options.coolDown || options.cooldown || 1
     this.args = options.args || options.argumentHandler || []
 
-    this.perm = options.userPerms || options.perm || 4
+    this.perm = options.userPerms || options.perm || 0
     this.botPerms = options.botPerms || options.botperms || []
 
     this.alias = options.alias || []
 
     this.runCommand = options.run
     if (!this.runCommand) throw new Error("Command function undefined")
-
   }
 
-  async run(message, bot, send) {
+  async run (message, bot, send) {
     if (typeof this.runCommand === "string") send(this.runCommand).catch(console.log)
     else if (typeof this.runCommand === "function") {
       if (bot.ArgumentHandler.chActive(message)) return
@@ -39,9 +38,7 @@ class Command {
         bot.logger.error(message.command + " - " + err.stack)
       }
     } else throw new Error("Invalid command type")
-
   }
-
 }
 
-Nitro.Command = Command
+module.exports = Command

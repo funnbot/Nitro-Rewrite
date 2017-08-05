@@ -1,9 +1,11 @@
+const Nitro = require("../Nitro.js")
+
 class ArgumentHandler {
-  constructor() {
+  constructor () {
     this.active = {}
   }
 
-  async run(args, message) {
+  async run (args, message) {
     if (1 > args.length) return message.content
     this.active[message.author.id] = true
     let newContent = []
@@ -39,7 +41,7 @@ class ArgumentHandler {
     return newContent.join(" ")
   }
 
-  async parse(content, arg, message) {
+  async parse (content, arg, message) {
     if (arg.type.number) {
       return content
     } else if (arg.type === "name") {
@@ -117,7 +119,7 @@ class ArgumentHandler {
     }
   }
 
-  test(content, arg) {
+  test (content, arg) {
     if (!content) return true
     if (arg.type.number) {
       let num = parseInt(content) || "invalid"
@@ -146,11 +148,11 @@ class ArgumentHandler {
 
   }
 
-  chActive(message) {
+  chActive (message) {
     return this.active[message.author.id]
   }
 
-  collect(arg, message) {
+  collect (arg, message) {
 
     return new Promise((resolve) => {
 
@@ -204,8 +206,8 @@ class ArgumentHandler {
       })
 
       message.reply(`${arg.desc}\n\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`)
-
     })
   }
 }
-Nitro.ArgumentHandler = ArgumentHandler
+
+module.exports = ArgumentHandler

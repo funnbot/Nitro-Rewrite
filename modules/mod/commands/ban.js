@@ -1,3 +1,4 @@
+const Nitro = require("../../../Nitro.js")
 module.exports = new Nitro.Command({
   help: "Ban a user.",
   example: "${p}ban Funnbot Spamming chat with memes.",

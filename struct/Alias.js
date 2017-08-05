@@ -27,4 +27,4 @@ class Alias {
 
 }
 
-Nitro.Alias = Alias
+module.exports = Alias

@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Ban multiple users.",
   example: "${p}bulkban @Funnbot @Nitro @Potato @Scammer403 | Nigerian princes selling their fortune.",

@@ -1,10 +1,10 @@
-const childProcess = require("child_process")
+const { fork } = require("child_process")
 const fs = require("fs")
 
-let start = (module) => {
-  if (module === ".DS_Store") return
-  if (fs.existsSync(`./modules/${module}/ShardingManager.js`)) childProcess.fork(`./modules/${module}/ShardingManager.js`)
-  else console.log(`module ${module} is missing Sharding Manager.`)
+let start = (mod) => {
+  if (mod === ".DS_Store") return
+  if (fs.existsSync(`./modules/${mod}/bot.js`)) fork("./struct/ShardingManager", [], {env: {MODULE: mod}})
+  else console.log(`module ${mod} is missing bot.js`)
 }
 
 if (process.env.MOD) start(process.env.MOD)

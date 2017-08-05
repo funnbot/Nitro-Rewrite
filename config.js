@@ -5,7 +5,8 @@ module.exports = {
     toString () {
       return "USD"
     },
-    icon: ":dollar:"
+    icon: ":dollar:",
+    sym: "$"
   },
   CHANNELS: {
     STATUS: "341048367737995274"
@@ -16,7 +17,7 @@ module.exports = {
     alias: {},
     perms: false,
     mod: {},
-    economy: 0
+    economy: {}
   },
   PERMISSIONS: {
     ADMINISTRATOR: "Administrator",

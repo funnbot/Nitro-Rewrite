@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Set the reason for a case.",
   example: "${p}reason 246 Sending bad images in every channel",

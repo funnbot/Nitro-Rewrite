@@ -1,6 +1,7 @@
 const Discord = require("discord.js")
 const DatabaseManager = require("./DatabaseManager.js")
 const Status = require("./Status.js")
+const Nitro = require("../Nitro.js")
 const ClientExtension = require("../extensions/ClientExtension.js")
 const MessageExtension = require("../extensions/MessageExtension.js")
 const MessageEmbedExtension = require("../extensions/MessageEmbedExtension.js")
@@ -16,18 +17,7 @@ ChannelExtension.extend(Discord.Channel)
 UserExtension.extend(Discord.User)
 GuildExtension.extend(Discord.Guild)
 
-global.Nitro = {}
-
 require("../extensions/NativeExtensions.js")
-require("./Command.js")
-require("./CommandLoader.js")
-require("./CoolDown.js")
-require("./PermissionHandler.js")
-require("./ArgumentHandler")
-require("./util.js")
-require("./Alias.js")
-require("./Logger.js")
-require("./Message.js")
 
 class Client {
   constructor (key, opt = {}) {

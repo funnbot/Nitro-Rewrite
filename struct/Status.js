@@ -2,7 +2,6 @@ const Discord = require("discord.js")
 
 let start = async (bot) => {
   let webhook = new Discord.WebhookClient("336196327975419906", "LfGQ70qrtgMQMfQYGNY2WrLWfNYzdRMAE6d7cEOB1cQ5PLJlJSPkFEGwHiHNzIOXsKps")
-  let embed = new bot.embed()
   if (bot.shard) {
     let text = `Shard: ${bot.shard.id + 1}/${bot.shard.count} - Module: ${bot.module || ""} - Bot: ${bot.user.tag} (${bot.user.id}) - `
     try {

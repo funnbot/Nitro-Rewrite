@@ -1,16 +1,9 @@
+const Nitro = require("../../Nitro.js")
 const bot = require("./bot.js")
 
-const Message = new Nitro.Message(bot, [
-  "commands",
-  "alias",
-  "permissions",
-  "argumenthandler",
-  "text",
-  "cooldown",
-  "execute"
-])
+const Message = new Nitro.Message(bot)
 
-Message.on(message => {
+Message.on("create", message => {
   /*
   TODO: Users will earn money based on messages sent,
   TODO: random amount between 0.00 and 3.00 at .50 increments,

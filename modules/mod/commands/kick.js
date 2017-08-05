@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Kick a user",
   example: "${p}kick @Funnbot Needs to learn a lesson.",

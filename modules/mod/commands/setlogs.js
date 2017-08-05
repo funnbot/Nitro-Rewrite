@@ -1,3 +1,5 @@
+const Nitro = require("../../../Nitro.js")
+
 module.exports = new Nitro.Command({
   help: "Set the case log channel.",
   example: "${p}setlogs mod-log",

@@ -30,7 +30,6 @@ class PermissionHandler {
           return true
         }
       } else {
-        message.channel.send("**This command requires you to have a role named `" + perms[perm] + "`**")
         return false
       }
     }
@@ -60,4 +59,4 @@ class PermissionHandler {
   }
 }
 
-Nitro.PermissionHandler = PermissionHandler
+module.exports = PermissionHandler

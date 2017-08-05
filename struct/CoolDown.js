@@ -25,4 +25,4 @@ class CoolDown {
 
 }
 
-Nitro.CoolDown = CoolDown
+module.exports = CoolDown

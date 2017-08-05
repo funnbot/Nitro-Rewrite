@@ -49,7 +49,7 @@ class DatabaseManager {
     if (id.guild && id.guild.id) id = id.guild.id
     if (id.id) id = id.id
     if (!id) id = "1234"
-    if (!this.settings[id] || !this.settings[id][key]) return false
+    if (!this.settings[id] || !this.settings[id][key]) return {}
     return this.settings[id][key]
   }
 

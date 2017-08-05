@@ -16,4 +16,4 @@ class Logger {
 
 }
 
-Nitro.logger = Logger
+module.exports = Logger
