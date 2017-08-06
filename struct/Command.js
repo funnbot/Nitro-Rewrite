@@ -25,14 +25,10 @@ class Command {
     else if (typeof this.runCommand === "function") {
       if (bot.ArgumentHandler.chActive(message)) return
       try {
-        message.content = await bot.ArgumentHandler.run(this.args, message)
-        if (!message.content) return
+        await bot.ArgumentHandler.run(this.args, message)
         message.channel.startTyping()
-        setTimeout(() => {
-          message.channel.stopTyping()
-        }, 2500)
-
         await this.runCommand(message, bot, send)
+        message.channel.stopTyping()
       } catch (err) {
         send("Command Error, Please alert the developer.").catch(console.log)
         bot.logger.error(message.command + " - " + err.stack)

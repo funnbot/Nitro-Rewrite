@@ -1,11 +1,11 @@
 const util = require("./util.js")
 
-class ArgumentHandler {
-  constructor () {
+class ArgumentHandlerOLD {
+  constructor() {
     this.active = {}
   }
 
-  async run (args, message) {
+  async run(args, message) {
     if (1 > args.length) return message.content
     this.active[message.author.id] = true
     let newContent = []
@@ -13,8 +13,7 @@ class ArgumentHandler {
     for (let [i, a] of args.entries()) {
       if (i + 1 === args.length && a.type === "text") {
         let content = message.suffixOf(i)
-        if (content.length === 0 && a.opt) {
-        } else {
+        if (content.length === 0 && a.opt) {} else {
           if (this.test(content, a, message)) {
             content = await this.collect(a, message)
             if (!content) return delete this.active[message.author.id], false
@@ -25,8 +24,7 @@ class ArgumentHandler {
         }
       } else {
         let content = message.args[i]
-        if (!content && a.opt) {
-        } else {
+        if (!content && a.opt) {} else {
           if (this.test(content, a, message)) {
             content = await this.collect(a, message)
             if (!content) return delete this.active[message.author.id], false
@@ -41,7 +39,7 @@ class ArgumentHandler {
     return newContent.join(" ")
   }
 
-  async parse (content, arg, message) {
+  async parse(content, arg, message) {
     if (arg.type.number) {
       return content
     } else if (arg.type === "name") {
@@ -119,7 +117,7 @@ class ArgumentHandler {
     }
   }
 
-  test (content, arg) {
+  test(content, arg) {
     if (!content) return true
     if (arg.type.number) {
       let num = parseInt(content) || "invalid"
@@ -148,11 +146,11 @@ class ArgumentHandler {
 
   }
 
-  chActive (message) {
+  chActive(message) {
     return this.active[message.author.id]
   }
 
-  collect (arg, message) {
+  collect(arg, message) {
 
     return new Promise((resolve) => {
 
@@ -210,4 +208,46 @@ class ArgumentHandler {
   }
 }
 
-module.exports = ArgumentHandler
+class Argument {
+
+  constructor(arg) {
+    this.prompt = arg.prompt
+    this.type = arg.type
+    this.options = arg
+    this._validateType()
+  }
+
+  _validateType() {
+    if (this.type === undefined) throw new TypeError("Type undefined")
+    let types = {
+      string() {
+        this.options.max || (this.options.max = 2000)
+      },
+      number() {
+        this.options.max || (this.options.max = 2 ** 31 - 2)
+        this.options.min || (this.options.min = 1)
+      },
+      user() {},
+      channel() {},
+      role() {},
+      selection() {
+        if (!this.options.opts) throw new TypeError("Selection options missing.")
+      },
+    }
+    if (!types[this.type]) throw new TypeError("Invalid Type " + this.type)
+    types[this.type]()
+  }
+
+}
+
+module.exports = class ArgumentHandler {
+
+  async run(message, args) {
+      if (args.length < 1) return 
+      for (let arg of args) {
+        let Arg = new Argument(arg)
+        Arg.
+      }
+  }
+
+}

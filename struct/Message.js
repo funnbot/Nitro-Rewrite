@@ -43,6 +43,7 @@ class Message extends EventEmitter {
     if (!this.dis.create) {
       bot.on("message", message => {
         if (message.author.bot) return
+        message.SetupExtension()
         this.emit("create", message)
         if (!this.dis.prefix && !message.content.startsWith(message.prefix)) return
         if (this.dis.text && message.channel.type === "text") return
@@ -51,7 +52,7 @@ class Message extends EventEmitter {
           if (!this.commands) return `Commands are disabled but execute is running: ${bot.module} module`.log()
           if (!this.dis.alias) {
             this.alias.mapCustom(bot.alias.g(message.guild))
-            message.content = this.alias.run(message)
+            message.command = this.alias.run(message)
           }
           let command = this.commands[message.command]
           if (!command) return

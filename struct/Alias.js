@@ -21,8 +21,7 @@ class Alias {
   }
 
   run(message) {
-    if (!this.aliases[message.command]) return message.content
-    return message.prefix + this.aliases[message.command] + " " + message.suffix
+    return this.aliases[message.command] || message.command
   }
 
 }

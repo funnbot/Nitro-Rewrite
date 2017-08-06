@@ -1,73 +1,72 @@
 const Extension = require("./Extension")
+const {
+  Message
+} = require("discord.js")
 
 class MessageExtension extends Extension {
 
-  get prefix () {
-    return this.client.prefix.g(this.guild ? this.guild.id : "1234")
+  SetupExtension() {
+    this.prefix = this.client.prefix.g(this.guild)
+    this._cutPrefix = this.content.slice(this.prefix.length)
+    this._contentSplit = this._cutPrefix.split(" ")
+    this._suffixSplit = this._contentSplit.slice(1)
+    this.command = this._contentSplit[0]
+    this.args = this._suffixSplit.filter(t => t != "")
+    this.suffix = this._suffixSplit.join(" ")
   }
 
-  get cutPrefix () {
-    return this.content.slice(this.prefix.length)
-  }
-
-  get command () {
-    return this.cutPrefix.split(" ")[0]
-  }
-
-  get args () {
-    return this.cutPrefix.split(" ").slice(1).filter(t => t != "")
-  }
-
-  get suffix () {
-    return this.cutPrefix.split(" ").slice(1).join(" ").trim()
-  }
-
-  suffixOf (index) {
-    return this.cutPrefix.split(" ").slice(index + 1).join(" ")
-  }
-
-  get checkSuffix () {
+  get checkSuffix() {
     return this.suffix.replace(/\s/g, "").length > 0
   }
 
-  get send () {
+  suffixOf(index) {
+    return this._suffixSplit.slice(index).join(" ")
+  }
+
+  get send() {
     return this.channel.send.bind(this.channel)
   }
 
-  succ (text, data) {
+  succ(text, data) {
     return this.channel.send(`:white_check_mark: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
-  warn (text, data) {
+  warn(text, data) {
     return this.channel.send(`:warning: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
-  fail (text, data) {
+  fail(text, data) {
     return this.channel.send(`:no_entry_sign: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
   }
 
-  async collectMessage (truthy, falsy, filter, time) {
+  async collectMessage(truthy, falsy, filter, time) {
     return new Promise((resolve, reject) => {
       if (filter === "author") filter = m => m.author.id === this.author.id
-      else if (filter === "everyone") filter = m => m.user.bot === "false"
+      else if (filter === "everyone") filter = m => m.user.bot === false
       else return reject("Filter = author || everyone")
       if (!time) time = 30000
-      let collector = this.channel.createMessageCollector(filter, {time})
+      let collector = this.channel.createMessageCollector(filter, {
+        time
+      })
       collector.on("collect", msg => {
         if ((typeof truthy === "object" && truthy.includes(msg.content)) || (truthy === msg.content)) return collector.stop("true")
         if ((typeof falsy === "object" && falsy.includes(msg.content)) || (falsy === msg.content)) return collector.stop("false")
       })
       collector.on("end", (c, reason) => {
-        resolve({time: false, true: true, false: false}[reason])
+        resolve({
+          time: false,
+          true: true,
+          false: false
+        }[reason])
       })
     })
   }
 
-  async parseUser (u) {
+  async parseUser(u) {
 
   }
 
-  async parseMember (u) {
+  async parseMember(u) {
     if (/<@\d{17,19}>/.test(u) || /<@!\d{18,21}>/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
       try {
@@ -107,11 +106,11 @@ class MessageExtension extends Extension {
     return null
   }
 
-  async parseRole (u) {
+  async parseRole(u) {
     return null
   }
 
-  async parseChannel (u) {
+  async parseChannel(u) {
     if (/<#\d{17,19}>/.test(u)) {
       let id = u.replace(/[^1234567890]/g, "")
       return this.guild.channels.get(id) || false
