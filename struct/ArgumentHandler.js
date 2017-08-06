@@ -246,7 +246,6 @@ module.exports = class ArgumentHandler {
       if (args.length < 1) return 
       for (let arg of args) {
         let Arg = new Argument(arg)
-        Arg.
       }
   }
 
