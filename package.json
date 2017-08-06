@@ -22,6 +22,7 @@
     "duration-js": "^4.0.0",
     "erlpack": "github:hammerandchisel/erlpack",
     "eslint": "^4.2.0",
+    "format-currency": "^1.0.0",
     "moment": "^2.18.1",
     "node-opus": "^0.2.6",
     "pretty-ms": "^3.0.0",

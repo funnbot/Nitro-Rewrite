@@ -5,11 +5,12 @@ module.exports = new Nitro.Command({
   example: "${p}editbalance Funnbot add 4000 || ${p}editbalance Funnbot set 1200 || ${p}editbalance Funnbot remove 300",
   argExample: "<user> <method> <amount>",
   userPerms: 2,
-  botPerms: [],
   alias: ["editbal", "editmoney"],
-  args: [],
 
-  run: async (message, bot, send) => {
-    
+  run: async(message, bot, send) => {
+    let member = message.args[0] ? await message.parseMember(message.args[0]) : message.member
+    if (!member) return message.fail("Unable to get user from:", message.args[0])
+    let id = member.user.id
+    let bal = bot.moneyman.getMoney(message.guild, id)
   }
 })

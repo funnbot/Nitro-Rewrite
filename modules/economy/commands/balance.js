@@ -14,6 +14,6 @@ module.exports = new Nitro.Command({
       if (!member) return message.fail("Unable to get user from:", message.args[0])
       let id = member.user.id
       let bal = bot.moneyman.getMoney(message.guild, id)
-      return send(`Your current balance is ${bot.config.CUR.sym}${bal} ${bot.config.CUR.icon}`.bold())
+      return send(`${member.user.tag}'s current balance is ${Nitro.util.formatBal(bal)}`.bold())
   }
 })

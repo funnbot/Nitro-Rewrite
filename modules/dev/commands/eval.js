@@ -1,6 +1,5 @@
 const Nitro = require("../../../Nitro.js")
 const util = require("util")
-const {TOKEN, FUNNBOT} = require("../../../config.js")
 const SnowFlake = require("../SnowFlakeUtil.js")
 
 module.exports = new Nitro.Command({
@@ -15,7 +14,7 @@ module.exports = new Nitro.Command({
   args: [],
 
   run: async (message, bot, send) => {
-    if (message.author.id !== FUNNBOT) return
+    if (message.author.id !== bot.config.FUNNBOT) return
     if (!message.checkSuffix) {
       let txt = evalTxt("Funnbot", "Output", "100000", "An idiot who does not provide code when he evals.")
       return send(txt)
@@ -53,7 +52,7 @@ ${d}\`\`\`
 }
 
 let clean = (t) => {
-  let split = TOKEN.split(".")
+  let split = Nitro.config.auth.TOKEN.split(".")
   let r = new RegExp(`(${split[1]})|(${split[2]})`, "g")
   t = t.toString().replace(r, "[SECRET]")
   return t
