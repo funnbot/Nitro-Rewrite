@@ -7,36 +7,36 @@ module.exports = new Nitro.Command({
   userPerms: 2,
   alias: ["editbal", "editmoney"],
 
-  args: [
-    {
-      desc: "Who's balance?",
+  args: [{
+      prompt: "Who's balance?",
       type: "user"
     },
     {
-      desc: "What action? `add`, `set`, `remove`",
-      type: "name"
+      prompt: "What action?",
+      type: "selection",
+      opts: ["add", "set", "remove"]
     },
     {
-      desc: "How much?",
-      type: {number: {min: 0, max: 9999999}}
+      prompt: "How much?",
+      type: "number",
+      max: 2000,
+      min: 10
     }
   ],
 
   run: async(message, bot, send) => {
+    return send(message.args.join(", "))
     let member = message.args[0] ? await message.parseMember(message.args[0]) : message.member
     if (!member) return message.fail("Unable to get user from:", message.args[0])
     let id = member.user.id
     let bal = bot.moneyman.getMoney(message.guild, id)
 
     let args = {
-      add: () => {
-      },
-      edit: () => {
-      },
-      remove: () => {
-      }
+      add: () => {},
+      edit: () => {},
+      remove: () => {}
     }
-    
-    args[message.args[0]] ? args[message.args[1]]() : message.fail("Invalid Argument:",  "Try `add`, `set`, `remove`")
+
+    args[message.args[0]] ? args[message.args[1]]() : message.fail("Invalid Argument:", "Try `add`, `set`, `remove`")
   }
 })

@@ -36,7 +36,7 @@ class Message extends EventEmitter {
     if (!this.dis.cooldown) {
       this.cooldown = new CoolDown()
     }
-    bot.ArgumentHandler = new ArgumentHandler()
+    bot.ArgumentHandler = ArgumentHandler
     if (!this.dis.permissions) {
       this.permissions = new PermissionHandler()
     }

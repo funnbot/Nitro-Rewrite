@@ -31,5 +31,8 @@ module.exports = Validate = {
     },
     role(val) {
         return regex.role.name.test(val) || regex.role.mention.test(val) || regex.id.test(val)
+    },
+    custom(val, opts) {
+        return opts.regex.test(val)
     }
 }

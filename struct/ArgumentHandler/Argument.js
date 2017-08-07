@@ -1,4 +1,4 @@
-const util = require("./util.js")
+const util = require("../util.js")
 const Validate = require("./Validate.js")
 const Parse = require("./Parse.js")
 
@@ -12,6 +12,9 @@ const def = {
 }
 //Its 31 because thats a 32 bit number, i dont see any reason why we need greater than 32 bit number...
 /* Types
+globaloptions: time - Default 30 seconds, how long to wait for collector to end, retries - default Infinite, 
+how many times to retry getting input if it dosnt validate
+
 string - A string of any kind, 
  options: max - The maximum string length
 word - Single word that is valid as channel name (or variable name) this is for consistancy
@@ -36,7 +39,7 @@ custom - A custom match
 
 //We NEED to validate with options... 
 
-class Argument {
+module.exports = class Argument {
 
     constructor(arg, index, message, final) {
         this.prompt = arg.prompt // When first collecting it asks this prompt
@@ -52,47 +55,47 @@ class Argument {
     }
 
     async run() {
-        //First it is checking if the argument exists
-        if (!this._exists()) {
-
-        }
-
         let retries = 0
-
         while (true) {
             if (this._exists()) {
                 if (!this._validateContent()) {
                     this.content = await this._collect()
-                    if (!collected) return {
+                    if (!this.content) return {
                         invalid: true
                     }
 
                     if (this._validateContent()) {
                         if (this._parseContent()) {
-                            return collected
+                            return this.content
                         } else this.content = false
                     }
                 }
             } else {
                 this.content = await this._collect()
-                if (!collected) return {
+                if (!this.content) return {
                     invalid: true
                 }
                 if (this._validateContent()) {
                     if (this._parseContent()) {
-                        return collected
+                        return this.content
                     } else this.content = false
                 }
             }
-            if (this.retries === "Infinite" && this.retries > retries) return {
+            if (this.retries !== "Infinite" && this.retries > retries) return {
                 invalid: true
             }
             retries++
         }
+        console.log(this.content)
+        return this.content
     }
 
     _exists() {
-        return !this.content && this.content.replace(/s*/g, "").length > 0
+        return !this.content || this.content.replace(/s*/g, "").length > 0
+    }
+
+    _parseContent() {
+        return Parse[this.type] ? Parse[this.type](this.content, this.message, this.dm) : this.content
     }
 
     _validateContent() {
@@ -100,8 +103,18 @@ class Argument {
     }
 
     async _collect() {
-        this.message.channel.send(this.prompt)
+        this.message.channel.send(this._formatPrompt())
+        let collected = await this.message.channel.awaitMessages(m => m.author.id === this.message.author.id, {
+            max: 1,
+            time: 30000,
+            errors: ["time"]
+        })
+        if (typeof collected !== "string") collected = false
+        return collected
+    }
 
+    _formatPrompt() {
+        return `${this.message.author}, ${this.prompt}\n${this.type === "selection" ? this.options.opts.join(", ") : ""}\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`
     }
 
     _validateType() {
