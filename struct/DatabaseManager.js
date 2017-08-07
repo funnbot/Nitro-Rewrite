@@ -38,7 +38,7 @@ class DatabaseManager {
     } catch (err) {
       console.log(err)
     }
-    return
+    return this.queue = []
   }
 
   update(id) {
