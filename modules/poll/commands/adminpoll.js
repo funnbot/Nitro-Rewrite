@@ -9,8 +9,7 @@ module.exports = new Nitro.Command({
   coolDown: 60,
   alias: ["apoll"],
   userPerms: 3,
-  args: [
-    {
+  args: [{
       desc: "What channel should it be displayed in?",
       type: "channel"
     },
@@ -28,18 +27,20 @@ module.exports = new Nitro.Command({
     }
   ],
 
-  run: async (message, bot, send) => {
+  run: async(message, bot, send) => {
     if (message.guild.check("apoll")) return send("**There is already a poll running.**")
     let display = message.args[0]
     if (!display) return send("**What channel will the poll be displayed in?**")
     display = message.guild.channels.get(display)
     if (!display || display.type !== "text") return send("**Invalid display channel.**")
     if (!display.permissionsFor(bot.user).has("SEND_MESSAGES")) return send("**I lack permission to send messages in the channel <#" + display.id + ">.**")
+
     let voting = message.args[1]
     if (!voting) return send("**What channel will people vote in?**")
     voting = message.guild.channels.get(voting)
     if (!voting || voting.type !== "text") return send("**Invalid voting channel.**")
     if (!voting.permissionsFor(bot.user).has("SEND_MESSAGES")) return send("**I lack permission to send messages in the channel <#" + voting.id + ">.**")
+
     let time = message.args[2]
     if (!time) return send("**How long will it run?**\nEx. 10m30s - 10 minutes and 30 seconds, 180m - 3 hours")
     try {
@@ -49,15 +50,25 @@ module.exports = new Nitro.Command({
     }
     if (time.hours() > 10) return send("**Admin polls can not be longer than 10 hours.**")
     if (time.minutes() < 5) return send("**Admin polls must be at least 5 minutes**")
+
     let split = message.suffixOf(3).split("|")
     if (!split[0]) return send("**Split your options with the character `|`**")
     if (split.length < 4) return send("**You must have at least 2 options")
     let quest = split[0]
     split = split.slice(1).map(t => t.trim())
     let options = split.map(t => {
-      return {content: t, votes: 0}
+      return {
+        content: t,
+        votes: 0
+      }
     })
-    message.guild.add("apoll", {author: message.author.id, total: 0, options: options, quest: quest})
+    
+    message.guild.add("apoll", {
+      author: message.author.id,
+      total: 0,
+      options: options,
+      quest: quest
+    })
     message.author.purge("apoll")
     send("**Respond with `endpoll` in <#" + voting.id + "> to end the poll early.**")
     display.send(`**__${quest}__**
@@ -66,7 +77,9 @@ ${split.map((t, i) => "**" + (i + 1) + ". " + t + "**").join("\n")}
 
 You can vote with \`${message.prefix}vote <option number>\` in the voting channel <#${voting.id}>`)
 
-    let collector = voting.createMessageCollector(m => m.author.bot !== true, {time: time.milliseconds()})
+    let collector = voting.createMessageCollector(m => m.author.bot !== true, {
+      time: time.milliseconds()
+    })
     collector.on("collect", msg => {
       if (msg.content === "endpoll") {
         let id = msg.guild.check("apoll")
@@ -83,8 +96,8 @@ You can vote with \`${message.prefix}vote <option number>\` in the voting channe
       if (num === "invalid" || num < 1 || num > poll.options.length + 1) return msg.channel.send("**Invalid option number**")
       msg.delete()
       poll.options[num - 1].votes++
-      poll.total++
-      msg.channel.send("**Vote Collected**").then(m => m.delete(14000))
+        poll.total++
+        msg.channel.send("**Vote Collected**").then(m => m.delete(14000))
       msg.guild.add("apoll", poll)
       msg.author.add("apoll")
     })
