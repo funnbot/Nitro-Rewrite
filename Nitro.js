@@ -1,5 +1,5 @@
 const Alias = require("./struct/Alias.js")
-const ArgumentHandler = require("./struct/ArgumentHandler")
+const ArgumentHandler = require("./struct/ArgumentHandler/index.js")
 const Command = require("./struct/Command.js")
 const CommandLoader = require("./struct/CommandLoader.js")
 const CoolDown = require("./struct/CoolDown.js")

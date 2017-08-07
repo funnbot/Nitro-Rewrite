@@ -1,7 +1,7 @@
 const CommandLoader = require("./CommandLoader.js")
 const Alias = require("./Alias.js")
 const CoolDown = require("./CoolDown.js")
-const ArgumentHandler = require("./ArgumentHandler.js")
+const ArgumentHandler = require("./ArgumentHandler/index.js")
 const PermissionHandler = require("./PermissionHandler.js")
 const EventEmitter = require("events")
 
