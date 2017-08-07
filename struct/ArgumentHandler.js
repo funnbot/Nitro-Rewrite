@@ -221,7 +221,7 @@ class Argument {
     this._validateType() // Validate the argument type
   }
 
-  async run() {
+  async run(guild) {
     //First it is checking if the argument exists
     if (this._exists()) {
       //If it does exist then it validates
