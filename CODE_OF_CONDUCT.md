@@ -1,3 +1,4 @@
+# USE GOD DAMN SEMICOLONS
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
