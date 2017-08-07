@@ -210,11 +210,69 @@ class ArgumentHandlerOLD {
 
 class Argument {
 
-  constructor(arg) {
-    this.prompt = arg.prompt
-    this.type = arg.type
-    this.options = arg
-    this._validateType()
+  constructor(arg, index, messageArgs) {
+    this.prompt = arg.prompt // When first collecting it asks this prompt
+    this.failed = arg.failed // If First collected is invalid, it asks again with more information
+    this.type = arg.type // The type of the argument string, name, number, user, channel, role, selection, duration
+    this.options = arg // Get the rest of the options
+    this.index = index // The index of the argument
+    this.msg = messageArgs // message.args array
+
+    this._validateType() // Validate the argument type
+  }
+
+  async run() {
+    //First it is checking if the argument exists
+    if (this._exists()) {
+      //If it does exist then it validates
+      if (!this._validateContent()) {
+        //If it dosnt exist or it dosnt validate, it collects a new one
+        await this._collect()
+      } else return 
+    } else this._collect()
+    //Then it validates if the existing argument fits the type if it exists
+    
+    //It validates again
+    //If everything is validated properly, it can then be parsed according to type, if not, it will ask again
+    //If the parse fails, it will ask again
+  }
+
+  _exists() {
+    return this.msg[this.index]
+  }
+
+  _validateContent() {
+
+  }
+
+  _regex(type, c) {
+    let regs = {
+      user() {
+        return /^.{2,32}$/.test(c)
+      },
+      userdisc() {
+        return /^.{2,32}#[0-9]{4}$/.test(c)
+      },
+      usermention() {
+        return /^<@[0-9]{17,19}>$/.test(c) || /^<@![0-9]{17,19}>$/.test(c)
+      },
+      channel() {
+        
+      },
+      channelmention() {
+
+      },
+      role() {
+
+      },
+      rolemention() {
+
+      },
+      id() {
+
+      }
+    }
+    return regs[type]()
   }
 
   _validateType() {
@@ -222,6 +280,11 @@ class Argument {
     let types = {
       string() {
         this.options.max || (this.options.max = 2000)
+      },
+      name() {
+        this.options.allowSpace || (this.options.allowSpace = false)
+        this.options.max || (this.options.max = 100)
+        this.options.min || (this.options.min = 2)
       },
       number() {
         this.options.max || (this.options.max = 2 ** 31 - 2)
@@ -233,6 +296,7 @@ class Argument {
       selection() {
         if (!this.options.opts) throw new TypeError("Selection options missing.")
       },
+      duration() {}
     }
     if (!types[this.type]) throw new TypeError("Invalid Type " + this.type)
     types[this.type]()
@@ -242,11 +306,12 @@ class Argument {
 
 module.exports = class ArgumentHandler {
 
-  async run(message, args) {
-      if (args.length < 1) return 
-      for (let arg of args) {
-        let Arg = new Argument(arg)
-      }
+  static async run(message, args) {
+    if (args.length < 1) return
+    for (let [i, arg] of args.entries()) {
+      let Arg = new Argument(arg, i, message.args)
+      message.args[i] = await Arg.run()
+    }
   }
 
 }
