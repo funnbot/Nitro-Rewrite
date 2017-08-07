@@ -15,11 +15,11 @@ const def = {
 string - A string of any kind, 
  options: max - The maximum string length
 word - Single word that is valid as channel name (or variable name) this is for consistancy
- options: none
+ options: max - the maximum string length
 number - A number like amount
  options: max - The maximum number, min - the minimum number
 selection - A list of options to select from
- options: opts - The array of options as strings
+ options: opts - The array of options as strings, ignoreCase - If true, it turns input to lowercase before checking against selection
 duration - A duration in the duration-js format
  options: max - The maximum duration in Milliseconds, min - The minimum duration in ms, This is in ms because it lets for finer control without selecting
 user - Parse a user from mention, id, name, name#discrim
@@ -28,7 +28,7 @@ role - Parse a role from mention, id, name
  options: none
 channel - Parse a channel from mention, id, name
  options: none
-*Possible* custom - A custom match
+custom - A custom match
  options: regex - The regex that it will validate against
  */
 
@@ -40,6 +40,7 @@ class Argument {
 
     constructor(arg, index, message, final) {
         this.prompt = arg.prompt // When first collecting it asks this prompt
+        this.retries = arg.retries || "Infinite" // How many times it asks for a argument if it does not validate
         this.type = arg.type // The type of the argument string, name, number, user, channel, role, selection, duration
         this.options = arg // Get the rest of the options
         this.index = index // The index of the argument
@@ -53,23 +54,41 @@ class Argument {
     async run() {
         //First it is checking if the argument exists
         if (!this._exists()) {
-            await this._collect()
-        } else {
-            if (this._validateContent())
+
         }
 
-        if (this._exists()) {
-            //If it does exist then it validates
-            if (!this._validateContent()) {
-                //If it dosnt exist or it dosnt validate, it collects a new one
-                await this._collect()
-            } else return
-        } else this._collect()
-        //Then it validates if the existing argument fits the type if it exists
+        let retries = 0
 
-        //It validates again
-        //If everything is validated properly, it can then be parsed according to type, if not, it will ask again
-        //If the parse fails, it will ask again
+        while (true) {
+            if (this._exists()) {
+                if (!this._validateContent()) {
+                    this.content = await this._collect()
+                    if (!collected) return {
+                        invalid: true
+                    }
+
+                    if (this._validateContent()) {
+                        if (this._parseContent()) {
+                            return collected
+                        } else this.content = false
+                    }
+                }
+            } else {
+                this.content = await this._collect()
+                if (!collected) return {
+                    invalid: true
+                }
+                if (this._validateContent()) {
+                    if (this._parseContent()) {
+                        return collected
+                    } else this.content = false
+                }
+            }
+            if (this.retries === "Infinite" && this.retries > retries) return {
+                invalid: true
+            }
+            retries++
+        }
     }
 
     _exists() {
@@ -77,18 +96,21 @@ class Argument {
     }
 
     _validateContent() {
-        return Validate[this.type](this.content)
+        return Validate[this.type](this.content, this.options)
     }
 
     async _collect() {
         this.message.channel.send(this.prompt)
-        
+
     }
 
     _validateType() {
         if (this.type === undefined) throw new TypeError("Type Undefined")
         let typeSetup = {
             string() {
+                this.options.max || (this.options.max = def.maxStringLength)
+            },
+            word() {
                 this.options.max || (this.options.max = def.maxStringLength)
             },
             number() {
@@ -100,6 +122,7 @@ class Argument {
                 this.options.min || (this.options.min = def.minDuration)
             },
             selection() {
+                this.options.ignoreCase || (this.options.ignoreCase = false)
                 if (!this.options.opts) throw new Error("Missing opts option on selection type")
             },
             custom() {
@@ -108,6 +131,5 @@ class Argument {
         }
         if (!this.prompt) throw new Error("Argument missing prompt")
         if (!Validate[this.type]) throw new TypeError("Invalid type " + this.type)
-        //I know that duplication of all types is annoying, but theres options that i want... need...
     }
 }
