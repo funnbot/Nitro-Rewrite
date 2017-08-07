@@ -2,5 +2,4 @@
 /rethinkdb_data
 auth.js
 .vscode
-.jsbeautifyrc
-.eslintrc.js
+.idea
