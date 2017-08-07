@@ -56,37 +56,55 @@ module.exports = class Argument {
 
     async run() {
         let retries = 0
+        //This will loop forever, This is how you can 
         while (true) {
+            // If the user had the arg
             if (this._exists()) {
+                // Validate the input
                 if (!this._validateContent()) {
+                    //If it is NOT Valid, start the collector
                     this.content = await this._collect()
+                    //If the collecotr returns false, because they ran out of time, or they did cancel cmd, return this object because strings are wierd
                     if (!this.content) return {
                         invalid: true
                     }
-
+                    // If collector returns actual content, it validates again, 
                     if (this._validateContent()) {
-                        if (this._parseContent()) {
+                        // If valid, it parses the content and then returns, ending the loop and gives the new arg
+                        if (await this._parseContent()) {
                             return this.content
-                        } else this.content = false
-                    }
-                }
-            } else {
-                this.content = await this._collect()
-                if (!this.content) return {
-                    invalid: true
-                }
-                if (this._validateContent()) {
-                    if (this._parseContent()) {
+                        } else this.content = false // Else content = false
+                    } else this.content = false
+                } else {
+                    //It exists and its validated, now just parse
+                    if (await this._parseContent()) {
+                        //Parse success
                         return this.content
                     } else this.content = false
                 }
+            } else {
+                //If it does not exist then just jump to collecting
+                this.content = await this._collect()
+                // same as last collect
+                if (!this.content) return {
+                    invalid: true
+                }
+                //If collected, validate
+                if (this._validateContent()) {
+                    //Parse the content
+                    if (await this._parseContent()) {
+                        //return the content
+                        return this.content
+                    } else this.content = false // Else content = false
+                } else this.content = false
             }
+            // It will reach this point if, Collected doesnt validate, parse returns false
+            // If retries is set check if we've past limit
             if (this.retries !== "Infinite" && this.retries > retries) return {
                 invalid: true
             }
             retries++
         }
-        console.log(this.content)
         return this.content
     }
 
@@ -94,8 +112,8 @@ module.exports = class Argument {
         return !this.content || this.content.replace(/s*/g, "").length > 0
     }
 
-    _parseContent() {
-        return Parse[this.type] ? Parse[this.type](this.content, this.message, this.dm) : this.content
+    async _parseContent() {
+        return Parse[this.type] ? await Parse[this.type](this.content, this.message, this.dm) : this.content
     }
 
     _validateContent() {
@@ -104,17 +122,25 @@ module.exports = class Argument {
 
     async _collect() {
         this.message.channel.send(this._formatPrompt())
-        let collected = await this.message.channel.awaitMessages(m => m.author.id === this.message.author.id, {
-            max: 1,
-            time: 30000,
-            errors: ["time"]
-        })
-        if (typeof collected !== "string") collected = false
-        return collected
+        let collected
+        try {
+            collected = await this.message.channel.awaitMessages(m => m.author.id === this.message.author.id, {
+                max: 1,
+                time: 30000,
+                errors: ["time"]
+            })
+        } catch (err) {
+            return false
+        }
+        let msg = collected.first()
+        if (msg) {
+            if (msg.content === "cancel") return false
+            else return msg.content
+        } else return false
     }
 
     _formatPrompt() {
-        return `${this.message.author}, ${this.prompt}\n${this.type === "selection" ? this.options.opts.join(", ") : ""}\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`
+        return `${this.message.author}, ${this.prompt}${this.type === "selection" ? "\n" + this.options.opts.join(", ") : ""}\n\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`
     }
 
     _validateType() {

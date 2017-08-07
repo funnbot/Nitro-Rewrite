@@ -1,7 +1,6 @@
 module.exports = Regex = {
     user: {
-        name: /^.{2,32}$/g,
-        namedisc: /^.{2,32}#[0-9]{0,4}$/g,
+        name: /^.{2,32}(#[0-9]{0,4})?$/g,
         mention: /^<@!?[0-9]{17,19}>$/g
     },
     channel: {

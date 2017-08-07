@@ -10,7 +10,7 @@ module.exports = Validate = {
     },
     number(val, opts) {
         val = parseInt(val) || false
-        return typeof val === "number" && (val > minNumber && val < maxNumber)
+        return typeof val === "number" && (val > opts.min && val < opts.max)
     },
     selection(val, opts) {
         return opts.opts.includes(opts.ignoreCase ? val.toLowerCase() : val)
@@ -24,7 +24,7 @@ module.exports = Validate = {
         }
     },
     user(val) {
-        return regex.user.name.test(val) || regex.user.namedisc.test(val) || regex.user.mention.test(val) || regex.id.test(val)
+        return regex.user.name.test(val) || regex.user.mention.test(val) || regex.id.test(val)
     },
     channel(val) {
         return regex.channel.name.test(val) || regex.channel.mention.test(val) || regex.id.test(val)
