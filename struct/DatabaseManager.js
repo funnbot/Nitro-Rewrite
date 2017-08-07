@@ -23,10 +23,11 @@ class DatabaseManager {
       })
     })
 
-    let loop = (async() => {
+    let loop = async() => {
       await this.insertQueue()
       setTimeout(() => loop(), 5e3)
-    })()
+    }
+    loop()
   }
 
   async insertQueue() {
