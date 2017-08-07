@@ -20,7 +20,7 @@ class MessageExtension extends Extension {
   }
 
   suffixOf(index) {
-    return this._suffixSplit.slice(index).join(" ")
+    return this._suffixSplit.slice(index).join(" ").trim()
   }
 
   get send() {

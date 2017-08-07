@@ -1,5 +1,4 @@
 const util = require("./util.js")
-const Duration = require("duration-js")
 const Validate = require("./Validate.js")
 const Parse = require("./Parse.js")
 
@@ -7,7 +6,9 @@ const Parse = require("./Parse.js")
 const def = {
     maxStringLength: 2000,
     maxNumber: 2 ** 31 - 2,
-    minNumber: 1
+    minNumber: 1,
+    maxDuration: 7 * 24 * 60 * 60 * 1000,
+    minDuration: 0
 }
 //Its 31 because thats a 32 bit number, i dont see any reason why we need greater than 32 bit number...
 /* Types
@@ -37,19 +38,26 @@ channel - Parse a channel from mention, id, name
 
 class Argument {
 
-    constructor(arg, index, message) {
+    constructor(arg, index, message, final) {
         this.prompt = arg.prompt // When first collecting it asks this prompt
         this.type = arg.type // The type of the argument string, name, number, user, channel, role, selection, duration
         this.options = arg // Get the rest of the options
         this.index = index // The index of the argument
+        this.final = final // Whether this is the last argument in the sequence, if it is then we are reading from a suffixOf, not an arg
         this.message = message
         this.dm = message.channel.type === "text" // If its a DM channel or not
-
+        this.content = final ? this.message.suffixOf(this.index) : this.message.args[this.index]
         this._validateType() // Validate the argument type
     }
 
     async run() {
         //First it is checking if the argument exists
+        if (!this._exists()) {
+            await this._collect()
+        } else {
+            if (this._validateContent())
+        }
+
         if (this._exists()) {
             //If it does exist then it validates
             if (!this._validateContent()) {
@@ -65,33 +73,41 @@ class Argument {
     }
 
     _exists() {
-        return this.msg[this.index] || false
+        return !this.content && this.content.replace(/s*/g, "").length > 0
     }
 
-    _validateContent(content) {
-        return validate[this.type](content)
+    _validateContent() {
+        return Validate[this.type](this.content)
+    }
+
+    async _collect() {
+        this.message.channel.send(this.prompt)
+        
     }
 
     _validateType() {
         if (this.type === undefined) throw new TypeError("Type Undefined")
         let typeSetup = {
-            string() { this.options.max || (this.options.max = def.maxStringLength) },
-            number(val) {
+            string() {
+                this.options.max || (this.options.max = def.maxStringLength)
+            },
+            number() {
                 this.options.max || (this.options.max = def.maxNumber)
                 this.options.min || (this.options.min = def.minNumber)
             },
-            selection(val) {
+            duration() {
+                this.options.max || (this.options.max = def.maxDuration)
+                this.options.min || (this.options.min = def.minDuration)
+            },
+            selection() {
                 if (!this.options.opts) throw new Error("Missing opts option on selection type")
             },
-            custom(val) {
+            custom() {
                 if (!this.options.regex) throw new TypeError("Missing regex option on custom type")
             }
         }
         if (!this.prompt) throw new Error("Argument missing prompt")
         if (!Validate[this.type]) throw new TypeError("Invalid type " + this.type)
         //I know that duplication of all types is annoying, but theres options that i want... need...
-    }
-    _collect() {
-        this.message.channel.send(this.prompt)
     }
 }
