@@ -1,6 +1,6 @@
 const util = require("./util.js")
 
-class ArgumentHandlerOLD {
+/*class ArgumentHandlerOLD {
   constructor() {
     this.active = {}
   }
@@ -206,7 +206,7 @@ class ArgumentHandlerOLD {
       message.reply(`${arg.desc}\n\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`)
     })
   }
-}
+}*/
 
 class Argument {
 
