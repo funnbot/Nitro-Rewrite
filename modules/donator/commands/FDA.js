@@ -3,12 +3,6 @@ const Nitro = require("../../../Nitro.js");
 module.exports = new Nitro.Command({
 	help: 'Bio for FDA',
 	example: '${p}FDA',
-	argExample: '',
-	dm: false,
-	coolDown: 1,
-	userPerms: 0,
-	botPerms: [],
-	args: [],
 
 	run: (message, bot, send) => {
 		send({
