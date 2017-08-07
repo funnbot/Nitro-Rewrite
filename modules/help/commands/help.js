@@ -1,4 +1,4 @@
-const Nitro = require("../../../Nitro.js");
+const Nitro = require("../../../Nitro.js")
 
 module.exports = new Nitro.Command({
   help: "A list of commands.",
@@ -45,7 +45,7 @@ module.exports = new Nitro.Command({
         "Tutorials",
         "Learn how to use Nitro."
       ]
-    };
+    }
 
     let commands = bot.allCommands;
     if (!message.checkSuffix) {
@@ -93,4 +93,4 @@ module.exports = new Nitro.Command({
       .setColor(embed.randomColor);
     return send("", {embed})
   }
-});
+})
