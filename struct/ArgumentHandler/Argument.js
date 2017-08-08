@@ -73,14 +73,18 @@ module.exports = class Argument {
                         // If valid, it parses the content and then returns, ending the loop and gives the new arg
                         if (await this._parseContent()) {
                             return this.content
-                        } else this.content = false // Else content = false
+                        } else return {
+                            invalid: true
+                        }
                     } else this.content = false
                 } else {
                     //It exists and its validated, now just parse
                     if (await this._parseContent()) {
                         //Parse success
                         return this.content
-                    } else this.content = false
+                    } else return {
+                        invalid: true
+                    }
                 }
             } else {
                 //If it does not exist then just jump to collecting
@@ -95,7 +99,9 @@ module.exports = class Argument {
                     if (await this._parseContent()) {
                         //return the content
                         return this.content
-                    } else this.content = false // Else content = false
+                    } else return {
+                        invalid: true
+                    }
                 } else this.content = false
             }
             // It will reach this point if, Collected doesnt validate, parse returns false
@@ -113,7 +119,7 @@ module.exports = class Argument {
     }
 
     async _parseContent() {
-        return Parse[this.type] ? await Parse[this.type](this.content, this.message, this.dm) : this.content
+        return Parse[this.type] ? await Parse[this.type](this.content, this.message) : this.content
     }
 
     _validateContent() {

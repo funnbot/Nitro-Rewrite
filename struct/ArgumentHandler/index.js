@@ -10,7 +10,10 @@ module.exports = class ArgumentHandler {
       let final = i === message.args.length - 1
       let Arg = new Argument(arg, i, message)
       message.args[i] = await Arg.run()
-      if (message.args[i].invalid) return message.send("Cancelled")
+      if (message.args[i].invalid) {
+        message.author.del("argumenthandler")
+        return message.send("Cancelled")
+      }
     }
     message.author.del("argumenthandler")
     return false
