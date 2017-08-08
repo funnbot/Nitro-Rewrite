@@ -6,7 +6,7 @@ const escapeMarkdown = require("discord.js").escapeMarkdown
 
 module.exports = Parse = {
     number(val) {
-        return parseInt(val)
+        return parseFloat(val)
     },
     user: async(val, message) => {
         if (regex.user.mention.test(val)) {

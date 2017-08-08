@@ -3,16 +3,16 @@ const Nitro = require("../../Nitro.js")
 
 class MoneyManager {
     getMoney(guild, id) {
-        if (!guild) return 0
-        if (guild.id) guild = guild.id
+        guild = this.getId(guild)
+        id = this.getId(id)
         let users = bot.economy.gKey(guild, "users")
         if (!users[id] || !users[id].money) return 0
         return users[id].money
     }
 
     setMoney(guild, id, bal) {
-        if (!guild) return false
-        if (guild.id) guild = guild.id
+        guild = this.getId(guild)
+        id = this.getId(id)
         let users = bot.economy.gKey(guild, "users")
         if (!users[id]) users[id] = {}
         users[id].money = bal
@@ -21,8 +21,8 @@ class MoneyManager {
     }
 
     addMoney(guild, id, money) {
-        if (!guild) return false
-        if (guild.id) guild = guild.id
+        guild = this.getId(guild)
+        id = this.getId(id)
         let users = bot.economy.gKey(guild, "users")
         if (!users[id]) users[id] = {}
         if (!users[id].money) users[id].money = money
@@ -30,6 +30,12 @@ class MoneyManager {
         users[id].money = Nitro.util.round100(users[id].money)
         bot.economy.sKey(guild, "users", users)
         return users[id].money
+    }
+
+    getId(i) {
+        if (!i) return "1234"
+        if (i.id) return i.id
+        return i
     }
 }
 

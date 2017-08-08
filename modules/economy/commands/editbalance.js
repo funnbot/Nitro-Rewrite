@@ -7,36 +7,44 @@ module.exports = new Nitro.Command({
     userPerms: 2,
     alias: ["editbal", "editmoney"],
 
-    args: [{
+    args: [
+        {
             prompt: "Who's balance?",
             type: "user"
         },
         {
             prompt: "What action?",
             type: "selection",
-            opts: ["add", "set", "remove"]
+            opts: ["set", "add", "remove"]
         },
         {
             prompt: "How much?",
             type: "number",
-            max: 9999999,
-            min: 10
+            max: 1000000000,
         }
     ],
 
     run: async(message, bot, send) => {
-        return console.log(message.args[0])
-        let member = message.args[0] ? await message.parseMember(message.args[0]) : message.member
-        if (!member) return message.fail("Unable to get user from:", message.args[0])
-        let id = member.user.id
+        let id = message.args[0]
         let bal = bot.moneyman.getMoney(message.guild, id)
+        let am = message.args[2]
 
         let args = {
-            add: () => {},
-            edit: () => {},
-            remove: () => {}
+            add() {
+                bot.moneyman.addMoney(message.guild, id, am)
+            },
+            set () {
+                bot.moneyman.setMoney(message.guild, id, am)
+            },
+            remove() {
+                let newAm = bal - am
+                bot.moneyman.setMoney(message.guild, id, newAm)
+            }
         }
-
-        args[message.args[0]] ? args[message.args[1]]() : message.fail("Invalid Argument:", "Try `add`, `set`, `remove`")
+        if (args[message.args[1]]) {
+            args[message.args[1]]()
+        } else return message.fail("Invalid Argument:", "Try `add`, `set`, `remove`")
+        let newBal = Nitro.util.formatBal(bot.moneyman.getMoney(message.guild, id))
+        message.succ(`${id.tag}'s new balance is ${newBal}`)
     }
 })

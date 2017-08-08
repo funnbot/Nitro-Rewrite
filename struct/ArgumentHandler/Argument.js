@@ -6,14 +6,14 @@ const Parse = require("./Parse.js")
 const def = {
     maxStringLength: 2000,
     maxNumber: 2 ** 31 - 2,
-    minNumber: 1,
+    minNumber: 0,
     maxDuration: 7 * 24 * 60 * 60 * 1000,
     minDuration: 0
 }
 //Its 31 because thats a 32 bit number, i dont see any reason why we need greater than 32 bit number...
 /* Types
 globaloptions: time - Default 30 seconds, how long to wait for collector to end, retries - default Infinite, 
-how many times to retry getting input if it dosnt validate
+how many times to retry getting input if it dosnt validate, optional - If the argument is optional or not if it is then it wont try to collect if non is provided
 
 string - A string of any kind, 
  options: max - The maximum string length
@@ -44,6 +44,7 @@ module.exports = class Argument {
     constructor(arg, index, message, final) {
         this.prompt = arg.prompt // When first collecting it asks this prompt
         this.retries = arg.retries || "Infinite" // How many times it asks for a argument if it does not validate
+        this.optional = arg.optional || false
         this.type = arg.type // The type of the argument string, name, number, user, channel, role, selection, duration
         this.options = arg // Get the rest of the options
         this.index = index // The index of the argument
@@ -59,9 +60,8 @@ module.exports = class Argument {
         //This will loop forever, This is how you can 
         while (true) {
             
-            // If the user had the arg
+            // If the user had the arg or its optional
             if (this._exists()) {
-                
                 // Validate the input
                 if (!this._validateContent()) {
                     
@@ -95,7 +95,7 @@ module.exports = class Argument {
                     }
                 }
             } else {
-                
+                if (this.optional) return false
                 //If it does not exist then just jump to collecting
                 this.content = await this._collect()
                 // same as last collect
@@ -170,12 +170,12 @@ module.exports = class Argument {
                 this.options.max || (this.options.max = def.maxStringLength)
             },
             number() {
-                this.options.max || (this.options.max = def.maxNumber)
-                this.options.min || (this.options.min = def.minNumber)
+                this.options.max !== undefined || (this.options.max = def.maxNumber)
+                this.options.min !== undefined || (this.options.min = def.minNumber)
             },
             duration() {
-                this.options.max || (this.options.max = def.maxDuration)
-                this.options.min || (this.options.min = def.minDuration)
+                this.options.max !== undefined || (this.options.max = def.maxDuration)
+                this.options.min !== undefined || (this.options.min = def.minDuration)
             },
             selection() {
                 this.options.ignoreCase || (this.options.ignoreCase = false)
@@ -187,5 +187,6 @@ module.exports = class Argument {
         }
         if (!this.prompt) throw new Error("Argument missing prompt")
         if (!Validate[this.type]) throw new TypeError("Invalid type " + this.type)
+        if (typeSetup[this.type]) typeSetup[this.type].call(this)
     }
 }

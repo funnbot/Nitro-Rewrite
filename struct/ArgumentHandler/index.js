@@ -1,6 +1,3 @@
-const BugZapper = require("bugzapper")
-const bz = new BugZapper()
-
 const Argument = require("./Argument.js")
 
 module.exports = class ArgumentHandler {
@@ -19,7 +16,6 @@ module.exports = class ArgumentHandler {
                 return null
             }
         }
-        bz.var({message: message.args})
         message.author.del("argumenthandler")
         return message
     }
