@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/funnbot/Mudulur-Boot#readme",
   "dependencies": {
+    "bugzapper": "^1.0.3",
     "chalk": "^2.0.1",
     "discord.js": "github:funnbot/discord.js",
     "duration-js": "^4.0.0",

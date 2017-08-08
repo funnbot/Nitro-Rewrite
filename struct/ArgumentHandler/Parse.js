@@ -1,3 +1,6 @@
+const BugZapper = require("bugzapper")
+const bz = new BugZapper()
+
 const regex = require("./Regex.js")
 const escapeMarkdown = require("discord.js").escapeMarkdown
 
@@ -5,44 +8,48 @@ module.exports = Parse = {
     number(val) {
         return parseInt(val)
     },
-    async user(val, message) {
+    user: async(val, message) => {
         if (regex.user.mention.test(val)) {
-            let id = val.replace(/[^0-9]/g)
-            return await fetchUser("id", message, id)
-        }
-        if (regex.id.test(val)) {
-            return await fetchUser("id", message, val)
-        }
-        if (regex.user.name.test(val)) {
-            return await fetchUser("name", message, val)
-        }
-        return false
+            let id = val.replace(/[^0-9]/g, "")
+            let u = await fetchUser("id", message, id)
+            return u
+        } else if (regex.id.test(val)) {
+            let u = await fetchUser("id", message, val)
+            return u
+        } else if (regex.user.name.test(val)) {
+            let u = await fetchUser("name", message, val)
+            return u
+        } else return false
     },
-    async channel(val, message) {
+    channel: async(val, message) => {
         if (regex.channel.mention.test(val)) {
-            let id = val.replace(/[^0-9]/g)
-            return await fetchChannel("id", message, id)
+            let id = val.replace(/[^0-9]/g, "")
+            let chan = await fetchChannel("id", message, id)
+            return chan
         }
         if (regex.id.test(val)) {
-            return await fetchChannel("id", message, val)
+            let chan = await fetchChannel("id", message, val)
+            return chan
         }
         if (regex.channel.name(val)) {
-            return await fetchChannel("name", message, val)
-        }
-        return false
+            let chan = await fetchChannel("name", message, id)
+            return chan
+        } else return false
     },
-    async role(val, message) {
+    role: async(val, message) => {
         if (regex.role.mention.test(val)) {
-            let id = val.replace(/[^0-9]/g)
-            return await fetchRole("id", message, id)
+            let id = val.replace(/[^0-9]/g, "")
+            let r = await fetchRole("id", message, id)
+            return r
         }
         if (regex.id.test(val)) {
-            return await fetchRole("id", message, val)
+            let r = await fetchRole("id", message, val)
+            return r
         }
         if (regex.role.name.test(val)) {
-            return await fetchRole("name", message, val)
-        }
-        return false
+            let r = await fetchRole("name", message, val)
+            return r
+        } else return false
     }
 }
 
@@ -52,8 +59,8 @@ let fetchUser = async(type, message, val) => {
     if (!guild) return false
     if (type === "id") {
         try {
-            let user = await bot.fetchUser(val)
-            return user || false
+            let member = await guild.fetchMember(val)
+            return member.user || false
         } catch (err) {
             return false
         }
@@ -63,7 +70,7 @@ let fetchUser = async(type, message, val) => {
             await guild.fetchMembers()
             let matches = guild.members.filter(memberFilter(val.toLowerCase()))
             if (matches.size === 0) return false
-            if (matches.size === 1) return matches[0].user
+            if (matches.size === 1) return matches.first().user
             else {
                 message.channel.send("Multiple users found. Please be more specific.")
                 return false

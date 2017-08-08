@@ -58,35 +58,44 @@ module.exports = class Argument {
         let retries = 0
         //This will loop forever, This is how you can 
         while (true) {
+            
             // If the user had the arg
             if (this._exists()) {
+                
                 // Validate the input
                 if (!this._validateContent()) {
+                    
                     //If it is NOT Valid, start the collector
                     this.content = await this._collect()
+                    
                     //If the collecotr returns false, because they ran out of time, or they did cancel cmd, return this object because strings are wierd
                     if (!this.content) return {
                         invalid: true
                     }
                     // If collector returns actual content, it validates again, 
                     if (this._validateContent()) {
+                        
                         // If valid, it parses the content and then returns, ending the loop and gives the new arg
-                        if (await this._parseContent()) {
-                            return this.content
+                        let parsed = await this._parseContent()
+                        if (parsed) {    
+                            return parsed
                         } else return {
                             invalid: true
                         }
                     } else this.content = false
                 } else {
+                    
                     //It exists and its validated, now just parse
-                    if (await this._parseContent()) {
+                    let parsed = await this._parseContent()
+                    if (parsed) {
                         //Parse success
-                        return this.content
+                        return parsed
                     } else return {
                         invalid: true
                     }
                 }
             } else {
+                
                 //If it does not exist then just jump to collecting
                 this.content = await this._collect()
                 // same as last collect
@@ -95,10 +104,12 @@ module.exports = class Argument {
                 }
                 //If collected, validate
                 if (this._validateContent()) {
+                    
                     //Parse the content
-                    if (await this._parseContent()) {
+                    let parsed = await this._parseContent()
+                    if (parsed) {
                         //return the content
-                        return this.content
+                        return parsed
                     } else return {
                         invalid: true
                     }
@@ -115,7 +126,7 @@ module.exports = class Argument {
     }
 
     _exists() {
-        return !this.content || this.content.replace(/s*/g, "").length > 0
+        return !!this.content && this.content.replace(/s*/g, "").length > 0
     }
 
     async _parseContent() {
