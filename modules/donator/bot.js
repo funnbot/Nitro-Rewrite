@@ -1,7 +1,6 @@
-const Nitro = require('../../Nitro.js');
 const Client = require("../../struct/Client.js");
-const client = new Client("tag");
+const client = new Client("donator");
 client.database();
 module.exports = client.bot;
-new Nitro.Message(client.bot);
+require("./message.js")
 client.login();

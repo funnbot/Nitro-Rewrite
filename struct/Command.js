@@ -24,9 +24,11 @@ class Command {
         if (typeof this.runCommand === "string") send(this.runCommand).catch(console.log)
         else if (typeof this.runCommand === "function") {
             try {
-                let handleArguments = await bot.ArgumentHandler.run(message, this.args)
-                if (handleArguments == null) return
-                message = handleArguments
+                if (this.args.size > 0) {
+                    let handleArguments = await bot.ArgumentHandler.run(message, this.args)
+                    if (handleArguments == null) return
+                    message = handleArguments
+                }
                 message.channel.startTyping()
                 await this.runCommand(message, bot, send)
                 message.channel.stopTyping()
