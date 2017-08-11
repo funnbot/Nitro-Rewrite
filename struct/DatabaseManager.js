@@ -81,7 +81,7 @@ class DatabaseManager {
         if (!i) return "1234"
         if (i.id) return i.id
         return i
-    }
+    }   
 }
 
 module.exports = DatabaseManager

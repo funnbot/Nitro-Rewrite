@@ -24,7 +24,7 @@ class Command {
         if (typeof this.runCommand === "string") send(this.runCommand).catch(console.log)
         else if (typeof this.runCommand === "function") {
             try {
-                if (this.args.size > 0) {
+                if (this.args.length > 0) {
                     let handleArguments = await bot.ArgumentHandler.run(message, this.args)
                     if (handleArguments == null) return
                     message = handleArguments

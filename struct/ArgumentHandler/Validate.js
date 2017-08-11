@@ -10,7 +10,6 @@ module.exports = Validate = {
     },
     number(val, opts) {
         val = parseFloat(val) || false
-        console.log(opts)
         return typeof val === "number" && (val > opts.min && val <= opts.max)
     },
     selection(val, opts) {

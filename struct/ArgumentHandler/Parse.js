@@ -69,7 +69,10 @@ let fetchUser = async(type, message, val) => {
         try {
             await guild.fetchMembers()
             let matches = guild.members.filter(memberFilter(val.toLowerCase()))
-            if (matches.size === 0) return false
+            if (matches.size === 0) {
+                message.channel.send("User not found.")
+                return false
+            }
             if (matches.size === 1) return matches.first().user
             else {
                 message.channel.send("Multiple users found. Please be more specific.")
@@ -87,7 +90,10 @@ let fetchChannel = (type, message, id) => {
     if (type === "id") return guild.channels.get(id)
     if (type === "name") {
         let matches = guild.channels.filter(channelFilter(val.toLowerCase()))
-        if (matches.size === 0) return false
+        if (matches.size === 0) {
+            message.channel.send("Channel not found.")
+            return false
+        }
         if (matches.size === 1) return matches[0]
         else {
             message.channel.send("Multiple channels found. Please be more specific")
@@ -102,7 +108,10 @@ let fetchRole = (type, message, id) => {
     if (type === "id") return guild.roles.get(id)
     if (type === "name") {
         let matches = guild.roles.filter(roleFilter(val.toLowerCase()))
-        if (matches.size === 0) return false
+        if (matches.size === 0) {
+            message.channel.send("Role not found.")
+            return false
+        }
         if (matches.size === 1) return matches[0]
         else {
             message.channel.send("Multiple roles found. Please be more specific.")

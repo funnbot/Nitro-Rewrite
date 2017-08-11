@@ -3,6 +3,8 @@ const client = new Client("economy")
 client.database(["economy"])
 module.exports = client.bot
 const MoneyManager = require("./MoneyManager.js")
+const StockMarket = require("./StockMarket.js")
 client.bot.moneyman = new MoneyManager()
+client.bot.stockmarket = new StockMarket()
 require("./message.js")
 client.login()
