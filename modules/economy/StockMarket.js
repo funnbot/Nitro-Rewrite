@@ -16,10 +16,10 @@ module.exports = class StockMarket {
         let s = this.ms[type] || "Alfred"
         let price = this.stocks[s].price * am
         let stock = this._getOwned(guild, user)
-        if (price > bal) return "You lack the required funds."
-        if (!stock[type]) stock[type] = am
-        else stock[type] = stock[type] + am
-        bot.moneyman.setMoney(guild, user, bal - price)
+        if (!stock[type] || am > stock[type]) return "You do not own these stocks."
+        stock[type] = stock[type] - am
+        if (stock[type] === 0) delete stock[type]
+        bot.moneyman.setMoney(guild, user, bal + price)
         this._setOwned(guild, user, stock)
     }
 

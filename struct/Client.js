@@ -19,43 +19,43 @@ GuildExtension.extend(Discord.Guild)
 require("../extensions/NativeExtensions.js")
 
 class Client {
-  constructor (key, opt = {}) {
-    opt.disabledEvents = ["TYPING_START"]
-    this.bot = new Discord.Client(opt)
-    this.bot.embed = Discord.MessageEmbed
-    this.bot.module = key
+    constructor(key, opt = {}) {
+        opt.disabledEvents = ["TYPING_START"]
+        this.bot = new Discord.Client(opt)
+        this.bot.embed = Discord.MessageEmbed
+        this.bot.module = key
 
-    Sentry.config(this.bot.config.auth.SENTRY).install()
-    this.bot.sentry = Sentry
+        Sentry.config(this.bot.config.auth.SENTRY).install()
+        this.bot.sentry = Sentry
 
-    this.bot.active = {
-      channel: {},
-      guild: {},
-      user: {}
+        this.bot.active = {
+            channel: {},
+            guild: {},
+            user: {}
+        }
+
+        this.bot.on("ready", () => {
+            console.log(`${key} bot online`)
+            Status.start(this.bot)
+        })
+
+        process.on("unhandledRejection", (err) => this.bot.logger.error(err.stack))
     }
 
-    this.bot.on("ready", () => {
-      console.log(`${key} bot online`)
-      Status.start(this.bot)
-    })
-
-    process.on("unhandledRejection", (err) => this.bot.logger.error(err.stack))
-  }
-
-  ready (cb) {
-    this.bot.once("ready", () => cb())
-  }
-
-  database (keys = []) {
-    keys.push("prefix", "alias", "perms")
-    for (let db of keys) {
-      this.bot[db] = new DatabaseManager(db)
+    ready(cb) {
+        this.bot.once("ready", () => cb())
     }
-  }
 
-  login () {
-    this.bot.login(this.bot.config.auth.TOKEN).catch(console.log)
-  }
+    database(keys = []) {
+        keys.push("prefix", "alias", "perms")
+        for (let db of keys) {
+            this.bot[db] = new DatabaseManager(db)
+        }
+    }
+
+    login() {
+        this.bot.login(this.bot.config.auth.TOKEN).catch(console.log)
+    }
 }
 
 module.exports = Client

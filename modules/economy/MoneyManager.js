@@ -2,6 +2,15 @@ const bot = require("./bot.js")
 const Nitro = require("../../Nitro.js")
 
 class MoneyManager {
+    getTop(guild) {
+        guild = this.getId(guild)
+        let users = bot.economy.gKey(guild, "users")
+        users = Object.entries(users).sort(([an, ak], [bn, bk]) => {
+            return (bk.money || 0) - (ak.money || 0)
+        })
+        return users
+    }
+
     getMoney(guild, id) {
         guild = this.getId(guild)
         id = this.getId(id)
