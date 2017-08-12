@@ -1,4 +1,5 @@
 const formatCur = require("format-currency")
+const Discord = require("discord.js")
 const { CUR } = require("../config.js")
 let formatOpts = {
     symbol: CUR.sym,
@@ -46,6 +47,10 @@ class Util {
 
     static round100(num) {
         return this.round(num, 2)
+    }
+
+    static get escapeMarkdown() {
+        return Discord.escapeMarkdown
     }
 }
 

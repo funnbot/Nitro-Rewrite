@@ -24,11 +24,13 @@
     "erlpack": "github:hammerandchisel/erlpack",
     "eslint": "^4.2.0",
     "format-currency": "^1.0.0",
+    "html2plaintext": "^1.1.1",
     "moment": "^2.18.1",
     "node-opus": "^0.2.6",
     "pretty-ms": "^3.0.0",
     "raven": "^2.1.0",
     "rethinkdbdash": "^2.3.29",
+    "string-similarity": "^1.2.0",
     "uws": "^8.14.0"
   },
   "devDependencies": {
