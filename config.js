@@ -55,7 +55,8 @@ module.exports = {
         mod: {},
         economy: {},
         irc: {},
-        trivia: 0
+        trivia: 0,
+        game: {}
     },
     //Map permission names to a easier to read format
     PERMISSIONS: {
