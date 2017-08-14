@@ -31,8 +31,8 @@ module.exports = Parse = {
             let chan = await fetchChannel("id", message, val)
             return chan
         }
-        if (regex.channel.name(val)) {
-            let chan = await fetchChannel("name", message, id)
+        if (regex.channel.name.test(val)) {
+            let chan = await fetchChannel("name", message, val)
             return chan
         } else return false
     },
@@ -89,12 +89,12 @@ let fetchChannel = (type, message, id) => {
     if (!guild) return false
     if (type === "id") return guild.channels.get(id)
     if (type === "name") {
-        let matches = guild.channels.filter(channelFilter(val.toLowerCase()))
+        let matches = guild.channels.filter(channelFilter(id.toLowerCase()))
         if (matches.size === 0) {
             message.channel.send("Channel not found.")
             return false
         }
-        if (matches.size === 1) return matches[0]
+        if (matches.size === 1) return matches.first()
         else {
             message.channel.send("Multiple channels found. Please be more specific")
             return false
@@ -107,12 +107,12 @@ let fetchRole = (type, message, id) => {
     if (!guild) return false
     if (type === "id") return guild.roles.get(id)
     if (type === "name") {
-        let matches = guild.roles.filter(roleFilter(val.toLowerCase()))
+        let matches = guild.roles.filter(roleFilter(id.toLowerCase()))
         if (matches.size === 0) {
             message.channel.send("Role not found.")
             return false
         }
-        if (matches.size === 1) return matches[0]
+        if (matches.size === 1) return matches.first()
         else {
             message.channel.send("Multiple roles found. Please be more specific.")
         }

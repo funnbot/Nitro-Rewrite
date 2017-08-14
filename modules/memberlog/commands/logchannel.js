@@ -8,9 +8,23 @@ module.exports = new Nitro.Command({
     args: [{
         type: "channel",
         prompt: "Which channel?",
+        optional: true
     }],
 
     run: async(message, bot, send) => {
-        
+        let channel = message.args[0] || false
+        let c = bot.memberlog.g(message.guild)
+
+        if (!channel) {
+            c.channel || delete c.channel
+            bot.memberlog.s(message.guild, c)
+            return message.succ("Disabled member log.")
+        }
+
+        if (channel.type !== "text") return message.fail("Invalid channel type:", "voice")
+
+        c.channel = channel.id
+        bot.memberlog.s(message.guild, c)
+        return message.succ("Set member log to:", channel)
     }
 })
