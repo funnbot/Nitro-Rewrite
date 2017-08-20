@@ -40,11 +40,10 @@ class TableManager {
         if (!id) id = "1234"
 
         let data = this.cache.get(id);
-
         if (data === undefined) {
             //Handle based on default
             if (nestedValue === undefined) {
-                return this.def
+                return this.def instanceof Object ? {} : this.def
             } else {
                 return this.def[nestedValue] === undefined ? null : this.def[nestedValue]
             }
@@ -63,16 +62,16 @@ class TableManager {
 
     set(id, nestedValue, newData) {
         if (nestedValue === undefined) throw new Error("newData is undefined");
-        newData !== undefined || (newData = nestedValue);
+        if (newData === undefined) newData = nestedValue
 
         id = this.parseID(id);
         if (!id) throw new Error("Invalid ID: " + id)
 
         let data = this.cache.get(id);
 
-        let checkNested = newData !== undefined && this.def[nestedValue];
-
-        if (checkNested && data) {
+        let checkNested = newData !== undefined && !!this.def[nestedValue];
+        if (checkNested) {
+            if (!data) data = {}
             data[nestedValue] = newData;
         } else data = newData;
         this.cache.set(id, data)

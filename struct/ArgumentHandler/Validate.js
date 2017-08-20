@@ -8,7 +8,6 @@ module.exports = Validate = {
     },
     word(val, opts) {
         val = util.cleanVarName(val)
-        console.log(val)
         return val.length <= opts.max && val.length >= 1    
     },
     number(val, opts) {

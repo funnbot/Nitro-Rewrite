@@ -7,8 +7,8 @@ module.exports = class ArgumentHandler {
         if (message.author.check("argumenthandler")) return null
         message.author.add("argumenthandler")
         for (let [i, arg] of args.entries()) {
-            let final = i === message.args.length - 1
-            let Arg = new Argument(arg, i, message)
+            let final = i === args.length - 1
+            let Arg = new Argument(arg, i, message, final)
             message.args[i] = await Arg.run()
             if (message.args[i].invalid) {
                 message.author.del("argumenthandler")

@@ -36,13 +36,13 @@ module.exports = new Nitro.Command({
             username = "Unknown"
         }
 
-        let embed = new bot.embed()
+        let embed = new bot.Embed()
         embed.setTitle("Tag Info: " + name)
         embed.addField("Created by", username, true)
         embed.addField("on", created, true)
         embed.addField("and used", uses !== 1 ? uses + " times." : uses + " time.", true)
         embed.setColor(embed.randomColor)
 
-        send({ embed })
+        return send({ embed })
     }
 })

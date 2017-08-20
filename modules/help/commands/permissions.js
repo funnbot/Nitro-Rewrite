@@ -1,18 +1,17 @@
 const Nitro = require("../../../Nitro.js")
 module.exports = new Nitro.Command({
-  help: "Tutorial on Nitro's permission system.",
-  example: "${p}permissions",
-  argExample: "",
-  dm: true,
-  coolDown: 1,
-  userPerms: 0,
-  botPerms: [],
+    help: "Tutorial on Nitro's permission system.",
+    example: "${p}permissions",
+    argExample: "",
+    dm: true,
+    coolDown: 1,
+    userPerms: 0,
+    botPerms: [],
 
-  args: [],
+    args: [],
 
-  run: async (message, bot, send) => {
-    console.log("?")
-    let txt = `**Permissions**
+    run: async(message, bot, send) => {
+        let txt = `**Permissions**
     Nitro uses a simple 4 role permission system.
     The roles do not need any special permissions. It is the **name** of the role that matters.
     Roles work in a hierarchy, higher level roles have access to lower level commands.
@@ -22,6 +21,6 @@ module.exports = new Nitro.Command({
     \`Admin\` - Almost all server configuration commands such as prefix.
     \`Nitro Commander\` - Complete control of all commands and features.`.unindent()
 
-    send(txt)
-  }
+        send(txt)
+    }
 })

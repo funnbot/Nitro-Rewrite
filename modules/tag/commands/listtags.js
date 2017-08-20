@@ -18,7 +18,7 @@ module.exports = new Nitro.Command({
             }
         })
         tags = Object.keys(tags)
-        let embed = new bot.embed()
+        let embed = new bot.Embed()
         embed.addField("> Tags on this server", tags.length > 0 ? "**" + tags.join("**, **") + "**" : "**None**")
         embed.addField("> Your Tags", owned.length > 0 ? "**" + owned.join("**, **") + "**" : "**None**")
         embed.setColor(embed.randomColor)

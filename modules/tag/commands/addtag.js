@@ -35,8 +35,8 @@ module.exports = new Nitro.Command({
             created: Date.now(),
             uses: 0
         }
-
         message.guild.set("Tag", "tags", tags)
+        let a = message.guild.get("Tag")
         return message.channel.send("**That tag `" + name + "` has been created**")
     }
 })
