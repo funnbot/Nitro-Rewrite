@@ -2,24 +2,36 @@ const Extension = require("./Extension.js")
 
 class ChannelExtension extends Extension {
 
-  add(key, value) {
-    if (!this.client.active.channel[key]) this.client.active.channel[key] = {}
-    this.client.active.channel[key][this.id] = value || true
-  }
+    get(table, nestedValue) {
+        return this.table(table).get(this.id, nestedValue)
+    }
 
-  check(key) {
-    if (!this.client.active.channel[key]) this.client.active.channel[key] = {}
-    return this.client.active.channel[key][this.id] || null
-  }
+    set(table, nestedValue, newData) {
+        return this.table(table).set(this.id, nestedValue, newData)
+    }
 
-  del(key) {
-    if (!this.client.active.channel[key]) this.client.active.channel[key] = {}
-    return delete this.client.active.channel[key][this.id]
-  }
+    table(table) {
+        return this.client.table(table)
+    }
 
-  purge(key) {
-    return delete this.client.active.channel[key]
-  }
+    add(key, value) {
+        if (!this.client.active.channel[key]) this.client.active.channel[key] = {}
+        this.client.active.channel[key][this.id] = value || true
+    }
+
+    check(key) {
+        if (!this.client.active.channel[key]) this.client.active.channel[key] = {}
+        return this.client.active.channel[key][this.id] || null
+    }
+
+    del(key) {
+        if (!this.client.active.channel[key]) this.client.active.channel[key] = {}
+        return delete this.client.active.channel[key][this.id]
+    }
+
+    purge(key) {
+        return delete this.client.active.channel[key]
+    }
 
 }
 

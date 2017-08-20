@@ -15,6 +15,43 @@ module.exports = {
     CHANNELS: {
         STATUS: "341048367737995274"
     },
+    TABLES: {
+        Prefix: ".",
+
+        Alias: {},
+
+        UserPerm: false,
+
+        Tag: {
+            tags: {},
+            hideuser: false
+        },
+
+        Moderation: {
+            channel: null,
+            cases: [],
+            mutes: {},
+            tempbans: {}
+        },
+
+        Economy: {
+            users: {},
+        },
+
+        IRC: { // Needs change feed
+            state: "off",
+        },
+
+        Trivia: 0, // Needs change feed
+
+        Game: {},
+
+        MemberLog: {
+            channel: null,
+            join: null,
+            leave: null
+        }
+    },
     //The "Companies" and their keys used in stock market
     STOCKS: {
         FunnCorp: {
@@ -45,19 +82,6 @@ module.exports = {
             key: "ALF",
             base: 0.55
         }
-    },
-    //The DEFAULT values returned if the corresponding database dosnt return anything
-    DEFAULTS: {
-        prefix: ".",
-        tag: {},
-        alias: {},
-        perms: false,
-        mod: {},
-        economy: {},
-        irc: {},
-        trivia: 0,
-        game: {},
-        memberlog: {}
     },
     //Map permission names to a easier to read format
     PERMISSIONS: {

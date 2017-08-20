@@ -1,6 +1,8 @@
-const Client = require("../../struct/Client.js")
-const client = new Client("dev")
-client.database(["tag"])
-module.exports = client.bot
+const { MessageHandler, NitroClient, config } = require("../../Nitro.js");
+const bot = new NitroClient("dev", {
+    disableDefaultTables: true
+})
+module.exports = bot
+bot.useTable(...Object.keys(config.TABLES))
+
 require("./message.js")
-client.login()

@@ -1,8 +1,6 @@
-const BugZapper = require("bugzapper")
-const bz = new BugZapper()
-
 const regex = require("./Regex.js")
 const escapeMarkdown = require("discord.js").escapeMarkdown
+const util = require("../util.js")
 
 module.exports = Parse = {
     number(val) {
@@ -50,6 +48,9 @@ module.exports = Parse = {
             let r = await fetchRole("name", message, val)
             return r
         } else return false
+    },
+    word: (val) => {
+        return util.cleanVarName(val);
     }
 }
 

@@ -3,8 +3,9 @@ const ArgumentHandler = require("./struct/ArgumentHandler/index.js")
 const Command = require("./struct/Command.js")
 const CommandLoader = require("./struct/CommandLoader.js")
 const CoolDown = require("./struct/CoolDown.js")
+const NitroClient = require("./struct/NitroClient.js")
 const logger = require("./struct/Logger.js")
-const Message = require("./struct/Message.js")
+const MessageHandler = require("./struct/MessageHandler.js")
 const PermissionHandler = require("./struct/PermissionHandler.js")
 const util = require("./struct/util.js")
 const config = require("./config.js")
@@ -16,8 +17,9 @@ module.exports = {
     Command,
     CommandLoader,
     CoolDown,
+    NitroClient,
     logger,
-    Message,
+    MessageHandler,
     PermissionHandler,
     util,
     config

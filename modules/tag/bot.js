@@ -1,8 +1,6 @@
-const Client = require("../../struct/Client.js")
-const client = new Client("tag")
+const { NitroClient, MessageHandler } = require("../../Nitro.js");
+const bot = new NitroClient("tag");
+bot.useTable("Tag");
+module.exports = bot
 
-client.database(["tag"])
-module.exports = client.bot
-require("./message.js")
-
-client.login()
+new MessageHandler(bot);

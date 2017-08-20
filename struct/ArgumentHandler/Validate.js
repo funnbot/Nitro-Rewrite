@@ -1,12 +1,15 @@
 const Duration = require("duration-js")
 const regex = require("./Regex.js")
+const util = require("../util.js")
 
 module.exports = Validate = {
     string(val, opts) {
-        return val.length <= opts.max
+        return val.length <= opts.max && val.length >= 1
     },
     word(val, opts) {
-        return val.length <= opts.max && !val.includes(" ")
+        val = util.cleanVarName(val)
+        console.log(val)
+        return val.length <= opts.max && val.length >= 1    
     },
     number(val, opts) {
         val = parseFloat(val) || false
@@ -36,3 +39,4 @@ module.exports = Validate = {
         return opts.regex.test(val)
     }
 }
+

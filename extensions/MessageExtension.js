@@ -3,7 +3,7 @@ const Extension = require("./Extension")
 class MessageExtension extends Extension {
 
     SetupExtension() {
-        this.prefix = this.client.prefix.g(this.guild)
+        this.prefix = this.table("Prefix").get(this.guild)
         this._cutPrefix = this.content.slice(this.prefix.length)
         this._contentSplit = this._cutPrefix.split(" ")
         this._suffixSplit = this._contentSplit.slice(1)
@@ -34,6 +34,10 @@ class MessageExtension extends Extension {
 
     fail(text, data) {
         return this.channel.send(`:no_entry_sign: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
+    }
+
+    table(table) {
+        return this.client.table(table)
     }
 
     async collectMessage(truthy, falsy, filter, time) {

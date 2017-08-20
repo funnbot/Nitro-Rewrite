@@ -51,7 +51,7 @@ class Message extends EventEmitter {
                 if (!this.dis.execute) {
                     if (!this.commands) return `Commands are disabled but execute is running: ${bot.module} module`.log()
                     if (!this.dis.alias) {
-                        this.alias.mapCustom(bot.alias.g(message.guild))
+                        this.alias.mapCustom(bot.table("Alias").get(message.guild))
                         message.command = this.alias.run(message)
                     }
                     let command = this.commands[message.command]

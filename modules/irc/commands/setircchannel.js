@@ -10,7 +10,7 @@ module.exports = new Nitro.Command({
     args: [],
 
     run: async(message, bot, send) => {
-        let channel = bot.irc.g(message.channel.id)
+        let channel = message.guild.get("irc", {})
         if (channel && channel.state === "on") {
             channel.state = "off"
             bot.irc.s(message.channel.id, channel)

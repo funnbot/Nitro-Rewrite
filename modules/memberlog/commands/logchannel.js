@@ -13,7 +13,7 @@ module.exports = new Nitro.Command({
 
     run: async(message, bot, send) => {
         let channel = message.args[0] || false
-        let c = bot.memberlog.g(message.guild)
+        let c = message.guild.get("memberlog", {})
 
         if (!channel) {
             c.channel || delete c.channel

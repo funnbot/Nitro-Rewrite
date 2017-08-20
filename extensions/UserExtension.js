@@ -2,24 +2,36 @@ const Extension = require("./Extension.js")
 
 class UserExtension extends Extension {
 
-  add(key, value) {
-    if (!this.client.active.user[key]) this.client.active.user[key] = {}
-    this.client.active.user[key][this.id] = value || true
-  }
+    get(table, nestedValue) {
+        return this.table(table).get(this.id, nestedValue)
+    }
 
-  check(key) {
-    if (!this.client.active.user[key]) this.client.active.user[key] = {}
-    return this.client.active.user[key][this.id] || null
-  }
+    set(table, nestedValue, newData) {
+        return this.table(table).set(this.id, nestedValue, newData)
+    }
 
-  del(key) {
-    if (!this.client.active.user[key]) this.client.active.user[key] = {}
-    return delete this.client.active.user[key][this.id]
-  }
+    table() {
+        return this.client.table(table)
+    }
 
-  purge(key) {
-    return delete this.client.active.user[key]
-  }
+    add(key, value) {
+        if (!this.client.active.user[key]) this.client.active.user[key] = {}
+        this.client.active.user[key][this.id] = value || true
+    }
+
+    check(key) {
+        if (!this.client.active.user[key]) this.client.active.user[key] = {}
+        return this.client.active.user[key][this.id] || null
+    }
+
+    del(key) {
+        if (!this.client.active.user[key]) this.client.active.user[key] = {}
+        return delete this.client.active.user[key][this.id]
+    }
+
+    purge(key) {
+        return delete this.client.active.user[key]
+    }
 
 }
 
