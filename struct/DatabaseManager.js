@@ -14,7 +14,7 @@ class TableManager {
         this.isGuild = isGuild;
 
         //Update queue
-        this.queue = [];
+        this.queue = {};
 
         //Table cached in memory
         this.cache = new Collection();
@@ -61,6 +61,7 @@ class TableManager {
     }
 
     set(id, nestedValue, newData) {
+        if (nestedValue === "all") return this.cache
         if (nestedValue === undefined) throw new Error("newData is undefined");
         if (newData === undefined) newData = nestedValue
 
@@ -69,11 +70,12 @@ class TableManager {
 
         let data = this.cache.get(id);
 
-        let checkNested = newData !== undefined && !!this.def[nestedValue];
+        let checkNested = newData !== undefined && this.def[nestedValue] !== undefined;
         if (checkNested) {
             if (!data) data = {}
             data[nestedValue] = newData;
         } else data = newData;
+
         this.cache.set(id, data)
         this.update(id)
         return true;
@@ -81,13 +83,16 @@ class TableManager {
 
     update(id) {
         let data = this.cache.get(id)
-        if (data) this.queue.push({ id, data })
+        if (data === undefined) this.queue[id] = {id}
+        this.queue[id] = {id, data}
     }
 
     async insertQueue() {
         try {
-            await this._table.insert(this.queue)
-            this.queue = []
+            await this._table.insert(Object.values(this.queue), {
+                conflict: "replace"
+            })
+            this.queue = {}
         } catch (e) {
             console.log(e)
         }

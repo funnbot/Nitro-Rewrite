@@ -16,7 +16,6 @@ module.exports = new Nitro.Command({
     }],
 
     run: async(message, bot, send) => {
-
         let tags = message.guild.get("Tag", "tags")
 
         let name = message.args[0]
