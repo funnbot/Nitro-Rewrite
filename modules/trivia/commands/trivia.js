@@ -77,7 +77,6 @@ async function play(message, bot, send, trivia) {
     let { question, correct_answer, difficulty, category, worth } = trivia
     correct_answer = h2p(correct_answer)
 
-    //Prepare embed
     let embed = new bot.Embed()
     embed.title = "`Trivia`"
     embed.addField("Question", h2p(question))
@@ -88,7 +87,7 @@ async function play(message, bot, send, trivia) {
         .setColor(embed.randomColor)
         .setAuthor(message.guild.name, message.guild.iconURL())
 
-    send({embed})
+    send({ embed })
 
     let collector = message.channel.createMessageCollector(m => {
         if (m.author.bot) return false
@@ -97,12 +96,13 @@ async function play(message, bot, send, trivia) {
             win(bot, message, m.author, worth)
         }
         return false
-    }, {time: 30000})
+    }, { time: 30000 })
 
     collector.on("end", (c, reason) => {
         message.channel.del("trivia")
         if (reason === "time") {
-            return message.fail("Noone guessed in time, the correct answer was:", correct_answer)
+            return message.fail("Noone guessed in time, the correct answer was:", correct_answer);
+            return message.fail("You're all idiots and coudn't guess a simple trivia question, it was actually: " + correct_answer);
         }
     })
 }
@@ -111,9 +111,9 @@ function win(bot, message, user, worth) {
     message.channel.del("trivia")
     message.succ(`${user.tag} answered the question correctly, here is your reward.`)
     bot.moneyman.addMoney(message.guild, user, worth)
-    let wins = bot.trivia.g(user)
+    let wins = message.author.get("Trivia");
     wins++
-    bot.trivia.s(user, wins)
+    message.author.set("Trivia", wins)
 }
 
 function checkAnswer(correct, input) {

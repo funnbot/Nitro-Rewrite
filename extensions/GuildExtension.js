@@ -1,15 +1,32 @@
-const Extension = require("./Extension.js")
+const Extension = require("./Extension.js");
 
 class GuildExtension extends Extension {
 
+    /**
+     * Get values from the database.
+     * @param {String} table 
+     * @param {String} nestedValue 
+     * @returns {*}
+     */
     get(table, nestedValue) {
         return this.table(table).get(this.id, nestedValue)
     }
 
+    /**
+     * Set values to the database.
+     * @param {String} table
+     * @param {String} nestedValue 
+     * @param {*} newData 
+     */
     set(table, nestedValue, newData) {
         return this.table(table).set(this.id, nestedValue, newData)
     }
 
+    /**
+     * Get a table
+     * @param {String} table 
+     * @returns {Object} TableManager
+     */
     table(table) {
         return this.client.table(table)
     }

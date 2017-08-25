@@ -1,6 +1,6 @@
-const Client = require("../../struct/Client.js")
-const client = new Client("status")
-client.database()
-module.exports = client.bot
-client.ready(() => require("./statistics.js"))
-client.login()
+const { NitroClient, MessageHandler } = require("../../Nitro.js");
+const bot = new NitroClient("status", {
+    disableDefaultTables: true
+});
+this.on("ready", () => require("./statistics.js"))
+module.exports = bot

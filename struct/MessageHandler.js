@@ -5,7 +5,26 @@ const ArgumentHandler = require("./ArgumentHandler/index.js")
 const PermissionHandler = require("./PermissionHandler.js")
 const EventEmitter = require("events")
 
+/**
+ * @typedef {Object} MessageHandlerOptions
+ * @property {Boolean} fetchAllCommands fetch all commands from each module
+ * @property {Boolean} moneyManager enable the money manager
+ * @property {Array<String>} enabledEvents delete|edit
+ * @property {Array<String>} disable commands|alias|cooldown|permissions|create|prefix|text|dm|execute|noPermAlert
+ */
+
+/**
+ * @class 
+ * @extends EventEmitter
+ * @emits Message#create Message created event.
+ * @emits Message#delete Message deleted event.
+ * @emits Message#edit Message edit event.
+ */
 class Message extends EventEmitter {
+    /**
+     * @param {Object} bot
+     * @param {...MessageHandlerOptions} [options={}]
+     */
     constructor(bot, options = {}) {
         super()
         this.bot = bot
@@ -41,7 +60,7 @@ class Message extends EventEmitter {
             this.permissions = new PermissionHandler()
         }
         if (!this.dis.create) {
-            bot.on("message", message => {
+            bot.on("message", async message => {
                 if (message.author.bot) return
                 message.SetupExtension()
                 this.emit("create", message)
@@ -56,14 +75,16 @@ class Message extends EventEmitter {
                     }
                     let command = this.commands[message.command]
                     if (!command) return
+                    if (message.guild) message.guild.fetchMember(message.author)
+                    if (this.options.moneyManager && message.member && message.guild) message.member.useMoneyManager()
                     if (!this.dis.permissions && message.guild && this.permissions.user(message, bot, command.perm)) return
                     if (message.channel.type !== "text" && !command.dm) return
                     if (!this.dis.noPermAlert && message.channel.type === "text" && !message.channel.permissionsFor(bot.user).has("SEND_MESSAGES"))
                         return message.author.send("**I lack permission to send messages in this channel.**")
                     if (this.cooldown && this.cooldown.run(message, command)) return
                     command.run(message, bot, message.send)
-                }
-            })
+                } 
+            }) 
         }
 
         if (this.enabledEvents.edit) {

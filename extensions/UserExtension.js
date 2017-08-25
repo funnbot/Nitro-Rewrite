@@ -1,4 +1,4 @@
-const Extension = require("./Extension.js")
+const Extension = require("./Extension.js");
 
 class UserExtension extends Extension {
 

@@ -3,9 +3,23 @@ const { COLORS } = require("../config.js")
 
 class MessageEmbedExtension extends Extension {
 
+    /**
+     * A random embed color.
+     * @deprecated
+     * @returns {String}
+     */
     get randomColor() {
-        let index = Math.floor(Math.random() * COLORS.length)
-        return COLORS[index]
+        let index = Math.floor(Math.random() * COLORS.length);
+        return COLORS[index];
+    }
+
+    /**
+     * Set a random nitro color.
+     * @returns {Void}
+     */
+    nitroColor() {
+        let index = Math.floor(Math.random() * COLORS.length);
+        this.color = parseInt(COLORS[index].replace("#", ""), 16)
     }
 
     actionColor(action) {

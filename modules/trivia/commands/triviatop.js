@@ -5,30 +5,30 @@ module.exports = new Nitro.Command({
     example: "${p}triviatop",
 
     run: async(message, bot, send) => {
-        let users = bot.trivia.settings
+        let users = message.guild.get("Trivia", "users");
         users = Object.entries(users).sort(([na, va], [nb, vb]) => {
-            return vb - va
-        }).slice(0, 19)
-        let num = 1
-        let txt = []
+            return vb - va;
+        }).slice(0, 19);
+        let num = 1;
+        let txt = [];
         for (let [id, wins] of users) {
-            let user = {}
+            let user = {};
             try {
-                user = bot.users.get(id)
-                if (!user) user = await bot.fetchUser(id)
-            } catch(e) {
-                user.tag = "User Left"
-                console.log(e)
+                user = bot.users.get(id);
+                if (!user) user = await bot.fetchUser(id);
+            } catch (e) {
+                user.tag = "User Left";
+                console.log(e);
             }
-            let tag = Nitro.util.escapeMarkdown(user.tag)
-            txt.push(`**${num}.** ${tag} (${wins})`)
-            num++
+            let tag = Nitro.util.escapeMarkdown(user.tag);
+            txt.push(`**${num}.** ${tag} (${wins})`);
+            num++;
         }
-        let embed = new bot.Embed()
-        embed.description = txt.join("\n")
-        embed.setTitle("`Trivia Leaderboard`")
-        embed.setColor(embed.randomColor)
+        let embed = new bot.Embed();
+        embed.description = txt.join("\n");
+        embed.setTitle("`Trivia Leaderboard`");
+        embed.setColor(embed.randomColor);
 
-        send({embed})
+        send({ embed });
     }
 })

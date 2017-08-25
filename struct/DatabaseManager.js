@@ -1,7 +1,15 @@
+const Util = require("./util.js");
 const { Collection } = require("discord.js");
-const { TABLES } = require("../config.js")
+const { TABLES } = require("../config.js");
 let r = require("rethinkdbdash")();
 
+/**
+ * @class
+ * @typedef {Object} TableManager
+ * @param {Object} client A discord client
+ * @param {String} table The table name
+ * @param {Boolean} isGuild If the table is for guilds
+ */
 class TableManager {
     constructor(client, table, isGuild) {
         //The client
@@ -36,8 +44,8 @@ class TableManager {
     }
 
     get(id, nestedValue) {
-        id = this.parseID(id)
-        if (!id) id = "1234"
+        id = Util.parseID(id);
+        if (!id) id = "1234";
 
         let data = this.cache.get(id);
         if (data === undefined) {
@@ -52,6 +60,7 @@ class TableManager {
             if (nestedValue === undefined) {
                 return data
             } else {
+                if (nestedValue === "all") return this.cache
                 if (this.def[nestedValue] === undefined) return null
                 else {
                     return data[nestedValue] === undefined ? this.def[nestedValue] : data[nestedValue]
@@ -61,11 +70,10 @@ class TableManager {
     }
 
     set(id, nestedValue, newData) {
-        if (nestedValue === "all") return this.cache
         if (nestedValue === undefined) throw new Error("newData is undefined");
         if (newData === undefined) newData = nestedValue
 
-        id = this.parseID(id);
+        id = Util.parseID(id);
         if (!id) throw new Error("Invalid ID: " + id)
 
         let data = this.cache.get(id);
@@ -83,8 +91,8 @@ class TableManager {
 
     update(id) {
         let data = this.cache.get(id)
-        if (data === undefined) this.queue[id] = {id}
-        this.queue[id] = {id, data}
+        if (data === undefined) this.queue[id] = { id }
+        this.queue[id] = { id, data }
     }
 
     async insertQueue() {
@@ -122,7 +130,7 @@ class TableManager {
 
     changeFeedListener() {
         if (this.isGuild) return
-        this._table.changes.then(feed => {
+        this._table.changes().then(feed => {
             feed.each((err, row) => {
                 if (err) return console.log(err)
                 let val = row.new_val
@@ -130,14 +138,6 @@ class TableManager {
                 this.cache.set(val.id, val.data)
             })
         })
-    }
-
-    parseID(i) {
-        if (i.id) i = i.id;
-        i = i.replace(/[^0-9]/g, "");
-        let regex = /^.{17,18}$/;
-        if (!regex.test(i)) return null;
-        return i;
     }
 
     get _table() {
