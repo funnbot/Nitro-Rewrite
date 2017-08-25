@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: struct/MessageHandler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: struct/MessageHandler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const CommandLoader = require("./CommandLoader.js")
+const Alias = require("./Alias.js")
+const CoolDown = require("./CoolDown.js")
+const ArgumentHandler = require("./ArgumentHandler/index.js")
+const PermissionHandler = require("./PermissionHandler.js")
+const EventEmitter = require("events")
+
+/**
+ * @typedef {Object} MessageHandlerOptions
+ * @property {Boolean} fetchAllCommands fetch all commands from each module
+ * @property {Boolean} moneyManager enable the money manager
+ * @property {Array&lt;String>} enabledEvents delete|edit
+ * @property {Array&lt;String>} disable commands|alias|cooldown|permissions|create|prefix|text|dm|execute|noPermAlert
+ */
+
+/**
+ * @class 
+ * @extends EventEmitter
+ * @emits Message#create Message created event.
+ * @emits Message#delete Message deleted event.
+ * @emits Message#edit Message edit event.
+ */
+class Message extends EventEmitter {
+    /**
+     * @param {Object} bot
+     * @param {...MessageHandlerOptions} [options={}]
+     */
+    constructor(bot, options = {}) {
+        super()
+        this.bot = bot
+        this.options = options
+        // This converts arrays to {string: true...}
+        this.dis = options.disable ? options.disable.reduce((o, d) => {
+            o[d] = true
+            return o
+        }, {}) : {}
+        this.enabledEvents = options.events ? options.events.reduce((o, d) => {
+            o[d] = true
+            return o
+        }, {}) : {}
+
+        if (!this.dis.commands) {
+            this.CommandHandler = new CommandLoader(bot.module)
+            this.commands = this.CommandHandler.fetch()
+        }
+        if (this.options.fetchAllCommands) {
+            if (!this.CommandHandler) this.CommandHandler = new CommandLoader(bot.module)
+            this.CommandHandler.readAll()
+            bot.allCommands = this.CommandHandler.fetchAll()
+        }
+        if (!this.dis.alias &amp;&amp; this.commands) {
+            this.alias = new Alias(bot.module, this.commands)
+            this.alias.mapDefaults(this.commands)
+        }
+        if (!this.dis.cooldown) {
+            this.cooldown = new CoolDown()
+        }
+        bot.ArgumentHandler = ArgumentHandler
+        if (!this.dis.permissions) {
+            this.permissions = new PermissionHandler()
+        }
+        if (!this.dis.create) {
+            bot.on("message", async message => {
+                if (message.author.bot) return
+                message.SetupExtension()
+                this.emit("create", message)
+                if (!this.dis.prefix &amp;&amp; !message.content.startsWith(message.prefix)) return
+                if (this.dis.text &amp;&amp; message.channel.type === "text") return
+                if (this.dis.dm &amp;&amp; message.channel.type !== "text") return
+                if (!this.dis.execute) {
+                    if (!this.commands) return `Commands are disabled but execute is running: ${bot.module} module`.log()
+                    if (!this.dis.alias) {
+                        this.alias.mapCustom(bot.table("Alias").get(message.guild))
+                        message.command = this.alias.run(message)
+                    }
+                    let command = this.commands[message.command]
+                    if (!command) return
+                    if (message.guild) message.guild.fetchMember(message.author)
+                    if (this.options.moneyManager &amp;&amp; message.member &amp;&amp; message.guild) message.member.useMoneyManager()
+                    if (!this.dis.permissions &amp;&amp; message.guild &amp;&amp; this.permissions.user(message, bot, command.perm)) return
+                    if (message.channel.type !== "text" &amp;&amp; !command.dm) return
+                    if (!this.dis.noPermAlert &amp;&amp; message.channel.type === "text" &amp;&amp; !message.channel.permissionsFor(bot.user).has("SEND_MESSAGES"))
+                        return message.author.send("**I lack permission to send messages in this channel.**")
+                    if (this.cooldown &amp;&amp; this.cooldown.run(message, command)) return
+                    command.run(message, bot, message.send)
+                } 
+            }) 
+        }
+
+        if (this.enabledEvents.edit) {
+            bot.on("messageUpdate", (oldMessage, newMessage) => {
+                this.emit("edit", oldMessage, newMessage)
+            })
+        }
+
+        if (this.enabledEvents.delete) {
+            bot.on("messageDelete", message => {
+                this.emit("delete", message)
+            })
+        }
+    }
+}
+
+module.exports = Message</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Message.html">Message</a></li><li><a href="MoneyManager.html">MoneyManager</a></li><li><a href="Util.html">Util</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Fri Aug 25 2017 13:34:28 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

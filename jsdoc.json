@@ -1,0 +1,12 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "exclude": [
+            ".git",
+            ".meteor",
+            "node_modules"
+        ]
+    }
+}
