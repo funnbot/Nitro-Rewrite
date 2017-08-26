@@ -23,8 +23,8 @@
  * @property {Number} [coolDown=1] - Command cooldown in seconds.
  * @property {Array<ArgumentOptions>} [args=[]] - Command arguments.
  * @property {Number} [perm=0] - Required permission 0-User, 1-Mod, 2-Admin, 3-Nitro Commander, 4-Dev
- * @property {Array<String>} botPerms - Required bot permissions to execute.
- * @property {Array<String>} alias - Command aliases.
+ * @property {Array<String>} [botPerms=[]] - Required bot permissions to execute.
+ * @property {Array<String>} [alias=[]] - Command aliases.
  * @property {(Function|String)} run - The command code.
  */
 
