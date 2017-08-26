@@ -13,7 +13,7 @@ module.exports = new Nitro.Command({
 
     run: async(message, bot, send) => {
         let page = message.args[0] || 1
-        let top = bot.moneyman.getTop(message.guild)
+        let top = message.member.balTop
         let pages = new Paginator(top)
         pages.paginate(20)
         let top20 = pages.getPage(page - 1)

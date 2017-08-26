@@ -48,6 +48,9 @@ module.exports = new Nitro.Command({
     }],
 
     run: async(message, bot, send) => {
+        let col = message.channel.messages;
+        col.filter(() => false)
+        console.log(col)
         let diff = message.args[0] || "random"
         let cat = message.args[1] || "random"
 
@@ -110,7 +113,7 @@ async function play(message, bot, send, trivia) {
 function win(bot, message, user, worth) {
     message.channel.del("trivia")
     message.succ(`${user.tag} answered the question correctly, here is your reward.`)
-    bot.moneyman.addMoney(message.guild, user, worth)
+    message.member.addBalance(worth);
     let wins = message.author.get("Trivia");
     wins++
     message.author.set("Trivia", wins)

@@ -22,7 +22,7 @@ module.exports = new Nitro.Command({
     }],
 
     run: async(message, bot, send) => {
-        let go = bot.stockmarket[message.args[0]](message.guild, message.author, message.args[1], message.args[2])
+        let go = bot.stockmarket[message.args[0]](message.guild, message.member, message.args[1], message.args[2])
         if (typeof go === "string") return message.fail(go)
         return message.succ("Transaction Successful")
     }

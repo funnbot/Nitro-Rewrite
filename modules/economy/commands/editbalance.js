@@ -25,26 +25,25 @@ module.exports = new Nitro.Command({
     ],
 
     run: async(message, bot, send) => {
-        let id = message.args[0]
-        let bal = bot.moneyman.getMoney(message.guild, id)
+        let member = message.guild.member(message.args[0]);
         let am = message.args[2]
 
         let args = {
             add() {
-                bot.moneyman.addMoney(message.guild, id, am)
+                member.addBalance(am);
             },
             set () {
-                bot.moneyman.setMoney(message.guild, id, am)
+                member.balance = am;
             },
             remove() {
-                let newAm = bal - am
-                bot.moneyman.setMoney(message.guild, id, newAm)
+                member.removeBalance(am);
             }
         }
         if (args[message.args[1]]) {
             args[message.args[1]]()
         } else return message.fail("Invalid Argument:", "Try `add`, `set`, `remove`")
-        let newBal = Nitro.util.formatBal(bot.moneyman.getMoney(message.guild, id))
-        message.succ(`${id.tag}'s new balance is ${newBal}`)
+        let newBal = member.balFormat()
+        message.succ(`${member.user.tag}'s new balance is ${newBal}`)
+        return
     }
 })

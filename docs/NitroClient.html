@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Message</title>
+    <title>JSDoc: Class: NitroClient</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Message</h1>
+    <h1 class="page-title">Class: NitroClient</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Message<span class="signature">(bot, &hellip;options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>NitroClient<span class="signature">(module, clientOptions<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,12 +41,16 @@
     
 
     
-    <h4 class="name" id="Message"><span class="type-signature"></span>new Message<span class="signature">(bot, &hellip;options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="NitroClient"><span class="type-signature"></span>new NitroClient<span class="signature">(module, clientOptions<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    Nitro's Modular Client
+</div>
 
 
 
@@ -85,13 +89,13 @@
 
         <tr>
             
-                <td class="name"><code>bot</code></td>
+                <td class="name"><code>module</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">String</span>
 
 
             
@@ -120,13 +124,13 @@
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>clientOptions</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#MessageHandlerOptions">MessageHandlerOptions</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -141,15 +145,13 @@
                 
 
                 
-                    &lt;repeatable><br>
-                
                 </td>
             
 
             
                 <td class="default">
                 
-                    {}
+                    defaultOptions
                 
                 </td>
             
@@ -195,7 +197,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="struct_MessageHandler.js.html">struct/MessageHandler.js</a>, <a href="struct_MessageHandler.js.html#line23">line 23</a>
+        <a href="struct_NitroClient.js.html">struct/NitroClient.js</a>, <a href="struct_NitroClient.js.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -209,15 +211,6 @@
 
 
 
-
-<h5>Fires:</h5>
-<ul>
-    <li>Message#event:create Message created event.</li>
-
-    <li>Message#event:delete Message deleted event.</li>
-
-    <li>Message#event:edit Message edit event.</li>
-</ul>
 
 
 
@@ -242,7 +235,7 @@
 
 
     <ul>
-        <li>EventEmitter</li>
+        <li>Discord.Client</li>
     </ul>
 
 

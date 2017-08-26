@@ -14,7 +14,8 @@ module.exports = new Nitro.Command({
     }],
 
     run: async(message, bot, send) => {
-        let m = bot.stockmarket.createList(message.guild, message.args[0] || message.author)
+        let member = message.guild.member(message.args[0]) || message.member
+        let m = bot.stockmarket.createList(message.guild, member)
         return send(m, { code: "diff" })
     }
 })

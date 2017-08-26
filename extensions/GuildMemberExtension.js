@@ -14,17 +14,29 @@ class GuildMemberExtension extends Extension {
      */
     get balance() {
         if (!this.economyTable) throw new Error("Enable money manager to use balance.");
-        let guild = this.guild;
         let id = this.user.id;
         let users = this.guild.get("Economy", "users");
         return users[id] ? users[id].money || 0 : 0;
     }
 
     /**
+     * The user's balance as a formatted string.
+     * 
+     * @param {Boolean} noCode
+     * @param {Boolean} noSymbol
+     * @returns {String}
+     * @memberof GuildMemberExtension
+     */
+    balFormat(...args) {
+        if (!this.economyTable) throw new Error("Enable money manager to use balance.");
+        return Util.formatBal(this.balance, ...args);
+    }
+
+    /**
      * Set the user's balance.
      * @param {Number} amount The amount.
      * @memberof GuildMemberExtension
-     * @returns {Void}
+     * @returns {Number}
      */
     set balance(amount) {
         if (!this.economyTable) throw new Error("Enable money manager to use balance.");
@@ -63,7 +75,7 @@ class GuildMemberExtension extends Extension {
      * 
      * 
      * @param {any} amount 
-     * @param {"add"|"remove"} type 
+     * @param {String} type "add" | "remove"
      * @returns {Number}
      * @private
      * @memberof GuildMemberExtension
@@ -83,7 +95,7 @@ class GuildMemberExtension extends Extension {
      * User objects sorted by balance.
      * @readonly
      * @memberof GuildMemberExtension
-     * @returns {[string, any][]}
+     * @returns {Array<String, Object>}
      */
     get balTop() {
         let users = this.guild.get("Economy", "users");

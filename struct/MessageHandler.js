@@ -6,7 +6,7 @@ const PermissionHandler = require("./PermissionHandler.js")
 const EventEmitter = require("events")
 
 /**
- * @typedef {Object} MessageHandlerOptions
+ * @typedef {MessageHandlerOptions} MessageHandlerOptions
  * @property {Boolean} fetchAllCommands fetch all commands from each module
  * @property {Boolean} moneyManager enable the money manager
  * @property {Array<String>} enabledEvents delete|edit
@@ -63,6 +63,8 @@ class Message extends EventEmitter {
             bot.on("message", async message => {
                 if (message.author.bot) return
                 message.SetupExtension()
+                if (message.guild) message.guild.fetchMember(message.author);
+                if (this.options.moneyManager && message.member && message.guild) message.member.useMoneyManager();
                 this.emit("create", message)
                 if (!this.dis.prefix && !message.content.startsWith(message.prefix)) return
                 if (this.dis.text && message.channel.type === "text") return
@@ -75,8 +77,6 @@ class Message extends EventEmitter {
                     }
                     let command = this.commands[message.command]
                     if (!command) return
-                    if (message.guild) message.guild.fetchMember(message.author)
-                    if (this.options.moneyManager && message.member && message.guild) message.member.useMoneyManager()
                     if (!this.dis.permissions && message.guild && this.permissions.user(message, bot, command.perm)) return
                     if (message.channel.type !== "text" && !command.dm) return
                     if (!this.dis.noPermAlert && message.channel.type === "text" && !message.channel.permissionsFor(bot.user).has("SEND_MESSAGES"))

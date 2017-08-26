@@ -17,17 +17,16 @@ module.exports = new Nitro.Command({
     ],
 
     run: async(message, bot, send) => {
-        if (message.args[1].id === message.author.id) return message.fail("You can't trade money with yourself.")
-        let g = message.guild
-        let tbal = bot.moneyman.getMoney(g, message.args[1])
-        let abal = bot.moneyman.getMoney(g, message.author)
-        let am = message.args[0]
+        if (message.args[1].id === message.author.id) return message.fail("You can't trade money with yourself.");
+        let member = message.member;
+        await message.guild.fetchMember(message.args[1]);
+        let target = message.guild.member(message.args[1]);
+        if (!target) return;
+        let am = message.args[0];
 
-        if (am > abal) return message.fail("You don't have that much money.")
-        tbal = tbal + am
-        abal = abal - am
-        bot.moneyman.setMoney(g, message.args[1], tbal)
-        bot.moneyman.setMoney(g, message.author, abal)
-        return message.succ(`New balances - ${message.author.tag}: ${Nitro.util.formatBal(abal)}, ${message.args[1].tag}: ${Nitro.util.formatBal(tbal)}`)
+        if (am > member.balance) return message.fail("You don't have that much money.");
+        member.removeBalance(am);
+        member.addBalance(am);
+        return message.succ(`New balances - ${member.user.tag}: ${member.balFormat()}, ${target.user.tag}: ${target.balFormat()}`);
     }
 })

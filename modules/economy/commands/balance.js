@@ -16,8 +16,7 @@ module.exports = new Nitro.Command({
     }],
 
     run: async(message, bot, send) => {
-        let id = message.args[0] || message.author
-        let bal = bot.moneyman.getMoney(message.guild, id)
-        return send(`${id.tag}'s current balance is ${Nitro.util.formatBal(bal)}`.bold())
+        let member = message.guild.member(message.args[0]) || message.member
+        return send(`${member.user.tag}'s current balance is ${member.balFormat()}`.bold())
     }
 })
