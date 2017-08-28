@@ -52,9 +52,17 @@ class NitroClient extends Discord.Client {
         this.sentry = Sentry
 
         //In memory storage
+        /** @deprecated */
         this.active = {
             channel: {},
             guild: {},
+            user: {}
+        }
+
+        //In memory storage
+        this.SimpleStorage = {
+            guild: {},
+            channel: {},
             user: {}
         }
 

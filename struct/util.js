@@ -7,8 +7,7 @@ let formatOpts = {
 }
 
 /**
- * General Util Functions.
- * @class
+ * General util functions for Nitro.
  */
 class Util {
     /**
@@ -66,6 +65,9 @@ class Util {
         return i;
     }
 
+    /**
+     * @private
+     */
     static _decimalAdjust(type, value, exp) {
         if (typeof exp === "undefined" || +exp === 0) return Math[type](value);
         value = +value;
@@ -88,6 +90,19 @@ class Util {
 
     static get escapeMarkdown() {
         return Discord.escapeMarkdown
+    }
+
+    /**
+     * Generate a random number with 100ths place between x and y
+     * 
+     * @static
+     * @param {Number} x - Minimum 
+     * @param {Number} y - Maximum
+     * @returns {Number}
+     * @memberof Util
+     */
+    static random100(minimum=1, maximum=1) {
+        return this.round100(Math.random() * maximum) + (minimum - 1)
     }
 
 

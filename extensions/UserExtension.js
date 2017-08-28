@@ -1,4 +1,5 @@
 const Extension = require("./Extension.js");
+const SimpleStorage = require("../struct/SimpleStorage.js");
 
 class UserExtension extends Extension {
 
@@ -12,6 +13,11 @@ class UserExtension extends Extension {
 
     table() {
         return this.client.table(table)
+    }
+
+    get storage() {
+        if (!this.SimpleStorage) this.SimpleStorage = new SimpleStorage(this.client, this.id, "user");
+        return this.SimpleStorage
     }
 
     add(key, value) {

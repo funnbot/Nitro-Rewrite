@@ -5,6 +5,10 @@ Object.defineProperties(String.prototype, {
             return this.toString()
         },
     },
+    /**
+     * Markdown Bold a string.
+     * @return {String}
+     */
     bold: {
         value: function() {
             return ("**" + this + "**").toString()

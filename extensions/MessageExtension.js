@@ -24,6 +24,34 @@ class MessageExtension extends Extension {
         return this.channel.send.bind(this.channel)
     }
 
+    async fetchImage() {
+        try {
+            var messages = await this.channel.fetchMessages({ limit: 3 })
+        } catch (e) {
+            return console.log(e);
+        }
+        for (let m of messages.values()) {
+            if (m.attachments.size) {
+                let url = m.attachments.first().url;
+                if (this._imageUrl(url)) return url;
+            }
+            if (m.embeds.length) {
+                if (m.embeds[0].thumbnail) {
+                    let url = m.embeds[0].thumbnail.url;
+                    if (this._imageUrl(url)) return url;
+                }
+            }
+        }
+        return null;
+    }
+
+    _imageUrl(url) {
+        url = url.trim();
+        if (/^<.+>$/.test(url)) url = url.substring(1, -1);
+        let ends = /^.+\.(jpg|png|gif|webp)$/.test(url);
+        return ends ? url : false;
+    }
+
     succ(text, data) {
         return this.channel.send(`:white_check_mark: **| ${text.replace(/\*\*/g, "")}** ${data || ""}`)
     }
