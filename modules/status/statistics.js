@@ -8,13 +8,10 @@ async function loop() {
     let message
     let stats = {}
     try {
-        message = await channel.fetchMessage(CHANNELS.STATUS)
-        stats.guilds = await bot.shard.fetchClientValues("guilds.size")
-        stats.channels = await bot.shard.fetchClientValues("channels.size")
-        stats.users = await bot.shard.fetchClientValues("users.size")
-        stats.guilds = stats.guilds.reduce((prev, val) => prev + val, 0)
-        stats.channels = stats.channels.reduce((prev, val) => prev + val, 0)
-        stats.users = stats.users.reduce((prev, val) => prev + val, 0)
+        message = await channel.fetchMessage(CHANNELS.STATUS);
+        stats.guilds = await bot.shard.clientValuesReduced("guilds.size");
+        stats.channels = await bot.shard.clientValuesReduced("channels.size");
+        stats.users = await bot.shard.clientValuesReduced("users.size");
     } catch (err) {
         console.log(err)
         return
@@ -36,4 +33,4 @@ async function loop() {
     })
 }
 
-loop().then()
+loop();

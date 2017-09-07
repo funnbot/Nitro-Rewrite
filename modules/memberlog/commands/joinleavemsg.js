@@ -11,20 +11,21 @@ module.exports = new Nitro.Command({
         opts: ["join", "leave"]
     }, {
         type: "string",
-        prompt: "With what message?",
+        prompt: "What message will be sent?",
         optional: true
     }],
 
     run: async(message, bot, send) => {
         let content = message.args[1] || false
-        let c = bot.memberlog.g(message.guild)
+        let config = message.guild.get("MemberLog", message.args[0])
         if (!content) {
-            delete c[message.args[0]]
-            bot.memberlog.s(message.guild, c)
+            if (!config) {
+                return send("**Set the messages sent when a user joins or leaves.**");
+            }
+            message.guild.set("MemberLog", message.args[0], null)
             return message.succ("Disabled " + message.args[0] + " messages.")
         }
-        if (message.args[0] === "join") {
-            
-        }
+        message.guild.set("MemberLog", message.args[0], content);
+        return message.succ("Join message set")
     }
 })

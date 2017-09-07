@@ -101,10 +101,18 @@ class Util {
      * @returns {Number}
      * @memberof Util
      */
-    static random100(minimum=1, maximum=1) {
-        return this.round100(Math.random() * maximum) + (minimum - 1)
+    static random100(minimum = 1, maximum = 1) {
+        return this.round100(Math.random() * (maximum - minimum + 1)) + minimum
     }
 
+    static parseNum(number, minimum, maximum, base = null) {
+        number = parseFloat(number) || base;
+        number >= minimum || (number = base);
+        number <= maximum || (number = base);
+        return number;
+    }
+
+    
 
 }
 

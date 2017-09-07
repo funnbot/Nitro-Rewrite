@@ -4,15 +4,10 @@ module.exports = new Nitro.Command({
     help: "",
     example: "",
     argExample: "",
-    dm: false,
-    coolDown: 1,
-    userPerms: 1,
-    botPerms: [],
-
+    userPerms: 2,
     args: [],
 
     run: async(message, bot, send) => {
-        // TODO: Finish hackban
-        return send("**This command is WIP**")
+        
     }
 })

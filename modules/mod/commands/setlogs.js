@@ -1,28 +1,24 @@
 const Nitro = require("../../../Nitro.js")
 
 module.exports = new Nitro.Command({
-  help: "Set the case log channel.",
-  example: "${p}setlogs mod-log",
-  argExample: "<channel>",
-  dm: false,
-  coolDown: 5,
-  userPerms: 2,
-  botPerms: [],
+    help: "Set the case log channel.",
+    example: "${p}setlogs mod-log",
+    argExample: "<channel>",
+    dm: false,
+    coolDown: 5,
+    userPerms: 2,
+    botPerms: [],
 
-  args: [{
-    desc: "Which channel?",
-    type: "channel"
-  }],
+    args: [{
+        prompt: "Which channel?",
+        type: "channel",
+        optional: true
+    }],
 
-  run: async (message, bot, send) => {
-    if (!message.checkSuffix) return send("**Which channel?**")
-    let channel = message.suffix
-    channel = Nitro.cleanVarName(channel)
-    channel = await message.parseChannel(channel)
-    if (!channel) return send("**Invalid Channel**")
-    let modDB = bot.mod.g(message.guild.id)
-    modDB.channel = channel.id
-    bot.mod.s(message.guild.id, modDB)
-    send("**Moderator logs set to:** " + channel)
-  }
+    run: async(message, bot, send) => {
+        let channel = message.args[0] || message.channel
+        if (!channel || channel.type !== "text") return send("**Invalid Channel**")
+        message.guild.set("Moderation", "channel", channel.id);
+        send("**Moderator logs set to:** " + channel)
+    }
 })

@@ -19,7 +19,7 @@ module.exports = new Nitro.Command({
     run: async(message, bot, send) => {
         if (message.args[1].id === message.author.id) return message.fail("You can't trade money with yourself.");
         let member = message.member;
-        await message.guild.fetchMember(message.args[1]);
+        await message.guild.members.fetch(message.args[1]);
         let target = message.guild.member(message.args[1]);
         if (!target) return;
         let am = message.args[0];

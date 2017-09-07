@@ -29,6 +29,7 @@
     "gm": "^1.23.0",
     "html2plaintext": "^1.1.1",
     "moment": "^2.18.1",
+    "node-dogstatsd": "0.0.6",
     "node-opus": "^0.2.6",
     "pretty-ms": "^3.0.0",
     "raven": "^2.1.0",

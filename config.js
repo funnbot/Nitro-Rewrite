@@ -56,6 +56,60 @@ module.exports = {
             leave: null
         }
     },
+    HELP: {
+        config: [
+            "Configuration",
+            "Change basic configuration for Nitro."
+        ],
+        mod: [
+            "Moderation",
+            "Manage users who are acting up."
+        ],
+        /*games: [
+            "Games",
+            "Play games with Nitro."
+        ],
+        fun: [
+            "Fun",
+            "Silly and random commands."
+        ],*/
+        image: [
+            "Image",
+            "Memes and image processing."
+        ],
+        memberlog: [
+            "Member Log",
+            "Welcome and say goodbye to users."
+        ],
+        donator: [
+            "Donator",
+            "View commands made for supporters."
+        ],
+        poll: [
+            "Polls",
+            "Create custom polls for users to vote on."
+        ],
+        tag: [
+            "Tags",
+            "Store custom text and make it easy to access."
+        ],
+        irc: [
+            "IRC",
+            "Send messages to other servers."
+        ],
+        economy: [
+            "Economy",
+            "Manage your money."
+        ],
+        trivia: [
+            "Trivia",
+            "Play trivia against your friends."
+        ],
+        help: [
+            "Tutorials",
+            "Learn how to use Nitro."
+        ]
+    },
     //The "Companies" and their keys used in stock market
     STOCKS: {
         FunnCorp: {

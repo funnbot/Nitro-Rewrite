@@ -1,5 +1,4 @@
-const snekfetch = require("snekfetch")
-const bot = require("./bot.js")
+const bot = require("./bot.js");
 
 //Member Join
 bot.on("guildMemberAdd", (member) => {
@@ -12,5 +11,5 @@ bot.on("guildMemberRemove", (member) => {
 })
 
 let guildMember = (member, type) => {
-
+    
 }

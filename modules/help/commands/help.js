@@ -1,4 +1,5 @@
 const Nitro = require("../../../Nitro.js")
+let modules = Nitro.config.HELP;
 
 module.exports = new Nitro.Command({
     help: "A list of commands.",
@@ -12,45 +13,6 @@ module.exports = new Nitro.Command({
     args: [],
 
     run: async(message, bot, send) => {
-        let modules = {
-            config: [
-                "Configuration",
-                "Change basic configuration for Nitro."
-            ],
-            mod: [
-                "Moderation",
-                "Manage users who are acting up."
-            ],
-            donator: [
-                "Donator",
-                "View commands made for supporters."
-            ],
-            poll: [
-                "Polls",
-                "Create custom polls for users to vote on."
-            ],
-            tag: [
-                "Tags",
-                "Store custom text and make it easy to access."
-            ],
-            irc: [
-                "IRC",
-                "Send messages to other servers."
-            ],
-            economy: [
-                "Economy",
-                "Manage your money."
-            ],
-            trivia: [
-                "Trivia",
-                "Play trivia against your friends."
-            ],
-            help: [
-                "Tutorials",
-                "Learn how to use Nitro."
-            ]
-        }
-
         let commands = bot.allCommands;
         if (!message.checkSuffix) {
             let fields = [];
@@ -61,7 +23,7 @@ module.exports = new Nitro.Command({
                     value
                 })
             }
-            let embed = new bot.embed();
+            let embed = new bot.Embed();
             embed.fields = fields;
             embed.setColor(embed.randomColor);
             return send("", {

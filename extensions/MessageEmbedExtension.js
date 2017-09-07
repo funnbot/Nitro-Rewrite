@@ -19,7 +19,8 @@ class MessageEmbedExtension extends Extension {
      */
     nitroColor() {
         let index = Math.floor(Math.random() * COLORS.length);
-        this.color = parseInt(COLORS[index].replace("#", ""), 16)
+        this.color = parseInt(COLORS[index].replace("#", ""), 16);
+        return this;
     }
 
     actionColor(action) {

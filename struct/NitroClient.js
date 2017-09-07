@@ -15,6 +15,7 @@ const UserExtension = require("../extensions/UserExtension.js");
 const GuildExtension = require("../extensions/GuildExtension.js");
 const GuildMemberExtension = require("../extensions/GuildMemberExtension.js");
 const NativeExtensions = require("../extensions/NativeExtensions.js");
+const ShardClientUtilExtension = require("../extensions/ShardClientUtilExtension.js");
 
 ClientExtension.extend(Discord.Client);
 MessageExtension.extend(Discord.Message);
@@ -22,7 +23,8 @@ MessageEmbedExtension.extend(Discord.MessageEmbed);
 ChannelExtension.extend(Discord.Channel);
 UserExtension.extend(Discord.User);
 GuildExtension.extend(Discord.Guild);
-GuildMemberExtension.extend(Discord.GuildMember)
+GuildMemberExtension.extend(Discord.GuildMember);
+ShardClientUtilExtension.extend(Discord.ShardClientUtil);
 // class extensions
 
 const defaultOptions = {
@@ -69,7 +71,7 @@ class NitroClient extends Discord.Client {
         //Initiate DatabaseManager
         this.DatabaseManager = new DatabaseManager(this)
 
-        //The tables loaded
+        //The tables to load
         this.tables = clientOptions.disableDefaultTables ? [] : clientOptions.useAllTables ? allTables : defaultTables
 
         //Basic Events
@@ -95,12 +97,13 @@ class NitroClient extends Discord.Client {
         this.on("ready", () => {
             console.log(once ? `Module ${this.module} is ready using ${this.shard.count} shards.` : `Module ${this.module} reconnected.`)
             if (once) this._setupTables()
-            once = false
+            this.isBeta = this.user.id !== "264087705124601856";
+            once = false;
         })
     }
 
     async _setupTables() {
-        await this.DatabaseManager.createDB()
+        //await this.DatabaseManager.createDB()
         for (let t of this.tables) {
             if (Array.isArray(t)) this.DatabaseManager.add(t[0])
             else this.DatabaseManager.add(t, true)

@@ -157,7 +157,7 @@ module.exports = class Argument {
     }
 
     _formatPrompt() {
-        return `${this.message.author}, ${this.prompt}${this.type === "selection" ? "\n" + this.options.opts.join(", ") : ""}\n\nRespond with \`cancel\` to cancel the command, it will automatically cancel in 30 seconds.`
+        return `${this.message.author}, Awaiting Response...\n\n **${this.prompt}**\n Type: **${this.type}**`
     }
 
     _validateType() {

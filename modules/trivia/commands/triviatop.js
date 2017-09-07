@@ -15,7 +15,7 @@ module.exports = new Nitro.Command({
             let user = {};
             try {
                 user = bot.users.get(id);
-                if (!user) user = await bot.fetchUser(id);
+                if (!user) user = await bot.users.fetch(id);
             } catch (e) {
                 user.tag = "User Left";
                 console.log(e);

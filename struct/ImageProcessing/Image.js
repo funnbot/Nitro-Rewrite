@@ -1,7 +1,8 @@
 const gm = require("gm").subClass({ imageMagick: true });
 const fs = require("fs");
+const request = require("request");
 
-const path = "./struct/ImageProcessing/";
+const path = "./struct/ImageProcessing/images/";
 
 /**
  * Image Manipulation
@@ -53,8 +54,20 @@ class Image {
      * @returns {Buffer}
      * @memberof Image
      */
-    static readImage(filename) {
+    static readFile(filename) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(path + filename, (err, buffer) => {
+                if (err) return reject(err);
+                resolve(buffer);
+            });
+        });
+    }
 
+    /**
+     * 
+     */
+    static readUrl(url) {
+        return request(url);
     }
 
 }

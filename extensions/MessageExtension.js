@@ -4,7 +4,8 @@ class MessageExtension extends Extension {
 
     SetupExtension() {
         this.prefix = this.table("Prefix").get(this.guild)
-        this._cutPrefix = this.content.slice(this.prefix.length)
+        let mentionRegex = new RegExp(`<@!?${this.client.user.id}>`);
+        this._cutPrefix = this._mention(this.content) ? this.content.replace(mentionRegex, "").trim() : this.content.slice(this.prefix.length)
         this._contentSplit = this._cutPrefix.split(" ")
         this._suffixSplit = this._contentSplit.slice(1)
         this.command = this._contentSplit[0]
@@ -24,7 +25,7 @@ class MessageExtension extends Extension {
         return this.channel.send.bind(this.channel)
     }
 
-    async fetchImage() {
+    async fetchImage(returnAvatarOnFail) {
         try {
             var messages = await this.channel.fetchMessages({ limit: 3 })
         } catch (e) {
@@ -42,7 +43,7 @@ class MessageExtension extends Extension {
                 }
             }
         }
-        return null;
+        return returnAvatarOnFail ? this.author.displayAvatarURL() : null;
     }
 
     _imageUrl(url) {
@@ -50,6 +51,10 @@ class MessageExtension extends Extension {
         if (/^<.+>$/.test(url)) url = url.substring(1, -1);
         let ends = /^.+\.(jpg|png|gif|webp)$/.test(url);
         return ends ? url : false;
+    }
+
+    _mention(text) {
+        return text.startsWith(`<@${this.client.user.id}>`) || text.startsWith(`<@!${this.client.user.id}>`);
     }
 
     succ(text, data) {
@@ -99,7 +104,7 @@ class MessageExtension extends Extension {
         if (/<@\d{17,19}>/.test(u) || /<@!\d{18,21}>/.test(u)) {
             let id = u.replace(/[^1234567890]/g, "")
             try {
-                let member = await this.guild.fetchMember(id)
+                let member = await this.guild.members.fetch(id)
                 return member
             } catch (err) {
                 return null
@@ -108,7 +113,7 @@ class MessageExtension extends Extension {
         if (/\d{17,19}/.test(u)) {
             let id = u.replace(/[^1234567890]/g, "")
             try {
-                let member = await this.guild.fetchMember(id)
+                let member = await this.guild.members.fetch(id)
                 return member
             } catch (err) {
                 return null
@@ -117,7 +122,7 @@ class MessageExtension extends Extension {
         if (/^.{2,32}#\d{4}$/.test(u)) {
             let [name, disc] = u.split("#")
             try {
-                await this.guild.fetchMembers()
+                await this.guild.members.fetch()
                 return this.guild.members.find(m => m.user.username.toLowerCase() === name.toLowerCase() && m.user.discriminator === disc)
             } catch (err) {
                 return null
@@ -126,7 +131,7 @@ class MessageExtension extends Extension {
         if (/^.{2,32}$/.test(u)) {
             if (u.length < 2) return null
             try {
-                await this.guild.fetchMembers()
+                await this.guild.members.fetch()
                 return this.guild.members.find(m => m.user.username.toLowerCase().includes(u.toLowerCase()) || (m.nickname && m.nickname.toLowerCase().includes(u.toLowerCase())))
             } catch (err) {
                 return null

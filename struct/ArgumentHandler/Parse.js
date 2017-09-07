@@ -60,7 +60,7 @@ let fetchUser = async(type, message, val) => {
     if (!guild) return false
     if (type === "id") {
         try {
-            let member = await guild.fetchMember(val)
+            let member = await guild.members.fetch(val)
             return member.user || false
         } catch (err) {
             return false
@@ -68,7 +68,7 @@ let fetchUser = async(type, message, val) => {
     }
     if (type === "name") {
         try {
-            await guild.fetchMembers()
+            await guild.members.fetch()
             let matches = guild.members.filter(memberFilter(val.toLowerCase()))
             if (matches.size === 0) {
                 message.channel.send("User not found.")

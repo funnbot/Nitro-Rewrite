@@ -30,7 +30,7 @@ module.exports = new Nitro.Command({
 
         let username
         try {
-            let user = await bot.fetchUser(author)
+            let user = await bot.users.fetch(author)
             username = user.username
         } catch (err) {
             username = "Unknown"

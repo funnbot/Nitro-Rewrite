@@ -1,7 +1,7 @@
 const Extension = require("./Extension.js");
 const SimpleStorage = require("../struct/SimpleStorage.js");
 
-class UserExtension extends Extension {
+class User extends Extension {
 
     get(table, nestedValue) {
         return this.table(table).get(this.id, nestedValue)
@@ -41,4 +41,4 @@ class UserExtension extends Extension {
 
 }
 
-module.exports = UserExtension
+module.exports = User

@@ -43,10 +43,10 @@ class Message extends EventEmitter {
             this.CommandHandler = new CommandLoader(bot.module)
             this.commands = this.CommandHandler.fetch()
         }
-        if (this.options.fetchAllCommands) {
-            if (!this.CommandHandler) this.CommandHandler = new CommandLoader(bot.module)
-            this.CommandHandler.readAll()
-            bot.allCommands = this.CommandHandler.fetchAll()
+        if (this.options.fetchAllCommands) { 
+            if (!this.CommandHandler) this.CommandHandler = new CommandLoader(bot.module);
+            this.CommandHandler.readAll();
+            bot.allCommands = this.CommandHandler.fetchAll();
         }
         if (!this.dis.alias && this.commands) {
             this.alias = new Alias(bot.module, this.commands)
@@ -63,10 +63,10 @@ class Message extends EventEmitter {
             bot.on("message", async message => {
                 if (message.author.bot) return
                 message.SetupExtension()
-                if (message.guild) message.guild.fetchMember(message.author);
+                if (message.guild) message.guild.members.fetch(message.author);
                 if (this.options.moneyManager && message.member && message.guild) message.member.useMoneyManager();
                 this.emit("create", message)
-                if (!this.dis.prefix && !message.content.startsWith(message.prefix)) return
+                if (!this.dis.prefix && !message.content.startsWith(message.prefix) && !message.content.startsWith(`<@${bot.user.id}>`) && !message.content.startsWith(`<@!${bot.user.id}>`)) return
                 if (this.dis.text && message.channel.type === "text") return
                 if (this.dis.dm && message.channel.type !== "text") return
                 if (!this.dis.execute) {

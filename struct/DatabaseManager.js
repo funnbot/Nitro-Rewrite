@@ -149,6 +149,7 @@ class DatabaseManager {
     constructor(client) {
         this.tables = {};
         this.client = client;
+        r = r.db("Nitro");
     }
 
     add(table, isGuild) {
