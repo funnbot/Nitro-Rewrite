@@ -5,13 +5,12 @@ const { botsDiscordPw, discordListsOrg, carbonitexNet, novoArchboxPro } = bot.co
 
 const embed = new bot.Embed();
 embed.setTitle("So, you invited Nitro...")
-    .setDescription("Nitro's goal is to provide every feature possible. Having one bot is easier to manage than numerous little bots.")
+    .setDescription("")
+    .addField("Getting Started", "Get the commands with `n!help`")
     .addField("Support Server", "https://discord.gg/aZ2PYhn")
     .setFooter("Hello")
     .setTimestamp(new Date())
-    .nitroColor()
-send({embed});
-1;
+    .nitroColor();
 
 
 bot.on("guildCreate", guild => {
@@ -19,11 +18,11 @@ bot.on("guildCreate", guild => {
         return guild.leave().catch(console.error);
 
     const defchannel = defaultChannel(guild) || guild.owner;
-    defchannel.send({embed})
-
+    defchannel.send({embed}).catch(console.error);
 
     postStats();
 });
+
 bot.on("guildDelete", guild => postStats());
 
 const postStats = async() => {
@@ -63,7 +62,7 @@ const makeRequest = (url, body, auth) => {
 
 const defaultChannel = guild => guild.channels
     .filter(c => c.type === "text" &&
-        c.permissionsFor(client.user).has("SEND_MESSAGES"))
+        c.permissionsFor(bot.user).has("SEND_MESSAGES"))
     .sort((a, b) => a.position - b.position ||
         Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber())
     .first();

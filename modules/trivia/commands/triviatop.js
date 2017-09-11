@@ -5,10 +5,11 @@ module.exports = new Nitro.Command({
     example: "${p}triviatop",
 
     run: async(message, bot, send) => {
-        let users = message.guild.get("Trivia", "users");
-        users = Object.entries(users).sort(([na, va], [nb, vb]) => {
-            return vb - va;
-        }).slice(0, 19);
+        let users = message.guild.table("Trivia").cache;
+        users = users.sort((a, b) => {
+            return b - a;
+        });
+        users = Array.from(users.entries()).slice(0, 19);
         let num = 1;
         let txt = [];
         for (let [id, wins] of users) {

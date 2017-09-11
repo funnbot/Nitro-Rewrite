@@ -2,7 +2,7 @@ const Nitro = require("../../../Nitro.js")
 
 module.exports = new Nitro.Command({
     help: "Set the channel member log messages are sent in.",
-    example: "${p}memlogchannel #welcome",
+    example: "${p}mlchannel #welcome",
     argExample: "<channel>",
     userPerms: 2,
     args: [{
@@ -10,6 +10,8 @@ module.exports = new Nitro.Command({
         prompt: "Which channel will member log messages be sent in?",
         optional: true
     }],
+
+    alias: ["mlchan"],
 
     run: async(message, bot, send) => {
         let channel = message.args[0] || false;

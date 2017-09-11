@@ -2,7 +2,7 @@ const Timer = require("./Timer.js");
 const CaseManager = require("./CaseManager.js");
 const { NitroClient, MessageHandler } = require("../../Nitro.js");
 const bot = new NitroClient("mod");
-bot.useTable("Moderation");
+bot.useTable(["Moderation"]);
 module.exports = bot
 
 const Message = new MessageHandler(bot);

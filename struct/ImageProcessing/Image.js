@@ -1,6 +1,7 @@
 const gm = require("gm").subClass({ imageMagick: true });
 const fs = require("fs");
 const request = require("request");
+const snekfetch = require("snekfetch");
 
 const path = "./struct/ImageProcessing/images/";
 
@@ -66,8 +67,15 @@ class Image {
     /**
      * 
      */
-    static readUrl(url) {
-        return request(url);
+    static async readUrl(url) {
+        try {
+            let res = await snekfetch.get(url);
+            if (!res.headers["content-type"].startsWith("image")) return null;
+            return res.body;
+        } catch (e) {
+            return null;
+        }
+
     }
 
 }

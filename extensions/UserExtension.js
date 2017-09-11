@@ -11,7 +11,7 @@ class User extends Extension {
         return this.table(table).set(this.id, nestedValue, newData)
     }
 
-    table() {
+    table(table) {
         return this.client.table(table)
     }
 

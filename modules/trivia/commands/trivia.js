@@ -48,9 +48,6 @@ module.exports = new Nitro.Command({
     }],
 
     run: async(message, bot, send) => {
-        let col = message.channel.messages;
-        col.filter(() => false)
-        console.log(col)
         let diff = message.args[0] || "random"
         let cat = message.args[1] || "random"
 

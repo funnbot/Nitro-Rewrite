@@ -1,6 +1,7 @@
 const Util = require("./util.js");
 const { Collection } = require("discord.js");
-const { TABLES } = require("../config.js");
+const { TABLES, DBNAME } = require("../config.js");
+const { RETHINKDBPASS } = require("../auth.js");
 let r = require("rethinkdbdash")();
 
 /**
@@ -104,7 +105,7 @@ class TableManager {
         } catch (e) {
             console.log(e)
         }
-        setTimeout(() => this.insertQueue(), 5e3)
+        setTimeout(() => this.insertQueue(), 200)
     }
 
     saveOnKill() {
@@ -149,7 +150,7 @@ class DatabaseManager {
     constructor(client) {
         this.tables = {};
         this.client = client;
-        r = r.db("Nitro");
+        r = r.db(DBNAME);
     }
 
     add(table, isGuild) {
@@ -160,12 +161,12 @@ class DatabaseManager {
         return this.tables[table];
     }
 
-    async createDB() {
+    /*async createDB() {
         let dbs = await r.dbList();
-        if (!dbs.includes("Nitro")) {
-            await r.dbCreate("Nitro");
+        if (!dbs.includes(DBNAME)) {
+            await r.dbCreate(DBNAME);
         }
-        r = r.db("Nitro");
+        r = r.db(DBNAME);
 
         await this._createTables();
         return;
@@ -178,6 +179,6 @@ class DatabaseManager {
             if (!tables.includes(t)) await r.tableCreate(t);
         }
         return;
-    }
+    }*/
 }
 module.exports = DatabaseManager

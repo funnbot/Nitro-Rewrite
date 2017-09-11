@@ -138,8 +138,8 @@ module.exports = class StockMarket {
     }
     // Fill empty space with space to length
     _sfill(text = "", s = 0, prepend = false) {
-        let a = s - text.length > 0 ? s - text.length : 0
-        return prepend ? " ".repeat(a) + text : text + " ".repeat(a)
+        let a = s - text.length > 0 ? s - text.length : 0;
+        return prepend ? " ".repeat(a) + text : text + " ".repeat(a);
     }
 
     _litem(a = []) {

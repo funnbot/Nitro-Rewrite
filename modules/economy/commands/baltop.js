@@ -13,7 +13,10 @@ module.exports = new Nitro.Command({
 
     run: async(message, bot, send) => {
         let page = message.args[0] || 1
-        let top = message.member.balTop
+        let top = message.guild.get("Economy", "users");
+        top = Object.entries(top).sort(([an, ak], [bn, bk]) => {
+            return (bk.money || 0) - (ak.money || 0)
+        });
         let pages = new Paginator(top)
         pages.paginate(20)
         let top20 = pages.getPage(page - 1)

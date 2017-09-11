@@ -9,9 +9,9 @@ module.exports = new Nitro.Command({
     userPerms: 2,
 
     run: async(message, bot, send) => {
-        let config = message.guild.get("perms", false)
+        let config = message.guild.get("UserPerm")
         if (config) send("**Users no longer require the role `User` to use Nitro's commands.**")
         else send("**Users now require a role named `User` to use Nitro's commands.**")
-        bot.perms.s(message.guild.id, !config)
+        message.guild.set("UserPerm", !config);
     }
 })

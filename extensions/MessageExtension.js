@@ -27,7 +27,7 @@ class MessageExtension extends Extension {
 
     async fetchImage(returnAvatarOnFail) {
         try {
-            var messages = await this.channel.fetchMessages({ limit: 3 })
+            var messages = await this.channel.messages.fetch({ limit: 3 })
         } catch (e) {
             return console.log(e);
         }

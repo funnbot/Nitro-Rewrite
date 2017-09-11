@@ -7,6 +7,6 @@ module.exports = new Nitro.Command({
     args: [],
 
     run: async(message, bot, send) => {
-        code
+        
     }
 })

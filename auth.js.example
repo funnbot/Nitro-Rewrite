@@ -1,4 +1,11 @@
 module.exports = {
-  TOKEN: "",
-  SENTRY: ""
+    TOKEN: "",
+    SENTRY: "",
+    LISTS: {
+        botsDiscordPw: "",
+        discordBotsOrg: "",
+        carbonitexNet: "",
+        novoArchboxPro: ""
+    },
+    RETHINKDBPASS: ""
 }

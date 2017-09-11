@@ -3,6 +3,10 @@ module.exports = {
     FUNNBOT: "163735744995655680",
     //How many shards to spawn
     SHARDS: 1,
+
+    MAXFILTERS: 30,
+
+    DBNAME: "Nitro",
     //The Currency
     CUR: {
         toString() {
@@ -54,7 +58,16 @@ module.exports = {
             channel: null,
             join: null,
             leave: null
-        }
+        },
+
+        Filter: {
+            filters: {},
+            filterpacks: {},
+            exc: {},
+            channel: null
+        },
+
+        Usage: {}
     },
     HELP: {
         config: [

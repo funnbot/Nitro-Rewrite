@@ -1,10 +1,13 @@
+//Its faster or something?
+global.Promise = require("bluebird");
+
 // Imports
 let Discord = require("discord.js");
 const Status = require("./Status.js");
 const Sentry = require("raven");
 const DatabaseManager = require("./DatabaseManager.js");
 const { TOKEN } = require("../auth");
-const { TABLES } = require("../config.js");
+const { TABLES, GAMES } = require("../config.js");
 
 // class extensions
 const ClientExtension = require("../extensions/ClientExtension.js");
@@ -31,7 +34,7 @@ const defaultOptions = {
     disabledEvents: ["TYPING_START"]
 }
 
-const defaultTables = ["Prefix", "Alias", "UserPerm"]
+const defaultTables = ["Prefix", "Alias", "UserPerm", "Usage"]
 const allTables = Object.keys(TABLES)
 
 /**
@@ -44,14 +47,14 @@ const allTables = Object.keys(TABLES)
 class NitroClient extends Discord.Client {
 
     constructor(module, clientOptions = defaultOptions) {
-        super(clientOptions)
+        super(clientOptions);
 
         //The Module Name
-        this.module = module
+        this.module = module;
 
         //Sentry Error Tracking
-        Sentry.config(this.config.auth.SENTRY).install()
-        this.sentry = Sentry
+        Sentry.config(this.config.auth.SENTRY).install();
+        this.sentry = Sentry;
 
         //In memory storage
         /** @deprecated */
@@ -59,44 +62,47 @@ class NitroClient extends Discord.Client {
             channel: {},
             guild: {},
             user: {}
-        }
+        };
 
         //In memory storage
         this.SimpleStorage = {
             guild: {},
             channel: {},
             user: {}
-        }
+        };
 
         //Initiate DatabaseManager
-        this.DatabaseManager = new DatabaseManager(this)
+        this.DatabaseManager = new DatabaseManager(this);
 
         //The tables to load
-        this.tables = clientOptions.disableDefaultTables ? [] : clientOptions.useAllTables ? allTables : defaultTables
+        this.tables = clientOptions.disableDefaultTables ? [] : clientOptions.useAllTables ? allTables : defaultTables;
 
         //Basic Events
-        this._unhandledRejection()
-        this._ready()
+        this._unhandledRejection();
+        this._ready();
 
         //Log the bot in
-        this.login(TOKEN)
+        this.login(TOKEN);
+
+        this.initializeTime = Date.now();
     }
 
     useTable(...args) {
         for (let table of args) {
-            this.tables.push(table)
+            this.tables.push(table);
         }
     }
 
     table(table) {
-        return this.DatabaseManager.table(table)
+        return this.DatabaseManager.table(table);
     }
 
     _ready() {
         let once = true
         this.on("ready", () => {
-            console.log(once ? `Module ${this.module} is ready using ${this.shard.count} shards.` : `Module ${this.module} reconnected.`)
-            if (once) this._setupTables()
+            const t = this.readyTimestamp - this.initializeTime;
+            console.log(once ? `Module ${this.module} is ready using ${this.shard.count} shards. Startup took: ${t}MS` : `Module ${this.module} reconnected.`);
+            if (once) this._setupTables();
             this.isBeta = this.user.id !== "264087705124601856";
             once = false;
         })
