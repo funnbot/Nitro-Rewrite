@@ -21,7 +21,7 @@ Message.on("create", message => {
     }
 
     let failed = false;
-    for (let word of Object.keys(filters))
+    for (let word of Object.keys(filters)) 0;
 
     
 })

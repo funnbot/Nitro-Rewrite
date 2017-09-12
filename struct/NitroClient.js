@@ -74,6 +74,9 @@ class NitroClient extends Discord.Client {
         //Initiate DatabaseManager
         this.DatabaseManager = new DatabaseManager(this);
 
+        //Reasons
+        process.setMaxListeners(20);
+
         //The tables to load
         this.tables = clientOptions.disableDefaultTables ? [] : clientOptions.useAllTables ? allTables : defaultTables;
 
