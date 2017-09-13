@@ -1,4 +1,5 @@
 const { NitroClient, MessageHandler } = require("../../Nitro.js");
+const filterpacks = require("../filterpacks.js");
 const bot = new NitroClient("filter");
 bot.useTable("Filter");
 module.exports = bot
@@ -10,6 +11,7 @@ Message.on("create", message => {
     //Handle Filtering.
     const filters = message.guild.get("Filter", "filters");
     const fp = message.guild.get("Filter", "filterpacks");
+    if (!filters || !fp) return;
     const ex = message.guild.get("Filter", "exc");
     const channel = message.guild.get("Filter", "channel")
     const content = message.content.toLowerCase();
@@ -19,10 +21,8 @@ Message.on("create", message => {
     for (let id of Object.keys(ex)) {
         if (message.member && message.member.roles.has(ex)) return;
     }
-
-    let failed = false;
-    for (let word of Object.keys(filters)) 0;
-
+    
+    if 
     
 })
 
