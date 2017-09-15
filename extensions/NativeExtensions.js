@@ -23,7 +23,29 @@ Object.defineProperties(String.prototype, {
     },
     contains: {
         value: function(...texts) {
-            for (let t of texts) if (this.includes(t)) return true;
+            for (let t of texts)
+                if (this.includes(t)) return true;
+        }
+    }
+})
+
+Object.defineProperties(Array.prototype, {
+    center: {
+        value: function() {
+            let maxlength = 0;
+            let result = "";
+            for (let val of this) {
+                if (typeof val !== "string") throw new Error("All values must be strings");
+                if (val.length > maxlength) maxlength = val.length;
+            }
+            for (let val of this) {
+                if (maxlength > val.length) {
+                    let a = maxlength / 2;
+                    let b = a - (val.length / 2)
+                    result += `${" ".repeat(b)}${val}\n`
+                } else result += val + "\n";
+            }
+            return result;
         }
     }
 })
@@ -56,4 +78,8 @@ async function forOfAsync(iter, callback) {
     }
 }
 
-Object.defineProperties(global, { forOf: { value: forOf }, forOfA: { value: forOfAsync }, typeof2: { value: typeof2 } })
+function timeoutGlobal(time = 1000) {
+    return new Promise(res => setTimeout(res, time))
+}
+
+Object.defineProperties(global, { forOf: { value: forOf }, forOfA: { value: forOfAsync }, typeof2: { value: typeof2 }, timeout: { value: timeoutGlobal } })

@@ -14,7 +14,7 @@ module.exports = new Nitro.Command({
 
     run: async(message, bot, send) => {
         let conf = message.guild.get("Filter", "filters");
-        if (Object.keys(filters).length > MAXFILTERS) return message.fail("Max filter limit reached:", MAXFILTERS);
+        if (Object.keys(conf).length > MAXFILTERS) return message.fail("Max filter limit reached:", MAXFILTERS);
         let f = message.args[0];
         if (filterpacks[f]) {
             let fp = message.guild.get("Filter", "filterpacks");
