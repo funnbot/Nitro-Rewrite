@@ -64,7 +64,11 @@ module.exports = {
             filters: {},
             filterpacks: {},
             exc: {},
-            channel: null
+            channel: null,
+            users: {},
+            strikes: null,
+            ban: null,
+            kick: null
         },
 
         Usage: {}
