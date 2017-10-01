@@ -5,19 +5,16 @@ module.exports = new Nitro.Command({
     example: "${p}setircchannel",
     argExample: "",
     userPerms: 2,
-    botPerms: [],
-    alias: [],
-    args: [],
 
     run: async(message, bot, send) => {
-        let channel = message.guild.get("irc", {})
+        let channel = bot.table("IRC").get(message.channel.id);
         if (channel && channel.state === "on") {
             channel.state = "off"
+            bot.table("IRC").set(message.channel.id, channel);
             bot.irc.s(message.channel.id, channel)
-            message.succ("Disabed IRC messages in this channel.")
         } else {
             channel.state = "on"
-            bot.irc.s(message.channel.id, channel)
+            bot.table("IRC").set(message.channel.id, channel);
             message.succ("Enabled IRC messages in this channel.")
         }
     }

@@ -1,7 +1,7 @@
-const { TABLES } = require("./config.js");
+const { TABLES, DBNAME } = require("./config.js");
 const { RETHINKDBPASS } = require("./auth.js");
-const r = require("rethinkdbdash")({
-    password: RETHINKDBPASS
+let r = require("rethinkdbdash")({
+    //password: RETHINKDBPASS
 });
 
 async function createDB() {
@@ -11,11 +11,11 @@ async function createDB() {
     }
     r = r.db(DBNAME);
     console.log("Created DB: " + DBNAME);
-    await this._createTables();
+    await createTables();
     return;
 }
 
-async function _createTables() {
+async function createTables() {
     let tables = await r.tableList();
     let neededTables = Object.keys(TABLES);
     for (let t of neededTables) {

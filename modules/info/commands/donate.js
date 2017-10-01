@@ -13,7 +13,6 @@ module.exports = new Nitro.Command({
             .addField("Paypal", "<https://paypal.me/funnbot>")
             .setFooter("*A minimum donation of $5 or being a patreon subscriber is required to keep your patron status.")
             .nitroColor()
-            .setTimestamp(new Date())
 
         if (message.channel.permissionsFor(bot.user).has("EMBED_LINKS")) 
             return send({embed})

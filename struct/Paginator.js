@@ -1,5 +1,5 @@
 class Paginator {
-    constructor(array = []) {
+    constructor(array) {
         if (!Array.isArray(array)) throw new Error("INVALID_TYPE", typeof array)
         this.array = array
     }

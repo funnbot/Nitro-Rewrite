@@ -10,12 +10,12 @@ module.exports = new Nitro.Command({
     userPerms: 0,
 
     args: [{
-            desc: "How long will it run?\nEx. 10m30s - 10 minutes and 30 seconds, 180m - 3 hours",
-            type: "name"
+            prompt: "How long will it run?\nEx. 10m30s - 10 minutes and 30 seconds, 180m - 3 hours",
+            type: "duration"
         },
         {
-            desc: "What is the question and options?\nSeparate with the character: `|`\nEx. `What is the best bot? | Nitro | Mee6 | Funnbot`",
-            type: "text"
+            prompt: "What is the question and options?\nSeparate with the character: `|`\nEx. `What is the best bot? | Nitro | Mee6 | Funnbot`",
+            type: "string"
         }
     ],
 

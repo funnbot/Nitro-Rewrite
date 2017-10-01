@@ -64,6 +64,7 @@ class Message extends EventEmitter {
                 if (message.author.bot) return
                 message.SetupExtension()
                 if (message.guild) message.guild.members.fetch(message.author);
+                if (message.channel.type === "text" && !message.member) return;
                 if (this.options.moneyManager && message.member && message.guild) message.member.useMoneyManager();
                 this.emit("create", message)
                 if (!this.dis.prefix && !message.content.startsWith(message.prefix) && !message.content.startsWith(`<@${bot.user.id}>`) && !message.content.startsWith(`<@!${bot.user.id}>`)) return
@@ -79,7 +80,7 @@ class Message extends EventEmitter {
                     if (!command) return
                     if (!this.dis.permissions && message.guild && this.permissions.user(message, bot, command.perm)) return
                     if (message.channel.type !== "text" && !command.dm) return
-                    if (!this.dis.noPermAlert && message.channel.type === "text" && !message.channel.permissionsFor(bot.user).has("SEND_MESSAGES"))
+                    if (!this.dis.noPermAlert && message.channel.type === "text" && message.channel.permissionsFor(bot.user) && !message.channel.permissionsFor(bot.user).has("SEND_MESSAGES"))
                         return message.author.send("**I lack permission to send messages in this channel.**")
                     if (this.cooldown && this.cooldown.run(message, command)) return
                     command.run(message, bot, message.send)

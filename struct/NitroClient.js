@@ -5,8 +5,10 @@ global.Promise = require("bluebird");
 let Discord = require("discord.js");
 const Status = require("./Status.js");
 const Sentry = require("raven");
+const os = require("os");
+const Memecached = require("./Memcached.js");
 const DatabaseManager = require("./DatabaseManager.js");
-const { TOKEN } = require("../auth");
+const { TOKEN, MEMCACHED } = require("../auth");
 const { TABLES, GAMES } = require("../config.js");
 
 // class extensions
@@ -71,6 +73,9 @@ class NitroClient extends Discord.Client {
             user: {}
         };
 
+        //Memcached
+        this.mem = new Memecached(MEMCACHED)
+
         //Initiate DatabaseManager
         this.DatabaseManager = new DatabaseManager(this);
 
@@ -105,7 +110,10 @@ class NitroClient extends Discord.Client {
         this.on("ready", () => {
             const t = this.readyTimestamp - this.initializeTime;
             console.log(once ? `Module ${this.module} is ready using ${this.shard.count} shards. Startup took: ${t}MS` : `Module ${this.module} reconnected.`);
-            if (once) this._setupTables();
+            if (once) {
+                this.saveStats();
+                this._setupTables()
+            };
             this.isBeta = this.user.id !== "264087705124601856";
             once = false;
         })
@@ -117,6 +125,33 @@ class NitroClient extends Discord.Client {
             if (Array.isArray(t)) this.DatabaseManager.add(t[0])
             else this.DatabaseManager.add(t, true)
         }
+    }
+
+    async saveStats() {
+        try {
+            var saved = await this.mem.get("stats");
+        } catch (e) {
+            return console.log("SAVE_STATS", e);
+        }
+
+        const mem = process.memoryUsage().rss / 1024 / 1024;
+        const cpu = os.loadavg();
+        const stats = {
+            m: Math.round(mem),
+            c: Math.ceil(cpu[1] * 100) / 10
+        }
+
+        if (!saved) saved = {};
+        if (!saved[this.module]) saved[this.module] = [];
+        saved[this.module][this.shard.id] = stats;
+
+        try {
+            await this.mem.set("stats", saved, 0);
+        } catch (e) {
+            return console.log("SAVE_STATS", e);
+        }
+
+        setTimeout(() => this.saveStats(), 1000 * ((Math.random() + 1) * 1000))
     }
 
     _unhandledRejection() {

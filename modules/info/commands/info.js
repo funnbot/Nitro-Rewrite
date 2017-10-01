@@ -13,31 +13,28 @@ module.exports = new Nitro.Command({
         const s = await fetchStuff(bot);
         if (!s) return send("**Something went wrong fetching stats.**");
 
-        const stats = "**```prolog\n" + [
-            `Shard     :: #${s.SHARDID}`,
-            `Guilds    :: ${s.GUILDS}`,
-            `Channels  :: ${s.CHANNELS}`,
-            `Users     :: ${s.USERS}`,
-            "",
-            `Shards    :: ${s.SHARDCOUNT}`,
+        const shards = "**```http\n" + [
+            `Amount    :: ${s.SHARDCOUNT}`,
             `Guilds    :: ${s.TOTAL_GUILDS}`,
             `Channels  :: ${s.TOTAL_CHANNELS}`,
             `Users     :: ${s.TOTAL_USERS}`
         ].join("\n") + "```**";
 
-        const envir = "**```prolog\n" + [
+        const mods = "**```http\n" + [
+            `Memory GB :: ${s.TOTAL_MEMORY}`,
+            `CPU       :: ${s.TOTAL_CPU}`,
+            `Ping MS   :: ${s.PING}`,
+            `Uptime    :: ${s.UPTIME}`
+        ].join("\n") + "```**";
+
+        const envir = "**```http\n" + [
             `NodeJS    :: ${s.NODE_V}`,
             `OS        :: ${s.OS}`,
             `Library   :: ${s.LIBRARY}`,
             `Version   :: ${s.LIBRARY_V}`,
-            "",
-            `Memory    :: ${s.MEMORY}`,
-            `CPU       :: ${s.CPU}`,
-            `Ping      :: ${s.PING}`,
-            `Uptime    :: ${s.UPTIME}`
         ].join("\n") + "```**";
 
-        const info = "**```prolog\n" + [
+        const info = "**```http\n" + [
             `Creator   :: ${s.CREATOR}`,
             `Modules   :: ${s.MODULES}`,
             `Commands  :: ${s.COMMANDS}`,
@@ -45,9 +42,10 @@ module.exports = new Nitro.Command({
             "Patreon   :: patreon.com/nitrobot",
             "PayPal    :: paypal.me/funnbot"
         ].join("\n") + "```**";
-        
+
         const embed = new bot.Embed()
-            .addField("—— Statistics ——", stats, true)
+            .addField("—— Shards ——", shards, true)
+            .addField("—— Modules ——", mods, true)
             .addField("—— Environment ——", envir, true)
             .addField("—— Information ——", info, true)
             .nitroColor()
@@ -76,6 +74,22 @@ async function fetchStuff(bot) {
         s.TOTAL_GUILDS = await bot.shard.clientValuesReduced("guilds.size");
         s.TOTAL_CHANNELS = await bot.shard.clientValuesReduced("channels.size");
         s.TOTAL_USERS = await bot.shard.clientValuesReduced("users.size");
+        let stats = await bot.mem.get("stats");
+        let mem = 0,
+            cpu = 0;
+        if (typeof stats !== "object") return null;
+        for (let val of Object.values(stats)) {
+            if (Array.isArray(val)) {
+                mem += val.reduce((a, b) => {
+                    return (a.m || 0) + (b.m || 0);
+                }, 0)
+                cpu += val.reduce((a, b) => {
+                    return (a.c || 0) + (b.c || 0);
+                }, 0)
+            }
+        }
+        s.TOTAL_MEMORY = Nitro.util.round(mem / 1024, 3);
+        s.TOTAL_CPU = Math.round(cpu);
     } catch (e) {
         console.log(e);
         return null;

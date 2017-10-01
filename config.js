@@ -62,6 +62,7 @@ module.exports = {
 
         Filter: {
             filters: {},
+            filterRegExp: null,
             filterpacks: {},
             exc: {},
             channel: null,
@@ -71,7 +72,14 @@ module.exports = {
             kick: null
         },
 
-        Usage: {}
+        Usage: {},
+
+        Nickname: {
+            boost: null,
+            auto: null,
+            mention: null,
+            curse: null
+        }
     },
     HELP: {
         config: [
@@ -158,6 +166,35 @@ module.exports = {
             base: 0.55
         }
     },
+    //Numbers
+    NUMBERS: [
+        ":zero:",
+        ":one:",
+        ":two:",
+        ":three:",
+        ":four:",
+        ":five:",
+        ":six:",
+        ":seven:",
+        ":eight:",
+        ":nine:",
+        ":one::zero:",
+        ":one::one:",
+        ":one::two:",
+        ":one::three:",
+        ":one::four:",
+        ":one::five:",
+        ":one::six",
+        ":one::seven",
+        ":one::eight",
+        ":one::nine:",
+        ":two::zero:",
+        ":two::one:",
+        ":two::two:",
+        ":two::three:",
+        ":two::four:",
+        ":two::five:"
+    ],
     //Map permission names to a easier to read format
     PERMISSIONS: {
         ADMINISTRATOR: "Administrator",

@@ -22,6 +22,7 @@ module.exports = new Nitro.Command({
         await message.guild.members.fetch(message.args[1]);
         let target = message.guild.member(message.args[1]);
         if (!target) return;
+        if (target.user.bot) return message.fail("You can't trade with bots.")
         let am = message.args[0];
 
         if (am > member.balance) return message.fail("You don't have that much money.");

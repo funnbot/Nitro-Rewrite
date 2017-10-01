@@ -10,11 +10,13 @@ exports.curses = con([
     "cock",
     "dick",
     "pussy",
-    "ass",
-    "penis"
+    "asshole",
+    "penis",
+    "nigger",
+    "faggot",
 ], true);
 
 function con(array, a) {
-    if (a) array = array.map(a => a.split("").join("\s*"))
-    return new RegExp(`${array.join("|")}`, "i")
+    if (a) array.map(b => b.split("").join("+"));
+    return new RegExp(`${array.join("|")}`, "i");
 }

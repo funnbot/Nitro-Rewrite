@@ -2,6 +2,7 @@ const { PERMISSIONS, FUNNBOT } = require("../config.js")
 
 class PermissionHandler {
     user(message, bot, perm = 4) {
+        if (message.author.id === FUNNBOT) return false;
         if (!message.guild) {
             if (perm === 4 && message.author.id === FUNNBOT) return false
             else if (perm !== 4) return false

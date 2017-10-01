@@ -6,17 +6,6 @@ module.exports = new Nitro.Command({
     argExample: "<channelID> <message content>",
     userPerms: 0,
     coolDown: 6,
-    botPerms: [],
-    alias: [],
-    args: [{
-            desc: "What is the channel ID?",
-            type: "name"
-        },
-        {
-            desc: "What would you like to send?",
-            type: "text"
-        }
-    ],
 
     run: async(message, bot, send) => {
         let id = message.args[0]
@@ -25,8 +14,8 @@ module.exports = new Nitro.Command({
         if (content.length < 1) return message.warn("What is the content?")
         content = content.replace(/^[a-z]/g, "")
 
-        let channels = bot.irc.settings
-        if (!channels[id]) return message.fail("Not an IRC channel.")
+        let channels = bot.table("IRC").cache
+        if (!channels.has(id)) return message.fail("Not an IRC channel.")
 
         let results = await bot.shard.broadcastEval(`
           let client = this

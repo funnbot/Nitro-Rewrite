@@ -11,8 +11,8 @@ module.exports = new Nitro.Command({
   alias: ["rpoll"],
   args: [
     {
-      desc: "What are the options?\nSeparate with the character: `|`\nEx. `What is the best bot? | Nitro | Mee6 | Funnbot`",
-      type: "text"
+      prompt: "What are the options?\nSeparate with the character: `|`\nEx. `What is the best bot? | Nitro | Mee6 | Funnbot`",
+      type: "string"
     }
   ],
 

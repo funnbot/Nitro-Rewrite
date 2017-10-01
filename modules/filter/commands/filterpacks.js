@@ -9,6 +9,7 @@ module.exports = new Nitro.Command({
     run: async(message, bot, send) => {
         let ls = [];
         for (let [k, v] of Object.entries(filterpacks)) {
+            v = v.toString().split("|")
             ls.push(`\`${k}\` - ${Object.keys(v).length} words`)
         }
         return send(`**Filter Packs**\n${ls.join("\n")}`)

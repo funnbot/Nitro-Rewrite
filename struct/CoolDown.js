@@ -1,31 +1,29 @@
-class CoolDown {
-
+class Cooldown {
     constructor() {
-        this.ids = {}
+        this.cmds = {};
     }
 
     run(message, command) {
-        let check = this.check(message.author.id, command.coolDown)
+        let check = this.check(message.author.id, message.command, command.coolDown);
         if (check) {
-            message.send("**CoolDown:** Please wait " + check / 1000 + " seconds before using this command.").then(m => m.delete({ timeout: check }))
-            return true
+            message.send("**CoolDown:** Please wait " + check / 1000 + " seconds before using this command.").then(m => m.delete({ timeout: check }));
+            return true;
         }
-        return false
     }
 
-    check(id, cooldown) {
-        let val = false
-        let u = this.ids[id]
-        let date = Date.now()
-        if (u) {
-            let e = u.date + u.cooldown * 1000
-            e > date ? val = e - date : delete this.ids[id]
+    check(id, command, cooldown) {
+        let valid = null;
+        let date = Date.now();
+        if (!this.cmds[command]) this.cmds[command] = {};
+        let user = this.cmds[command][id];
+        if (user) {
+            let total = user.date + (user.cooldown * 1000);
+            total > date ? valid = total - date : delete this.cmds[command][id];
         } else {
-            this.ids[id] = { date, cooldown }
+            this.cmds[command][id] = { date, cooldown };
         }
-        return val
+        return valid;
     }
-
 }
 
-module.exports = CoolDown
+module.exports = Cooldown

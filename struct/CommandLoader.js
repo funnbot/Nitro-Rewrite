@@ -1,32 +1,58 @@
 const logger = require("./Logger")
 const fs = require("fs")
 
-class CommandHandler {
+class CommandLoader {
     constructor(key) {
-        this.commands = {}
-        this.allCommands = {}
-        this.path = `./modules/${key}/commands`
-        this.commandFiles = fs.readdirSync(this.path)
-        for (let commandFile of this.commandFiles) {
-            commandFile = commandFile.slice(0, -3)
+        this.key = key;
+        this.commands = {};
+        this.allCommands = {};
+        this.path = `./modules/${key}/commands`;
+
+        this.globalCommands = ["../modules/dev/commands/eval"]
+
+        this.loadCommands();
+        this.loadGlobal();
+    }
+
+    loadCommands() {
+        const files = fs.readdirSync(this.path);
+
+        for (let cmd of files) {
+            const name = cmd.slice(0, -3);
             try {
-                let command = require(`.${this.path}/${commandFile}`)
-                if (Object.keys(command).length === 0) throw new Error("EMPTY_COMMAND")
-                this.commands[commandFile] = command
-            } catch (err) {
-                logger.error(`Error Loading Command: .${this.path}/${commandFile} - \n` + err.stack)
+                var load = require(`.${this.path}/${cmd}`);
+            } catch (e) {
+                console.log(cmd, e);
+                continue;
             }
+
+            if (Object.keys(load).length < 1) {
+                console.log("EMPTY_COMMAND", cmd);
+                continue;
+            }
+
+            this.commands[name] = load;
         }
-        this.globalCommands = ["./modules/dev/commands/eval"]
+    }
+
+    loadGlobal() {
         for (let cmd of this.globalCommands) {
-            let name = cmd.split("/")
-            name = name[name.length - 1]
+            let name = cmd.split("/");
+            name = name[name.length - 1];
+
             try {
-                let command = require("." + cmd)
-                this.commands[key + name] = command
-            } catch (err) {
-                logger.error(`Error Loading Command: .${cmd} - \n` + err.stack)
+                var load = require(cmd);
+            } catch (e) {
+                console.log(name, e);
+                continue;
             }
+
+            if (Object.keys(load).length < 1) {
+                console.log("EMPTY_COMMAND", name);
+                continue;
+            }
+
+            this.commands[this.key + name] = load;
         }
     }
 
@@ -35,11 +61,12 @@ class CommandHandler {
             if (err) return console.log("Error Reading Modules")
             for (let mod of modules) {
                 fs.readdir(`./modules/${mod}/commands`, (err, files) => {
-                    if (err) return
+                    if (err) return;
                     for (let file of files) {
                         file = file.slice(0, -3)
                         try {
                             let command = require(`../modules/${mod}/commands/${file}`)
+                            if (Object.keys(command).length < 1) continue;
                             if (!this.allCommands[mod]) this.allCommands[mod] = {}
                             this.allCommands[mod][file] = command
                         } catch (err) {
@@ -51,14 +78,13 @@ class CommandHandler {
         })
     }
 
-    fetchAll() {
-        return this.allCommands
-    }
-
     fetch() {
-        return this.commands
+        return this.commands;
     }
 
+    fetchAll() {
+        return this.allCommands;
+    }
 }
 
-module.exports = CommandHandler
+module.exports = CommandLoader;
